@@ -1,0 +1,175 @@
+/* Common Styles */
+:root {
+    --primary-color: #0c3057;
+    --secondary-color: #f68b6b;
+    --background-color: #f9f9f9;
+    --text-color: #333;
+    --border-color: #e0e0e0;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    background-color: var(--primary-color);
+    padding-bottom: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar h2 {
+    color: #fff;
+    font-weight: 600;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 0;
+    background-color: #082440;
+}
+
+.sidebar .nav-link {
+    color: #fff;
+    font-weight: 500;
+    padding: 12px 20px;
+    border-left: 4px solid transparent;
+    transition: background-color 0.3s ease, border-left-color 0.3s ease;
+}
+
+.sidebar .nav-link:hover {
+    background-color: #154360;
+    border-left-color: var(--secondary-color);
+}
+
+.sidebar .nav-link.active {
+    background-color: var(--secondary-color);
+    font-weight: 700;
+    border-left-color: var(--secondary-color);
+}
+
+/* Content Area */
+.content {
+    margin-left: 250px;
+    padding: 20px;
+    min-height: 100vh;
+    transition: margin-left 0.3s ease;
+}
+
+/* Cards */
+.card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    margin-bottom: 20px;
+}
+
+.card-header {
+    background-color: white;
+    border-bottom: 1px solid var(--border-color);
+    padding: 15px 20px;
+}
+
+.card-header h3 {
+    color: var(--primary-color);
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+/* Forms */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    color: var(--primary-color);
+    font-weight: 500;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.form-control {
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 10px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 2px rgba(246, 139, 107, 0.25);
+}
+
+/* Buttons */
+.btn {
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background-color: var(--secondary-color);
+    border: none;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #e07a5e;
+}
+
+.btn-outline-primary {
+    border: 1px solid var(--secondary-color);
+    color: var(--secondary-color);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+/* Status Badges */
+.status-badge {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.status-pending {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.status-in-progress {
+    background-color: #cce5ff;
+    color: #004085;
+}
+
+.status-resolved {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .sidebar {
+        width: 100%;
+        position: relative;
+        padding: 15px;
+    }
+    
+    .content {
+        margin-left: 0;
+    }
+} 

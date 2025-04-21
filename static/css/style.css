@@ -1,0 +1,125 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+    color: #333;
+    display: flex; /* Enable flexbox for sidebar and content layout */
+    min-height: 100vh; /* Ensure full viewport height */
+}
+
+.sidebar {
+    background-color: #d4c2ef;
+    color: #fff;
+    width: 200px; /* Adjust width as needed */
+    padding: 20px;
+    box-sizing: border-box;
+    min-height: 100vh; /* Full height sidebar */
+}
+
+.sidebar h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: #fff;
+}
+
+.sidebar .nav-link {
+    color: #fff;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-bottom: 5px;
+}
+
+.sidebar .nav-link:hover {
+    background-color: #c0aedb;
+}
+
+.sidebar .nav-link.active {
+    background-color: #f68b6b;
+    font-weight: bold;
+}
+
+.content {
+    flex-grow: 1; /* Content takes remaining space */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.container {
+    max-width: 960px;
+    margin: 0 auto; /* Center content within the content area */
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2 {
+    color: #f68b6b;
+    text-align: left; /* Adjust heading alignment within content */
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="number"],
+input[type="password"],
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+select {
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="currentColor" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position-x: 95%;
+    background-position-y: center;
+    padding-right: 30px;
+}
+
+button {
+    background-color: #f68b6b;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #e07a5e;
+}
+
+.complaint-history .table-responsive {
+    overflow-x: auto;
+}
+
+.complaint-history .table {
+    width: 100%;
+}
+
+.complaint-history .badge {
+    font-size: 0.8em;
+}
+
+#comments-section h3 {
+    margin-top: 20px;
+}
+
+#comments-list li {
+    padding: 8px 0;
+}
