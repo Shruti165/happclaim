@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaint History - HappyClaim</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static/css/common.css">
+</head>
+<body>
+<div class="d-flex">
+    <!-- Include Navigation -->
+    <div id="navigation"></div>
+
+    <div class="content">
+        <div class="container mt-4">
+            <h1>Complaint History</h1>
+            <p class="lead text-center mb-4">Track the status of your complaints</p>
+
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>Filter Complaints</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="status">Status</label>
+                                <select class="form-control" id="status">
+                                    <option value="">All Status</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="in-progress">In Progress</option>
+                                    <option value="resolved">Resolved</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="category">Category</label>
+                                <select class="form-control" id="category">
+                                    <option value="">All Categories</option>
+                                    <option value="ecommerce">E-commerce</option>
+                                    <option value="banking">Banking</option>
+                                    <option value="healthcare">Healthcare</option>
+                                    <option value="telecom">Telecommunications</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="date-from">Date From</label>
+                                <input type="date" class="form-control" id="date-from">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="date-to">Date To</label>
+                                <input type="date" class="form-control" id="date-to">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3>Your Complaints</h3>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Complaint ID</th>
+                                    <th>Category</th>
+                                    <th>Date Filed</th>
+                                    <th>Status</th>
+                                    <th>Amount (₹)</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>HC-2024-001</td>
+                                    <td>E-commerce</td>
+                                    <td>2024-04-20</td>
+                                    <td><span class="status-badge status-pending">Pending</span></td>
+                                    <td>5,000</td>
+                                    <td>
+                                        <a href="complaint-details.html?id=HC-2024-001" class="btn btn-sm btn-primary">View</a>
+                                        <button class="btn btn-sm btn-outline-secondary">Download</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>HC-2024-002</td>
+                                    <td>Healthcare</td>
+                                    <td>2024-04-19</td>
+                                    <td><span class="status-badge status-resolved">Resolved</span></td>
+                                    <td>15,000</td>
+                                    <td>
+                                        <a href="complaint-details.html?id=HC-2024-002" class="btn btn-sm btn-primary">View</a>
+                                        <button class="btn btn-sm btn-outline-secondary">Download</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>HC-2024-003</td>
+                                    <td>Banking</td>
+                                    <td>2024-04-18</td>
+                                    <td><span class="status-badge status-in-progress">In Progress</span></td>
+                                    <td>25,000</td>
+                                    <td>
+                                        <a href="complaint-details.html?id=HC-2024-003" class="btn btn-sm btn-primary">View</a>
+                                        <button class="btn btn-sm btn-outline-secondary">Download</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    // Load navigation
+    $(document).ready(function() {
+        $("#navigation").load("static/navigation.html", function() {
+            // Set active link
+            $('.nav-link[href="complaint-history.html"]').addClass('active');
+        });
+    });
+</script>
+</body>
+</html>

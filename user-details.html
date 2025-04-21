@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Details - HappyClaim</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static/css/common.css">
+</head>
+<body>
+<div class="d-flex">
+    <!-- Include Navigation -->
+    <div id="navigation"></div>
+
+    <div class="content">
+        <div class="container mt-4">
+            <h1>User Profile</h1>
+            <p class="lead text-center mb-4">Manage your account settings and preferences</p>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h3>Profile Picture</h3>
+                        </div>
+                        <div class="card-body text-center">
+                            <img src="https://via.placeholder.com/150" alt="Profile Picture" class="rounded-circle mb-3">
+                            <button class="btn btn-outline-primary btn-block">Change Picture</button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Account Statistics</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <h5>Total Complaints</h5>
+                                <p class="display-4">12</p>
+                            </div>
+                            <div class="mb-3">
+                                <h5>Resolved Complaints</h5>
+                                <p class="display-4">8</p>
+                            </div>
+                            <div>
+                                <h5>Success Rate</h5>
+                                <p class="display-4">67%</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-8">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h3>Personal Information</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="userDetailsForm">
+                                <div class="form-group">
+                                    <label for="fullName">Full Name</label>
+                                    <input type="text" class="form-control" id="fullName" value="John Doe">
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email Address</label>
+                                    <input type="email" class="form-control" id="email" value="john.doe@example.com">
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">Phone Number</label>
+                                    <input type="tel" class="form-control" id="phone" value="+91 98765 43210">
+                                </div>
+                                <div class="form-group">
+                                    <label for="address">Address</label>
+                                    <textarea class="form-control" id="address" rows="3">123, Main Street, Mumbai - 400001</textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Update Profile</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Security Settings</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="securityForm">
+                                <div class="form-group">
+                                    <label for="currentPassword">Current Password</label>
+                                    <input type="password" class="form-control" id="currentPassword">
+                                </div>
+                                <div class="form-group">
+                                    <label for="newPassword">New Password</label>
+                                    <input type="password" class="form-control" id="newPassword">
+                                </div>
+                                <div class="form-group">
+                                    <label for="confirmPassword">Confirm New Password</label>
+                                    <input type="password" class="form-control" id="confirmPassword">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Change Password</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    // Load navigation
+    $(document).ready(function() {
+        $("#navigation").load("static/navigation.html", function() {
+            // Set active link
+            $('.nav-link[href="user-details.html"]').addClass('active');
+        });
+
+        // Form submission handlers
+        $("#userDetailsForm").on("submit", function(e) {
+            e.preventDefault();
+            alert("Profile updated successfully!");
+        });
+
+        $("#securityForm").on("submit", function(e) {
+            e.preventDefault();
+            alert("Password changed successfully!");
+        });
+    });
+</script>
+</body>
+</html>
