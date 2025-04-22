@@ -406,38 +406,135 @@
             margin-top: 15px;
             color: #212529;
         }
+
+        /* Improve button styling */
+        .btn {
+            padding: 8px 16px;
+            font-weight: 500;
+            border-radius: 4px;
+        }
+
+        /* Service Selection Styling */
+        .service-option {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+                padding: 15px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            border: 1px solid #e9ecef;
+        }
+
+        .service-option:hover {
+            background-color: #fff;
+            border-color: var(--secondary-color);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .service-option .custom-control {
+            margin-bottom: 10px;
+        }
+
+        .service-option .custom-control-label {
+            font-weight: 500;
+            color: #495057;
+        }
+
+        .service-option .form-text {
+            color: #6c757d;
+            font-size: 0.875rem;
+        }
+
+        .service-option .sub-options {
+            margin-top: 10px;
+            padding-left: 20px;
+            border-left: 2px solid #e9ecef;
+        }
+
+        .service-option .sub-options .custom-control {
+            margin-bottom: 8px;
+        }
+
+        .service-option .sub-options .custom-control-label {
+            font-weight: 400;
+        }
+
+        .service-option input[type="radio"]:checked ~ .custom-control-label {
+            color: var(--secondary-color);
+        }
+
+        /* Add CSS for fee breakdown */
+        .fee-breakdown {
+            background-color: #f8f9fa;
+                padding: 20px;
+            border-radius: 8px;
+        }
+        .fee-breakdown h5 {
+            color: #495057;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        .fee-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .fee-item:last-child {
+            border-bottom: none;
+        }
+        .fee-item.total {
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 2px solid #e9ecef;
+        }
+        .payment-note {
+            color: #6c757d;
+            font-size: 0.875rem;
+        }
     </style>
 
     <!-- Add Select2 CSS and JS -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <!-- Add EmailJS library -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
+        })();
+    </script>
 </head>
 <body>
 <div class="d-flex">
     <!-- Include Navigation -->
     <div id="navigation"></div>
 
-    <div class="content">
-        <div class="container mt-4">
-            <h1>File a Complaint</h1>
+<div class="content">
+    <div class="container mt-4">
+        <h1>File a Complaint</h1>
             <p class="lead text-center mb-4">Help us help you resolve your consumer issues</p>
 
             <!-- Progress Indicator -->
             <div class="step-indicator">
-                <div class="step active" data-step="1">
-                    <span class="step-label">Complainant Details</span>
+                <div class="step active" data-step="0">
+                    <span class="step-label">Service</span>
+                </div>
+                <div class="step" data-step="1">
+                    <span class="step-label">Complainant </span>
                 </div>
                 <div class="step" data-step="2">
-                    <span class="step-label">Complaint Details</span>
+                    <span class="step-label">Complaint </span>
                 </div>
                 <div class="step" data-step="3">
-                    <span class="step-label">Respondent Details</span>
+                    <span class="step-label">Respondent</span>
                 </div>
                 <div class="step" data-step="4">
                     <span class="step-label">Jurisdiction</span>
                 </div>
                 <div class="step" data-step="5">
-                    <span class="step-label">Lawyer Selection</span>
+                    <span class="step-label">Lawyer</span>
                 </div>
                 <div class="step" data-step="6">
                     <span class="step-label">Confirmation</span>
@@ -448,20 +545,57 @@
             </div>
 
             <form id="complaintForm">
+                <!-- Service Selection Section -->
+                <div class="form-section active" id="section-0">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Service</h3>
+                        </div>
+                        <div class="card-body">
+                    <div class="form-group">
+                                <label data-toggle="tooltip" title="Select the type of service you require">
+                                    Service Type <i class="fas fa-info-circle text-muted"></i>
+                                </label>
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" id="serviceNotice" name="serviceType" class="custom-control-input" value="notice" checked>
+                                    <label class="custom-control-label" for="serviceNotice">Send Notice</label>
+                                    <small class="form-text text-muted d-block">Send a legal notice to the opposite party before filing a complaint</small>
+                                    <div class="sub-options" id="noticeTypeOptions">
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" id="happyClaimNotice" name="noticeType" class="custom-control-input" value="happyClaim" checked>
+                                            <label class="custom-control-label" for="happyClaimNotice">Send through HappyClaim</label>
+                    </div>
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" id="lawyerNotice" name="noticeType" class="custom-control-input" value="lawyer">
+                                            <label class="custom-control-label" for="lawyerNotice">Through lawyer recommended by HappyClaim</label>
+                                            <small class="form-text text-muted d-block">Letter head will contain lawyer details</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="custom-control custom-radio mt-2">
+                                    <input type="radio" id="serviceComplaint" name="serviceType" class="custom-control-input" value="complaint">
+                                    <label class="custom-control-label" for="serviceComplaint">Raise Consumer Complaint</label>
+                                    <small class="form-text text-muted d-block">File a formal consumer complaint with the appropriate commission</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Section 1: Complainant Details -->
-                <div class="form-section active" id="section-1">
+                <div class="form-section" id="section-1">
                     <div class="card">
                         <div class="card-header">
                             <h3>Complainant Details</h3>
                         </div>
                         <div class="card-body">
-                            <div class="form-group">
+                    <div class="form-group">
                                 <label for="complainant-name" data-toggle="tooltip" title="Enter your full name as per official documents">
                                     Name of Complainant <i class="fas fa-info-circle text-muted"></i>
                                 </label>
                                 <input type="text" class="form-control" id="complainant-name" required>
-                            </div>
-                            <div class="form-group">
+                    </div>
+                    <div class="form-group">
                                 <label for="pincode" data-toggle="tooltip" title="Select your pincode to automatically fill city and state">
                                     Pincode <i class="fas fa-info-circle text-muted"></i>
                                 </label>
@@ -478,27 +612,27 @@
                                     <option value="302001">302001 - Jaipur, Rajasthan</option>
                                     <option value="800001">800001 - Patna, Bihar</option>
                                 </select>
-                            </div>
-                            <div class="form-group">
+                    </div>
+                    <div class="form-group">
                                 <label for="complainant-address" data-toggle="tooltip" title="Enter your complete communication address where you can receive official correspondence">
                                     Communication Address of Complainant <i class="fas fa-info-circle text-muted"></i>
                                 </label>
                                 <textarea class="form-control" id="complainant-address" rows="3" required></textarea>
-                            </div>
+                    </div>
                             <div class="form-group">
                                 <label for="phone" data-toggle="tooltip" title="Enter your 10-digit mobile number">
                                     Phone No <i class="fas fa-info-circle text-muted"></i>
                                 </label>
                                 <input type="tel" class="form-control" id="phone" pattern="[0-9]{10}" required>
                                 <small class="form-text text-muted">Enter 10-digit mobile number</small>
-                            </div>
-                            <div class="form-group">
+                </div>
+                    <div class="form-group">
                                 <label for="email" data-toggle="tooltip" title="Enter your email address for official communication">
                                     Email <i class="fas fa-info-circle text-muted"></i>
                                 </label>
                                 <input type="email" class="form-control" id="email" required>
-                            </div>
-                            <div class="form-group">
+                    </div>
+                    <div class="form-group">
                                 <label for="relationship" data-toggle="tooltip" title="Select your relationship with the complainant">
                                     Relationship with Complainant <i class="fas fa-info-circle text-muted"></i>
                                 </label>
@@ -526,20 +660,19 @@
                         </div>
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="industry" data-toggle="tooltip" title="Select the industry related to your complaint">
-                                    Industry <i class="fas fa-info-circle text-muted"></i>
+                                <label for="category" data-toggle="tooltip" title="Select the category that best describes your complaint">
+                                    Category(Industry) <i class="fas fa-info-circle text-muted"></i>
                                 </label>
-                                <select class="form-control" id="industry" required>
-                                    <option value="">Select Industry</option>
-                                    <option value="retail">Retail</option>
-                                    <option value="hospitality">Hospitality</option>
-                                    <option value="finance">Finance</option>
-                                    <option value="healthcare">Healthcare</option>
+                                <select class="form-control" id="category" required>
+                            <option value="">Select Category</option>
+                            <option value="travel">Travel</option>
+                            <option value="healthcare">Healthcare</option>
+                            <option value="ecommerce">E-commerce</option>
+                            <option value="banking">Banking</option>
+                            <option value="insurance">Insurance</option>
                                     <option value="real_estate">Real Estate</option>
-                                    <option value="transportation">Transportation</option>
-                                    <option value="telecom">Telecommunications</option>
-                                </select>
-                            </div>
+                        </select>
+                    </div>
 
                             <div class="form-group">
                                 <label data-toggle="tooltip" title="Select whether your complaint is related to a product or service">
@@ -556,68 +689,148 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="category" data-toggle="tooltip" title="Select the category that best describes your complaint">
-                                    Category <i class="fas fa-info-circle text-muted"></i>
-                                </label>
-                                <select class="form-control" id="category" required>
-                                    <option value="">Select Category</option>
-                                    <option value="travel">Travel</option>
-                                    <option value="healthcare">Healthcare</option>
-                                    <option value="ecommerce">E-commerce</option>
-                                    <option value="banking">Banking</option>
-                                    <option value="insurance">Insurance</option>
-                                    <option value="real_estate">Real Estate</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
                                 <label for="subcategory" data-toggle="tooltip" title="Select the specific type of complaint">
                                     Sub-Category <i class="fas fa-info-circle text-muted"></i>
                                 </label>
                                 <select class="form-control" id="subcategory" required>
-                                    <option value="">Select Sub-Category</option>
+                            <option value="">Select Sub-Category</option>
                                     <!-- Sub-categories will be populated dynamically -->
-                                </select>
-                            </div>
+                        </select>
+                    </div>
 
-                            <div class="form-group">
+                    <div class="form-group">
+                                <label for="company" data-toggle="tooltip" title="Select the company related to your complaint">
+                                    Company <i class="fas fa-info-circle text-muted"></i>
+                                </label>
+                                <select class="form-control" id="company" required>
+                                    <option value="">Select Company</option>
+                                    <!-- Travel Companies -->
+                                    <optgroup label="Travel & Hospitality">
+                                        <option value="makemytrip">MakeMyTrip</option>
+                                        <option value="yatra">Yatra.com</option>
+                                        <option value="cleartrip">Cleartrip</option>
+                                        <option value="goibibo">Goibibo</option>
+                                        <option value="taj_hotels">Taj Hotels</option>
+                                        <option value="oberoi">Oberoi Hotels</option>
+                                        <option value="air_india">Air India</option>
+                                        <option value="indigo">IndiGo</option>
+                                        <option value="spicejet">SpiceJet</option>
+                                    </optgroup>
+                                    <!-- Healthcare Companies -->
+                                    <optgroup label="Healthcare">
+                                        <option value="apollo">Apollo Hospitals</option>
+                                        <option value="fortis">Fortis Healthcare</option>
+                                        <option value="max">Max Healthcare</option>
+                                        <option value="apollo_pharmacy">Apollo Pharmacy</option>
+                                        <option value="medplus">Medplus</option>
+                                        <option value="lal_pathlabs">Dr. Lal PathLabs</option>
+                                        <option value="thyrocare">Thyrocare</option>
+                                    </optgroup>
+                                    <!-- E-commerce Companies -->
+                                    <optgroup label="E-commerce">
+                                        <option value="amazon">Amazon India</option>
+                                        <option value="flipkart">Flipkart</option>
+                                        <option value="myntra">Myntra</option>
+                                        <option value="ajio">AJIO</option>
+                                        <option value="nykaa">Nykaa</option>
+                                        <option value="meesho">Meesho</option>
+                                        <option value="firstcry">FirstCry</option>
+                                    </optgroup>
+                                    <!-- Banking Companies -->
+                                    <optgroup label="Banking & Finance">
+                                        <option value="sbi">State Bank of India</option>
+                                        <option value="hdfc">HDFC Bank</option>
+                                        <option value="icici">ICICI Bank</option>
+                                        <option value="axis">Axis Bank</option>
+                                        <option value="kotak">Kotak Mahindra Bank</option>
+                                        <option value="pnb">Punjab National Bank</option>
+                                    </optgroup>
+                                    <!-- Insurance Companies -->
+                                    <optgroup label="Insurance">
+                                        <option value="lic">Life Insurance Corporation</option>
+                                        <option value="star_health">Star Health Insurance</option>
+                                        <option value="hdfc_ergo">HDFC ERGO</option>
+                                        <option value="icici_lombard">ICICI Lombard</option>
+                                        <option value="bajaj_allianz">Bajaj Allianz</option>
+                                    </optgroup>
+                                    <!-- Real Estate Companies -->
+                                    <optgroup label="Real Estate">
+                                        <option value="dlf">DLF Limited</option>
+                                        <option value="godrej">Godrej Properties</option>
+                                        <option value="sobhagroup">Sobha Limited</option>
+                                        <option value="prestige">Prestige Group</option>
+                                        <option value="magicbricks">MagicBricks</option>
+                                        <option value="99acres">99acres</option>
+                                    </optgroup>
+                                    <!-- Telecom Companies -->
+                                    <optgroup label="Telecom">
+                                        <option value="airtel">Airtel</option>
+                                        <option value="jio">Reliance Jio</option>
+                                        <option value="vi">Vodafone Idea</option>
+                                        <option value="bsnl">BSNL</option>
+                                    </optgroup>
+                                    <!-- Utility Companies -->
+                                    <optgroup label="Utilities">
+                                        <option value="tata_power">Tata Power</option>
+                                        <option value="adani_power">Adani Power</option>
+                                        <option value="torrent_power">Torrent Power</option>
+                                        <option value="brihanmumbai">Brihanmumbai Electric Supply</option>
+                                    </optgroup>
+                                    <!-- Education Companies -->
+                                    <optgroup label="Education">
+                                        <option value="byjus">BYJU'S</option>
+                                        <option value="vedantu">Vedantu</option>
+                                        <option value="unacademy">Unacademy</option>
+                                        <option value="upgrad">upGrad</option>
+                                    </optgroup>
+                                    <!-- Food Delivery Companies -->
+                                    <optgroup label="Food Delivery">
+                                        <option value="zomato">Zomato</option>
+                                        <option value="swiggy">Swiggy</option>
+                                        <option value="dunzo">Dunzo</option>
+                                        <option value="blinkit">Blinkit</option>
+                                    </optgroup>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
                                 <label for="issueTitle" data-toggle="tooltip" title="Enter a brief title for your complaint">
                                     Issue Title <i class="fas fa-info-circle text-muted"></i>
                                 </label>
                                 <input type="text" class="form-control" id="issueTitle" required>
-                            </div>
+                    </div>
 
-                            <div class="form-group">
+                    <div class="form-group">
                                 <label for="description" data-toggle="tooltip" title="Provide detailed information about your complaint">
                                     Complaint Description <i class="fas fa-info-circle text-muted"></i>
                                 </label>
                                 <textarea class="form-control" id="description" rows="5" required></textarea>
-                            </div>
+                    </div>
 
-                            <div class="form-group">
+                    <div class="form-group">
                                 <label for="value" data-toggle="tooltip" title="Enter the monetary value of the product or service">
                                     Value of Product/Service (₹) <i class="fas fa-info-circle text-muted"></i>
                                 </label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">₹</span>
-                                    </div>
+                    </div>
                                     <input type="number" class="form-control" id="value" min="0" step="0.01" required>
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                    <div class="form-group">
                                 <label for="documents" data-toggle="tooltip" title="Upload relevant documents to support your complaint">
                                     Upload Documents (Bills, Proofs, Communication, etc.) <i class="fas fa-info-circle text-muted"></i>
                                 </label>
                                 <div class="custom-file">
                                     <input type="file" class="custom-file-input" id="documents" multiple>
                                     <label class="custom-file-label" for="documents">Choose files</label>
-                                </div>
+                    </div>
                                 <small class="form-text text-muted">Supported formats: PDF, JPG, PNG (Max size: 5MB each)</small>
                                 <div id="uploadedFiles" class="mt-3">
                                     <!-- Uploaded files will be listed here -->
-                                </div>
+                </div>
                             </div>
                         </div>
                     </div>
@@ -631,19 +844,19 @@
                         </div>
                         <div class="card-body">
                             <form id="respondentForm">
-                                <div class="form-group">
+                    <div class="form-group">
                                     <label for="partyName" data-toggle="tooltip" title="Enter the name of the opposite party">
                                         Name of Party <i class="fas fa-info-circle text-muted"></i>
                                     </label>
                                     <input type="text" class="form-control" id="partyName" required>
-                                </div>
-                                <div class="form-group">
+                    </div>
+                    <div class="form-group">
                                     <label for="partyAddress" data-toggle="tooltip" title="Enter the complete address of the opposite party">
                                         Address of Party <i class="fas fa-info-circle text-muted"></i>
                                     </label>
                                     <textarea class="form-control" id="partyAddress" rows="3" required></textarea>
-                                </div>
-                                <div class="form-group">
+                    </div>
+                    <div class="form-group">
                                     <label for="partyRelationship" data-toggle="tooltip" title="Select the relationship with the respondent">
                                         Relationship with Respondent <i class="fas fa-info-circle text-muted"></i>
                                     </label>
@@ -658,19 +871,19 @@
                                         <option value="distributor">Distributor</option>
                                         <option value="other">Other</option>
                                     </select>
-                                </div>
-                                <div class="form-group">
+                    </div>
+                    <div class="form-group">
                                     <label for="partyContact" data-toggle="tooltip" title="Enter the contact number of the opposite party (optional)">
                                         Contact No <i class="fas fa-info-circle text-muted"></i>
                                     </label>
                                     <input type="tel" class="form-control" id="partyContact">
-                                </div>
-                                <div class="form-group">
+                    </div>
+                    <div class="form-group">
                                     <label for="partyEmail" data-toggle="tooltip" title="Enter the email address of the opposite party (optional)">
                                         Email <i class="fas fa-info-circle text-muted"></i>
                                     </label>
                                     <input type="email" class="form-control" id="partyEmail">
-                                </div>
+                    </div>
                                 <div class="form-group">
                                     <button type="button" class="btn btn-primary" id="addParty">
                                         <i class="fas fa-plus"></i> Add Party
@@ -681,7 +894,7 @@
                                     <button type="button" class="btn btn-outline-secondary" id="cancelEdit" style="display: none;">
                                         <i class="fas fa-times"></i> Cancel
                                     </button>
-                                </div>
+                </div>
                             </form>
 
                             <div class="table-responsive mt-4">
@@ -709,21 +922,51 @@
                 <div class="form-section" id="section-4">
                     <div class="card">
                         <div class="card-header">
-                            <h3>Jurisdiction Details - District Consumer Disputes Redressal Forum (DCDRC)</h3>
+                            <h3>Jurisdiction Details</h3>
                         </div>
                         <div class="card-body">
                             <!-- Jurisdiction Information -->
                             <div class="alert alert-info mb-4">
                                 <h5 class="alert-heading">Under the Consumer Protection Act, 2019:</h5>
                                 <ul class="mb-0">
-                                    <li><strong>District Commission (DCDRC):</strong> For claims up to ₹1 crore.</li>
-                                    <li><strong>State Commission (SCDRC):</strong> For claims exceeding ₹1 crore but not exceeding ₹10 crore.</li>
-                                    <li><strong>National Commission (NCDRC):</strong> For claims exceeding ₹10 crore.</li>
+                                    <li><strong>District Commission (DCDRC):</strong> For claims up to ₹1 crore
+                                        <ul>
+                                            <li>Presiding Officer: President (District Judge)</li>
+                                            <li>Members: 2 members (1 woman)</li>
+                                            <li>Appeal: To State Commission within 45 days</li>
+                                        </ul>
+                                    </li>
+                                    <li><strong>State Commission (SCDRC):</strong> For claims exceeding ₹1 crore but not exceeding ₹10 crore
+                                        <ul>
+                                            <li>Presiding Officer: President (High Court Judge)</li>
+                                            <li>Members: 4 members (1 woman)</li>
+                                            <li>Appeal: To National Commission within 30 days</li>
+                                        </ul>
+                                    </li>
+                                    <li><strong>National Commission (NCDRC):</strong> For claims exceeding ₹10 crore
+                                        <ul>
+                                            <li>Presiding Officer: President (Supreme Court Judge)</li>
+                                            <li>Members: 4 members (1 woman)</li>
+                                            <li>Appeal: To Supreme Court within 30 days</li>
+                                        </ul>
+                                    </li>
                                 </ul>
+                                <div class="mt-3">
+                                    <small class="text-muted">
+                                        <i class="fas fa-info-circle"></i> Note: All commissions have the power to:
+                                        <ul class="mb-0">
+                                            <li>Summon and enforce attendance of witnesses</li>
+                                            <li>Receive evidence on affidavits</li>
+                                            <li>Grant interim relief</li>
+                                            <li>Pass ex-parte orders</li>
+                                            <li>Order refund of money or replacement of goods</li>
+                                        </ul>
+                                    </small>
+                                </div>
                             </div>
 
                             <form id="jurisdictionForm">
-                                <div class="form-group">
+                    <div class="form-group">
                                     <label for="jurisdictionPincode" data-toggle="tooltip" title="Pincode of the jurisdiction area">
                                         Pincode <i class="fas fa-info-circle text-muted"></i>
                                     </label>
@@ -740,32 +983,32 @@
                                         <option value="302001">302001 - Jaipur, Rajasthan</option>
                                         <option value="800001">800001 - Patna, Bihar</option>
                                     </select>
-                                </div>
-                                <div class="form-group">
+                    </div>
+                    <div class="form-group">
                                     <label for="districtCourt" data-toggle="tooltip" title="Name of the District Consumer Court">
                                         District Court <i class="fas fa-info-circle text-muted"></i>
                                     </label>
                                     <input type="text" class="form-control" id="districtCourt" required>
-                                </div>
-                                <div class="form-group">
+                    </div>
+                    <div class="form-group">
                                     <label for="jurisdictionCity" data-toggle="tooltip" title="City of the jurisdiction">
                                         City <i class="fas fa-info-circle text-muted"></i>
                                     </label>
                                     <input type="text" class="form-control" id="jurisdictionCity" required>
-                                </div>
-                                <div class="form-group">
+                    </div>
+                    <div class="form-group">
                                     <label for="courtAddress" data-toggle="tooltip" title="Complete address of the District Consumer Court">
                                         Court Address <i class="fas fa-info-circle text-muted"></i>
                                     </label>
                                     <textarea class="form-control" id="courtAddress" rows="3" required></textarea>
-                                </div>
-                                <div class="form-group">
+                    </div>
+                    <div class="form-group">
                                     <button type="button" class="btn btn-primary" id="confirmJurisdiction">
                                         <i class="fas fa-check"></i> Confirm Jurisdiction Details
                                     </button>
-                                </div>
+                    </div>
                             </form>
-                        </div>
+                </div>
                     </div>
                 </div>
 
@@ -777,7 +1020,7 @@
                             <h3>Advocate Selection</h3>
                         </div>
                         <div class="card-body">
-                            <div class="form-group">
+                    <div class="form-group">
                                 <label data-toggle="tooltip" title="Choose whether to select your own lawyer or let Happy Claim suggest one">
                                     Select your preferred way to choose a lawyer <i class="fas fa-info-circle text-muted"></i>
                                 </label>
@@ -797,16 +1040,16 @@
                                     Select Lawyer <i class="fas fa-info-circle text-muted"></i>
                                 </label>
                                 <select class="form-control" id="lawyerSelect">
-                                    <option value="">Select a Lawyer</option>
+                            <option value="">Select a Lawyer</option>
                                     <option value="1">Adv. Rajesh Kumar (10 years, Specialist in Consumer Law)</option>
                                     <option value="2">Adv. Priya Sharma (8 years, Specialist in Consumer Protection)</option>
                                     <option value="3">Adv. Amit Singh (12 years, Specialist in Consumer Law)</option>
                                     <option value="4">Adv. Neha Gupta (9 years, Specialist in Consumer Protection)</option>
                                     <option value="5">Adv. Vikram Patel (11 years, Specialist in Consumer Disputes)</option>
                                     <option value="6">Adv. Meera Desai (7 years, Specialist in Consumer Rights)</option>
-                                </select>
-                            </div>
-                        </div>
+                        </select>
+                    </div>
+                    </div>
                     </div>
 
                     <!-- Lawyer Details Card -->
@@ -915,8 +1158,89 @@
                         </div>
                         <div class="card-body">
                             <div class="summary">
-                                <h4>Please review your complaint details:</h4>
+                                <h4>Please review your details:</h4>
                                 <div id="summary-details"></div>
+                            </div>
+
+                            <!-- Insurance Option -->
+                            <div class="card mt-4">
+                                <div class="card-header bg-light">
+                                    <h5 class="mb-0">Complaint Insurance Coverage</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="insuranceCoverage">
+                                        <label class="form-check-label" for="insuranceCoverage">
+                                            <strong>Add Insurance Coverage for this Complaint</strong>
+                                        </label>
+                                        <small class="form-text text-muted d-block">
+                                            <i class="fas fa-info-circle text-primary"></i> 
+                                            Get insurance coverage for your complaint. In case of an unfavorable outcome, you can claim back up to 80% of your legal expenses and claim amount.
+                                        </small>
+                                    </div>
+                                    <div class="insurance-details mt-3" style="display: none;">
+                                        <div class="alert alert-info">
+                                            <h6 class="alert-heading">Insurance Coverage Details:</h6>
+                                            <ul class="mb-0">
+                                                <li>Coverage up to 80% of legal expenses</li>
+                                                <li>Coverage up to 80% of claim amount</li>
+                                                <li>Valid for 2 years from complaint filing</li>
+                                                <li>Premium: 5% of claim amount</li>
+                                            </ul>
+                    </div>
+                    <div class="form-group">
+                                            <label for="insuranceAmount">Insurance Amount (₹)</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">₹</span>
+                                                </div>
+                                                <input type="number" class="form-control" id="insuranceAmount" readonly>
+                                            </div>
+                                            <small class="form-text text-muted">5% of your claim amount</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Door-step Delivery Option -->
+                            <div class="card mt-4" id="doorstepDeliveryCard" style="display: none;">
+                                <div class="card-header bg-light">
+                                    <h5 class="mb-0">Door-step Delivery Service</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="doorstepDelivery">
+                                        <label class="form-check-label" for="doorstepDelivery">
+                                            <strong>Add Door-step Delivery Service</strong>
+                                        </label>
+                                        <small class="form-text text-muted d-block">
+                                            <i class="fas fa-truck text-primary"></i> 
+                                            Get your notice delivered at the respondent's doorstep with proof of delivery and acknowledgment.
+                                        </small>
+                                    </div>
+                                    <div class="delivery-details mt-3" style="display: none;">
+                                        <div class="alert alert-info">
+                                            <h6 class="alert-heading">Delivery Service Details:</h6>
+                                            <ul class="mb-0">
+                                                <li>Professional delivery executive</li>
+                                                <li>Photo proof of delivery</li>
+                                                <li>Digital acknowledgment receipt</li>
+                                                <li>Real-time tracking updates</li>
+                                                <li>Delivery within 48 hours</li>
+                                            </ul>
+                    </div>
+                    <div class="form-group">
+                                            <label for="deliveryAmount">Delivery Service Amount (₹)</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">₹</span>
+                    </div>
+                                                <input type="number" class="form-control" id="deliveryAmount" value="500" readonly>
+                                            </div>
+                                            <small class="form-text text-muted">Flat rate for door-step delivery service</small>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- Disclaimer Message -->
@@ -952,26 +1276,25 @@
                         <div class="card-body">
                             <form id="paymentForm">
                                 <!-- Case ID Field -->
-                                <div class="form-group">
+                    <div class="form-group">
                                     <label for="caseId" data-toggle="tooltip" title="Your unique case identification number">
                                         Case ID <i class="fas fa-info-circle text-muted"></i>
                                     </label>
                                     <input type="text" class="form-control" id="caseId" readonly>
-                                </div>
+                    </div>
 
                                 <div class="payment-summary mb-4">
                                     <h4>Payment Summary</h4>
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <p>Filing Fee: ₹500</p>
-                                            <p>Lawyer Fee: ₹2000</p>
-                                            <p>Service Tax: ₹300</p>
-                                            <h5>Total Amount: ₹2800</h5>
-                                </div>
+                                            <div id="payment-details">
+                                                <!-- Payment details will be populated here -->
+                </div>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="form-group">
+                    <div class="form-group">
                                     <label for="payment-method" data-toggle="tooltip" title="Select your preferred payment method">
                                         Payment Mode <i class="fas fa-info-circle text-muted"></i>
                                     </label>
@@ -982,24 +1305,24 @@
                                         <option value="netbanking">Net Banking</option>
                                         <option value="upi">UPI</option>
                                         <option value="wallet">Digital Wallet</option>
-                                </select>
-                                </div>
+                        </select>
+                    </div>
 
                                 <div class="form-group">
                                     <label for="transactionId" data-toggle="tooltip" title="Enter the transaction ID provided by your payment method">
                                         Transaction ID <i class="fas fa-info-circle text-muted"></i>
                                     </label>
                                     <input type="text" class="form-control" id="transactionId" placeholder="Enter transaction ID" required>
-                                </div>
+                    </div>
 
                                 <div class="form-group mt-4">
                                     <button type="button" class="btn btn-primary" id="makePayment">
                                         <i class="fas fa-lock"></i> Make Payment
                                     </button>
-                                </div>
-                            </form>
-                        </div>
                     </div>
+                            </form>
+                    </div>
+                </div>
                 </div>
             </div>
 
@@ -1042,11 +1365,54 @@
             });
         });
 
+        // Initialize service type selection
+        const initialServiceType = $('input[name="serviceType"]:checked').val();
+        const isNotice = initialServiceType === 'notice';
+        $('#doorstepDeliveryCard').toggle(isNotice);
+        if (!isNotice) {
+            $('#doorstepDelivery').prop('checked', false);
+            $('.delivery-details').hide();
+        }
+
+        // Handle service type selection
+        $('input[name="serviceType"]').on('change', function() {
+            const selectedValue = $(this).val();
+            const isNotice = selectedValue === 'notice';
+            $('#doorstepDeliveryCard').toggle(isNotice);
+            if (!isNotice) {
+                $('#doorstepDelivery').prop('checked', false);
+                $('.delivery-details').hide();
+            }
+            
+            if (selectedValue === 'notice') {
+                $('#noticeTypeOptions').slideDown(300);
+                // Reset notice type selection
+                $('#happyClaimNotice').prop('checked', true);
+            } else {
+                $('#noticeTypeOptions').slideUp(300);
+                // Clear notice type selection
+                $('input[name="noticeType"]').prop('checked', false);
+            }
+        });
+
+        // Initialize notice type options visibility
+        if ($('#serviceNotice').is(':checked')) {
+            $('#noticeTypeOptions').show();
+            // Set default notice type
+            $('#happyClaimNotice').prop('checked', true);
+        } else {
+            $('#noticeTypeOptions').hide();
+            // Clear notice type selection
+            $('input[name="noticeType"]').prop('checked', false);
+        }
+
         // Pincode change handler
         $('#pincode').change(function() {
             const selectedOption = $(this).find('option:selected');
             if (selectedOption.val()) {
                 const [pincode, cityState] = selectedOption.text().split(' - ');
+                // Update jurisdiction pincode to match complainant pincode
+                $('#jurisdictionPincode').val(pincode).trigger('change');
                 // Here you can add logic to auto-fill city and state if needed
                 console.log(`Selected: ${cityState}`);
             }
@@ -1057,16 +1423,16 @@
             this.value = this.value.replace(/[^0-9]/g, '').substring(0, 10);
         });
 
-        let currentSection = 1;
-        const totalSections = 7;
+        let currentSection = 0;
+        const totalSections = 8;
 
         // Update progress indicator
         function updateProgress() {
             $('.step').removeClass('active completed');
             $('.step').each(function(index) {
-                if (index + 1 < currentSection) {
+                if (index < currentSection) {
                     $(this).addClass('completed');
-                } else if (index + 1 === currentSection) {
+                } else if (index === currentSection) {
                     $(this).addClass('active');
                 }
             });
@@ -1074,14 +1440,40 @@
 
         // Show/hide navigation buttons
         function updateButtons() {
-            $('#prevBtn').toggle(currentSection > 1);
-            $('#nextBtn').text(currentSection === totalSections ? 'Submit' : 'Next');
+            $('#prevBtn').toggle(currentSection > 0);
+            $('#nextBtn').text(currentSection === totalSections - 1 ? 'Submit' : 'Next');
         }
 
         // Function to update summary details
         function updateSummary() {
+            const serviceType = $('input[name="serviceType"]:checked').val();
+            const noticeType = $('input[name="noticeType"]:checked').val();
+            
+            let serviceDetails = '';
+            if (serviceType === 'notice') {
+                serviceDetails = `
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Service Details</h5>
+                            <p><strong>Service Type:</strong> Send Notice</p>
+                            <p><strong>Notice Type:</strong> ${noticeType === 'happyClaim' ? 'Send through HappyClaim' : 'Through lawyer recommended by HappyClaim'}</p>
+                        </div>
+                    </div>
+                `;
+            } else {
+                serviceDetails = `
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Service Details</h5>
+                            <p><strong>Service Type:</strong> Raise Consumer Complaint</p>
+                        </div>
+                    </div>
+                `;
+            }
+
             const summary = `
-                <div class="row">
+                ${serviceDetails}
+                <div class="row mt-4">
                     <div class="col-md-6">
                         <h5>Complainant Details</h5>
                         <p><strong>Name:</strong> ${$('#complainant-name').val()}</p>
@@ -1109,14 +1501,6 @@
                         <p><strong>District Court:</strong> ${$('#districtCourt').val()}</p>
                         <p><strong>City:</strong> ${$('#jurisdictionCity').val()}</p>
                         <p><strong>Address:</strong> ${$('#courtAddress').val()}</p>
-                    </div>
-                </div>
-                <div class="row mt-4">
-                    <div class="col-12">
-                        <h5>Selected Lawyer</h5>
-                        <p><strong>Name:</strong> ${$('#lawyerFullName').text()}</p>
-                        <p><strong>Specialization:</strong> ${$('#lawyerSpecialization').text()}</p>
-                        <p><strong>Credentials:</strong> ${$('#lawyerCredentials').text()}</p>
                     </div>
                 </div>
             `;
@@ -1149,7 +1533,7 @@
 
         // Handle next button click
         $('#nextBtn').on('click', function() {
-            if (currentSection === totalSections) {
+            if (currentSection === totalSections - 1) {
                 // Submit form
                 alert('Complaint submitted successfully!');
                 window.location.href = 'complaint-history.html';
@@ -1286,12 +1670,162 @@
                 width: '100%',
                 dropdownAutoWidth: true
             });
+
+            // Clear company dropdown when category changes
+            $('#company').empty().append('<option value="">Select Company</option>');
+            $('#company').select2('destroy').select2({
+                width: '100%',
+                dropdownAutoWidth: true
+            });
+        });
+
+        // Update companies when subcategory changes
+        $('#subcategory').on('change', function() {
+            const category = $('#category').val();
+            const subcategory = $(this).val();
+            const $company = $('#company');
+            
+            console.log('Subcategory changed:', { category, subcategory });
+            
+            // Clear existing options
+            $company.empty();
+            $company.append('<option value="">Select Company</option>');
+            
+            if (category && subcategory && companyData[category] && companyData[category][subcategory]) {
+                console.log('Populating companies for:', { category, subcategory });
+                const companies = companyData[category][subcategory];
+                companies.forEach(item => {
+                    $company.append(`<option value="${item.value}">${item.label}</option>`);
+                });
+            } else {
+                console.log('No companies found for:', { category, subcategory });
+            }
+            
+            // Reinitialize Select2 for company with search functionality
+            $company.select2('destroy').select2({
+                width: '100%',
+                dropdownAutoWidth: true,
+                minimumInputLength: 0, // Allow typing from the start
+                placeholder: "Type to search companies...",
+                allowClear: true,
+                tags: true, // Allow custom entries
+                createTag: function(params) {
+                    return {
+                        id: params.term,
+                        text: params.term,
+                        newOption: true
+                    }
+                },
+                matcher: function(params, data) {
+                    // If there are no search terms, return all of the data
+                    if ($.trim(params.term) === '') {
+                        return data;
+                    }
+
+                    // Do not display the item if there is no 'text' property
+                    if (typeof data.text === 'undefined') {
+                        return null;
+                    }
+
+                    // Search in the text and optgroup label
+                    const searchTerm = params.term.toLowerCase();
+                    const text = data.text.toLowerCase();
+                    const group = data.element.parentElement.label ? data.element.parentElement.label.toLowerCase() : '';
+
+                    if (text.indexOf(searchTerm) > -1 || group.indexOf(searchTerm) > -1) {
+                        return data;
+                    }
+
+                    return null;
+                },
+                templateResult: function(data) {
+                    if (!data.id) return data.text;
+                    if (data.newOption) {
+                        return $('<span>' + data.text + ' (new)</span>');
+                    }
+                    return $('<span>' + data.text + '</span>');
+                },
+                templateSelection: function(data) {
+                    if (!data.id) return data.text;
+                    return $('<span>' + data.text + '</span>');
+                }
+            });
         });
 
         // Initialize Select2 for all selects
         $('select').select2({
             width: '100%',
             dropdownAutoWidth: true
+        });
+
+        // Initialize Select2 for company dropdown with search functionality
+        $('#company').select2({
+            width: '100%',
+            dropdownAutoWidth: true,
+            minimumInputLength: 0, // Allow typing from the start
+            placeholder: "Type to search companies...",
+            allowClear: true,
+            tags: true, // Allow custom entries
+            createTag: function(params) {
+                return {
+                    id: params.term,
+                    text: params.term,
+                    newOption: true
+                }
+            },
+            matcher: function(params, data) {
+                // If there are no search terms, return all of the data
+                if ($.trim(params.term) === '') {
+                    return data;
+                }
+
+                // Do not display the item if there is no 'text' property
+                if (typeof data.text === 'undefined') {
+                    return null;
+                }
+
+                // Search in the text and optgroup label
+                const searchTerm = params.term.toLowerCase();
+                const text = data.text.toLowerCase();
+                const group = data.element.parentElement.label ? data.element.parentElement.label.toLowerCase() : '';
+
+                if (text.indexOf(searchTerm) > -1 || group.indexOf(searchTerm) > -1) {
+                    return data;
+                }
+
+                return null;
+            },
+            templateResult: function(data) {
+                if (!data.id) return data.text;
+                if (data.newOption) {
+                    return $('<span>' + data.text + ' (new)</span>');
+                }
+                return $('<span>' + data.text + '</span>');
+            },
+            templateSelection: function(data) {
+                if (!data.id) return data.text;
+                return $('<span>' + data.text + '</span>');
+            }
+        });
+
+        // Add custom styling for search results
+        $('.select2-results__option').css({
+            'padding': '8px 12px',
+            'white-space': 'normal',
+            'word-wrap': 'break-word'
+        });
+
+        // Add custom styling for optgroups
+        $('.select2-results__group').css({
+            'font-weight': 'bold',
+            'padding': '8px 12px',
+            'background-color': '#f8f9fa',
+            'border-bottom': '1px solid #e9ecef'
+        });
+
+        // Ensure the dropdown is properly focused when clicked
+        $('#company').on('select2:open', function() {
+            $('.select2-search__field').focus();
         });
 
         // Handle file uploads
@@ -1356,8 +1890,8 @@
                 name: name,
                 address: address,
                 relationship: relationship,
-                contact: contact,
-                email: email
+                contact: contact || '-',
+                email: email || '-'
             };
 
             // Add to parties array
@@ -1394,8 +1928,8 @@
                         <td>${party.name}</td>
                         <td>${party.address}</td>
                         <td>${party.relationship}</td>
-                        <td>${party.contact || '-'}</td>
-                        <td>${party.email || '-'}</td>
+                        <td>${party.contact}</td>
+                        <td>${party.email}</td>
                         <td>
                             <button class="btn btn-sm btn-info edit-party" data-index="${index}">
                                 <i class="fas fa-edit"></i>
@@ -1411,12 +1945,12 @@
             });
 
             // Add event handlers for edit and delete buttons
-            $('.edit-party').on('click', function() {
+            $('.edit-party').off('click').on('click', function() {
                 const index = $(this).data('index');
                 editParty(index);
             });
 
-            $('.delete-party').on('click', function() {
+            $('.delete-party').off('click').on('click', function() {
                 const index = $(this).data('index');
                 deleteParty(index);
             });
@@ -1429,8 +1963,8 @@
             $('#partyName').val(party.name);
             $('#partyAddress').val(party.address);
             $('#partyRelationship').val(party.relationship);
-            $('#partyContact').val(party.contact);
-            $('#partyEmail').val(party.email);
+            $('#partyContact').val(party.contact === '-' ? '' : party.contact);
+            $('#partyEmail').val(party.email === '-' ? '' : party.email);
 
             editingIndex = index;
             $('#addParty').hide();
@@ -1465,8 +1999,8 @@
                 name: name,
                 address: address,
                 relationship: relationship,
-                contact: contact,
-                email: email
+                contact: contact || '-',
+                email: email || '-'
             };
 
             console.log('Updated party:', parties[editingIndex]);
@@ -1596,13 +2130,157 @@
 
         // Function to update payment section
         function updatePaymentSection() {
+            const serviceType = $('input[name="serviceType"]:checked').val();
+            const noticeType = $('input[name="noticeType"]:checked').val();
+            const hasInsurance = $('#insuranceCoverage').is(':checked');
+            const hasDelivery = $('#doorstepDelivery').is(':checked');
+            
             // Generate and set case ID
             const caseId = generateCaseId();
             $('#caseId').val(caseId);
 
-            // Clear previous values
-            $('#payment-method').val('');
-            $('#transactionId').val('');
+            let paymentDetails = '';
+            if (serviceType === 'notice') {
+                if (noticeType === 'happyClaim') {
+                    paymentDetails = `
+                        <div class="fee-breakdown">
+                            <h5>Fee Breakdown</h5>
+                            <div class="fee-item">
+                                <span>Notice Drafting Fee</span>
+                                <span>₹500</span>
+                            </div>
+                            <div class="fee-item">
+                                <span>Courier Charges</span>
+                                <span>₹100</span>
+                            </div>
+                            <div class="fee-item">
+                                <span>Service Charges</span>
+                                <span>₹200</span>
+                            </div>
+                            ${hasInsurance ? `
+                            <div class="fee-item">
+                                <span>Insurance Premium</span>
+                                <span>₹${$('#insuranceAmount').val()}</span>
+                            </div>
+                            ` : ''}
+                            ${hasDelivery ? `
+                            <div class="fee-item">
+                                <span>Door-step Delivery Service</span>
+                                <span>₹500</span>
+                            </div>
+                            ` : ''}
+                            <div class="fee-item">
+                                <span>GST (18%)</span>
+                                <span>₹144</span>
+                            </div>
+                            <div class="fee-item total">
+                                <span>Total Amount</span>
+                                <span>₹${hasInsurance || hasDelivery ? (944 + (hasInsurance ? parseFloat($('#insuranceAmount').val()) : 0) + (hasDelivery ? 500 : 0)).toFixed(2) : '944'}</span>
+                            </div>
+                        </div>
+                        <div class="payment-note mt-3">
+                            <small class="text-muted">
+                                <i class="fas fa-info-circle"></i> Includes 2 rounds of notice drafting and delivery
+                                ${hasInsurance ? '<br><i class="fas fa-shield-alt"></i> Includes insurance coverage for the complaint' : ''}
+                                ${hasDelivery ? '<br><i class="fas fa-truck"></i> Includes door-step delivery service' : ''}
+                            </small>
+                        </div>
+                    `;
+                } else {
+                    paymentDetails = `
+                        <div class="fee-breakdown">
+                            <h5>Fee Breakdown</h5>
+                            <div class="fee-item">
+                                <span>Lawyer Consultation Fee</span>
+                                <span>₹1000</span>
+                            </div>
+                            <div class="fee-item">
+                                <span>Notice Drafting Fee</span>
+                                <span>₹1000</span>
+                            </div>
+                            <div class="fee-item">
+                                <span>Courier Charges</span>
+                                <span>₹100</span>
+                            </div>
+                            <div class="fee-item">
+                                <span>Service Charges</span>
+                                <span>₹300</span>
+                            </div>
+                            ${hasInsurance ? `
+                            <div class="fee-item">
+                                <span>Insurance Premium</span>
+                                <span>₹${$('#insuranceAmount').val()}</span>
+                            </div>
+                            ` : ''}
+                            ${hasDelivery ? `
+                            <div class="fee-item">
+                                <span>Door-step Delivery Service</span>
+                                <span>₹500</span>
+                            </div>
+                            ` : ''}
+                            <div class="fee-item">
+                                <span>GST (18%)</span>
+                                <span>₹432</span>
+                            </div>
+                            <div class="fee-item total">
+                                <span>Total Amount</span>
+                                <span>₹${hasInsurance || hasDelivery ? (2832 + (hasInsurance ? parseFloat($('#insuranceAmount').val()) : 0) + (hasDelivery ? 500 : 0)).toFixed(2) : '2832'}</span>
+                            </div>
+                        </div>
+                        <div class="payment-note mt-3">
+                            <small class="text-muted">
+                                <i class="fas fa-info-circle"></i> Includes lawyer consultation, notice drafting, and delivery
+                                ${hasInsurance ? '<br><i class="fas fa-shield-alt"></i> Includes insurance coverage for the complaint' : ''}
+                                ${hasDelivery ? '<br><i class="fas fa-truck"></i> Includes door-step delivery service' : ''}
+                            </small>
+                        </div>
+                    `;
+                }
+            } else {
+                paymentDetails = `
+                    <div class="fee-breakdown">
+                        <h5>Fee Breakdown</h5>
+                        <div class="fee-item">
+                            <span>Filing Fee</span>
+                            <span>₹500</span>
+                        </div>
+                        <div class="fee-item">
+                            <span>Lawyer Consultation Fee</span>
+                            <span>₹2000</span>
+                        </div>
+                        <div class="fee-item">
+                            <span>Documentation Charges</span>
+                            <span>₹500</span>
+                        </div>
+                        <div class="fee-item">
+                            <span>Service Charges</span>
+                            <span>₹500</span>
+                        </div>
+                        ${hasInsurance ? `
+                        <div class="fee-item">
+                            <span>Insurance Premium</span>
+                            <span>₹${$('#insuranceAmount').val()}</span>
+                        </div>
+                        ` : ''}
+                        <div class="fee-item">
+                            <span>GST (18%)</span>
+                            <span>₹630</span>
+                        </div>
+                        <div class="fee-item total">
+                            <span>Total Amount</span>
+                            <span>₹${hasInsurance ? (4130 + parseFloat($('#insuranceAmount').val())).toFixed(2) : '4130'}</span>
+                        </div>
+                    </div>
+                    <div class="payment-note mt-3">
+                        <small class="text-muted">
+                            <i class="fas fa-info-circle"></i> Includes complete case handling until resolution
+                            ${hasInsurance ? '<br><i class="fas fa-shield-alt"></i> Includes insurance coverage for the complaint' : ''}
+                        </small>
+                    </div>
+                `;
+            }
+            
+            $('#payment-details').html(paymentDetails);
         }
 
         // Function to generate case ID
@@ -1615,9 +2293,10 @@
         // Listen for pincode changes in complainant details
         $('#pincode').on('change', function() {
             const selectedPincode = $(this).val();
+            console.log('Complainant pincode changed:', selectedPincode);
             if (selectedPincode) {
                 // Set the jurisdiction pincode to match complainant pincode
-                $('#jurisdictionPincode').val(selectedPincode).trigger('change');
+                $('#jurisdictionPincode').val(selectedPincode);
                 populateJurisdictionDetails(selectedPincode);
             }
         });
@@ -1625,6 +2304,7 @@
         // Listen for jurisdiction pincode changes
         $('#jurisdictionPincode').on('change', function() {
             const selectedPincode = $(this).val();
+            console.log('Jurisdiction pincode changed:', selectedPincode);
             if (selectedPincode) {
                 populateJurisdictionDetails(selectedPincode);
             }
@@ -1632,13 +2312,120 @@
 
         // Function to populate jurisdiction details
         function populateJurisdictionDetails(pincode) {
+            console.log('Populating jurisdiction details for pincode:', pincode);
             const data = jurisdictionData[pincode];
             if (data) {
                 $('#districtCourt').val(data.districtCourt);
                 $('#jurisdictionCity').val(data.city);
                 $('#courtAddress').val(data.address);
+                console.log('Jurisdiction details updated:', data);
+            } else {
+                console.log('No jurisdiction data found for pincode:', pincode);
             }
         }
+
+        // Initialize jurisdiction details if pincode is already selected
+        $(document).ready(function() {
+            const initialPincode = $('#pincode').val();
+            if (initialPincode) {
+                $('#jurisdictionPincode').val(initialPincode);
+                populateJurisdictionDetails(initialPincode);
+            }
+        });
+
+        // Jurisdiction data mapping
+        const jurisdictionData = {
+            '400001': {
+                districtCourt: 'Mumbai District Consumer Disputes Redressal Commission',
+                city: 'Mumbai',
+                address: 'Consumer Disputes Redressal Commission, 3rd Floor, New Administrative Building, Opposite Mantralaya, Mumbai - 400032, Maharashtra',
+                contact: '022-22027991',
+                email: 'dcdrc.mumbai@maharashtra.gov.in',
+                workingHours: '10:00 AM - 6:00 PM (Monday to Friday)',
+                jurisdiction: 'South Mumbai, Colaba, Fort, Marine Lines, Churchgate'
+            },
+            '110001': {
+                districtCourt: 'New Delhi District Consumer Disputes Redressal Commission',
+                city: 'New Delhi',
+                address: 'Consumer Disputes Redressal Commission, 5th Floor, Vikas Bhawan, I.P. Estate, New Delhi - 110002, Delhi',
+                contact: '011-23379111',
+                email: 'dcdrc.delhi@delhi.gov.in',
+                workingHours: '9:30 AM - 5:30 PM (Monday to Friday)',
+                jurisdiction: 'Connaught Place, Parliament Street, Janpath, Sansad Marg'
+            },
+            '560001': {
+                districtCourt: 'Bangalore District Consumer Disputes Redressal Commission',
+                city: 'Bangalore',
+                address: 'Consumer Disputes Redressal Commission, 2nd Floor, M.S. Building, Dr. Ambedkar Veedhi, Bangalore - 560001, Karnataka',
+                contact: '080-22252525',
+                email: 'dcdrc.bangalore@karnataka.gov.in',
+                workingHours: '10:00 AM - 5:30 PM (Monday to Friday)',
+                jurisdiction: 'Central Business District, MG Road, Brigade Road, Commercial Street'
+            },
+            '600001': {
+                districtCourt: 'Chennai District Consumer Disputes Redressal Commission',
+                city: 'Chennai',
+                address: 'Consumer Disputes Redressal Commission, 4th Floor, Singaravelar Maligai, 32, Rajaji Salai, Chennai - 600001, Tamil Nadu',
+                contact: '044-25340500',
+                email: 'dcdrc.chennai@tn.gov.in',
+                workingHours: '10:00 AM - 5:45 PM (Monday to Friday)',
+                jurisdiction: 'George Town, Parrys Corner, Broadway, High Court'
+            },
+            '700001': {
+                districtCourt: 'Kolkata District Consumer Disputes Redressal Commission',
+                city: 'Kolkata',
+                address: 'Consumer Disputes Redressal Commission, 3rd Floor, Bikash Bhawan, Salt Lake, Kolkata - 700091, West Bengal',
+                contact: '033-23370000',
+                email: 'dcdrc.kolkata@wb.gov.in',
+                workingHours: '10:30 AM - 5:00 PM (Monday to Friday)',
+                jurisdiction: 'BBD Bagh, Dalhousie Square, Writers Building, Esplanade'
+            },
+            '380001': {
+                districtCourt: 'Ahmedabad District Consumer Disputes Redressal Commission',
+                city: 'Ahmedabad',
+                address: 'Consumer Disputes Redressal Commission, 5th Floor, Block No. 5, Dr. Jivraj Mehta Bhavan, Gandhinagar - 382010, Gujarat',
+                contact: '079-23250505',
+                email: 'dcdrc.ahmedabad@gujarat.gov.in',
+                workingHours: '10:00 AM - 6:00 PM (Monday to Friday)',
+                jurisdiction: 'Central Ahmedabad, Ellis Bridge, Ashram Road, CG Road'
+            },
+            '500001': {
+                districtCourt: 'Hyderabad District Consumer Disputes Redressal Commission',
+                city: 'Hyderabad',
+                address: 'Consumer Disputes Redressal Commission, 3rd Floor, Gruhakalpa Complex, M.J. Road, Hyderabad - 500001, Telangana',
+                contact: '040-23230404',
+                email: 'dcdrc.hyderabad@telangana.gov.in',
+                workingHours: '10:30 AM - 5:00 PM (Monday to Friday)',
+                jurisdiction: 'Abids, Koti, Sultan Bazar, Nampally'
+            },
+            '411001': {
+                districtCourt: 'Pune District Consumer Disputes Redressal Commission',
+                city: 'Pune',
+                address: 'Consumer Disputes Redressal Commission, 4th Floor, New Administrative Building, Pune - 411001, Maharashtra',
+                contact: '020-26123333',
+                email: 'dcdrc.pune@maharashtra.gov.in',
+                workingHours: '10:00 AM - 5:30 PM (Monday to Friday)',
+                jurisdiction: 'Shivajinagar, FC Road, JM Road, Deccan Gymkhana'
+            },
+            '302001': {
+                districtCourt: 'Jaipur District Consumer Disputes Redressal Commission',
+                city: 'Jaipur',
+                address: 'Consumer Disputes Redressal Commission, 2nd Floor, Yojana Bhawan, Tilak Marg, Jaipur - 302005, Rajasthan',
+                contact: '0141-2222222',
+                email: 'dcdrc.jaipur@rajasthan.gov.in',
+                workingHours: '10:00 AM - 5:00 PM (Monday to Friday)',
+                jurisdiction: 'Civil Lines, MI Road, Bani Park, C-Scheme'
+            },
+            '800001': {
+                districtCourt: 'Patna District Consumer Disputes Redressal Commission',
+                city: 'Patna',
+                address: 'Consumer Disputes Redressal Commission, 3rd Floor, Vikas Bhawan, Bailey Road, Patna - 800001, Bihar',
+                contact: '0612-2222222',
+                email: 'dcdrc.patna@bihar.gov.in',
+                workingHours: '10:00 AM - 5:00 PM (Monday to Friday)',
+                jurisdiction: 'Patna City, Gandhi Maidan, Fraser Road, Exhibition Road'
+            }
+        };
 
         // Handle advocate selection radio buttons
         $('input[name="advocateSelection"]').on('change', function() {
@@ -1796,7 +2583,284 @@
 
         // Initialize with first lawyer's details
         updateLawyerDetails('1');
-    });
-</script>
+
+        // Company data mapping
+        const companyData = {
+            travel: {
+                hotel: [
+                    { value: 'taj_hotels', label: 'Taj Hotels' },
+                    { value: 'oberoi_hotels', label: 'Oberoi Hotels' },
+                    { value: 'itc_hotels', label: 'ITC Hotels' },
+                    { value: 'marriott', label: 'Marriott International' },
+                    { value: 'hyatt', label: 'Hyatt Hotels' }
+                ],
+                travel_partner: [
+                    { value: 'makemytrip', label: 'MakeMyTrip' },
+                    { value: 'yatra', label: 'Yatra.com' },
+                    { value: 'cleartrip', label: 'Cleartrip' },
+                    { value: 'goibibo', label: 'Goibibo' },
+                    { value: 'expedia', label: 'Expedia' }
+                ],
+                airline: [
+                    { value: 'air_india', label: 'Air India' },
+                    { value: 'indigo', label: 'IndiGo' },
+                    { value: 'spicejet', label: 'SpiceJet' },
+                    { value: 'vistara', label: 'Vistara' },
+                    { value: 'air_asia', label: 'AirAsia India' }
+                ]
+            },
+            healthcare: {
+                hospital: [
+                    { value: 'apollo', label: 'Apollo Hospitals' },
+                    { value: 'fortis', label: 'Fortis Healthcare' },
+                    { value: 'max', label: 'Max Healthcare' },
+                    { value: 'manipal', label: 'Manipal Hospitals' },
+                    { value: 'medanta', label: 'Medanta' }
+                ],
+                pharmacy: [
+                    { value: 'apollo_pharmacy', label: 'Apollo Pharmacy' },
+                    { value: 'medplus', label: 'Medplus' },
+                    { value: 'netmeds', label: 'Netmeds' },
+                    { value: 'pharmeasy', label: 'Pharmeasy' },
+                    { value: '1mg', label: '1mg' }
+                ],
+                diagnostic: [
+                    { value: 'lal_pathlabs', label: 'Dr. Lal PathLabs' },
+                    { value: 'thyrocare', label: 'Thyrocare' },
+                    { value: 'metropolis', label: 'Metropolis Healthcare' },
+                    { value: 'srl_diagnostics', label: 'SRL Diagnostics' },
+                    { value: 'apollo_diagnostics', label: 'Apollo Diagnostics' }
+                ]
+            },
+            ecommerce: {
+                delivery: [
+                    { value: 'amazon', label: 'Amazon India' },
+                    { value: 'flipkart', label: 'Flipkart' },
+                    { value: 'myntra', label: 'Myntra' },
+                    { value: 'ajio', label: 'AJIO' },
+                    { value: 'meesho', label: 'Meesho' }
+                ],
+                product_quality: [
+                    { value: 'amazon', label: 'Amazon India' },
+                    { value: 'flipkart', label: 'Flipkart' },
+                    { value: 'myntra', label: 'Myntra' },
+                    { value: 'nykaa', label: 'Nykaa' },
+                    { value: 'firstcry', label: 'FirstCry' }
+                ],
+                refund: [
+                    { value: 'amazon', label: 'Amazon India' },
+                    { value: 'flipkart', label: 'Flipkart' },
+                    { value: 'myntra', label: 'Myntra' },
+                    { value: 'ajio', label: 'AJIO' },
+                    { value: 'meesho', label: 'Meesho' }
+                ]
+            },
+            banking: {
+                account: [
+                    { value: 'sbi', label: 'State Bank of India' },
+                    { value: 'hdfc', label: 'HDFC Bank' },
+                    { value: 'icici', label: 'ICICI Bank' },
+                    { value: 'axis', label: 'Axis Bank' },
+                    { value: 'kotak', label: 'Kotak Mahindra Bank' }
+                ],
+                transaction: [
+                    { value: 'sbi', label: 'State Bank of India' },
+                    { value: 'hdfc', label: 'HDFC Bank' },
+                    { value: 'icici', label: 'ICICI Bank' },
+                    { value: 'axis', label: 'Axis Bank' },
+                    { value: 'kotak', label: 'Kotak Mahindra Bank' }
+                ],
+                credit_card: [
+                    { value: 'sbi', label: 'State Bank of India' },
+                    { value: 'hdfc', label: 'HDFC Bank' },
+                    { value: 'icici', label: 'ICICI Bank' },
+                    { value: 'axis', label: 'Axis Bank' },
+                    { value: 'kotak', label: 'Kotak Mahindra Bank' }
+                ]
+            },
+            insurance: {
+                health_insurance: [
+                    { value: 'star_health', label: 'Star Health Insurance' },
+                    { value: 'hdfc_ergo', label: 'HDFC ERGO' },
+                    { value: 'icici_lombard', label: 'ICICI Lombard' },
+                    { value: 'bajaj_allianz', label: 'Bajaj Allianz' },
+                    { value: 'new_india', label: 'New India Assurance' }
+                ],
+                motor_insurance: [
+                    { value: 'bajaj_allianz', label: 'Bajaj Allianz' },
+                    { value: 'icici_lombard', label: 'ICICI Lombard' },
+                    { value: 'hdfc_ergo', label: 'HDFC ERGO' },
+                    { value: 'united_india', label: 'United India Insurance' },
+                    { value: 'national_insurance', label: 'National Insurance' }
+                ],
+                life_insurance: [
+                    { value: 'lic', label: 'Life Insurance Corporation' },
+                    { value: 'sbi_life', label: 'SBI Life Insurance' },
+                    { value: 'hdfc_life', label: 'HDFC Life Insurance' },
+                    { value: 'icici_prudential', label: 'ICICI Prudential' },
+                    { value: 'max_life', label: 'Max Life Insurance' }
+                ]
+            },
+            real_estate: {
+                builder: [
+                    { value: 'dlf', label: 'DLF Limited' },
+                    { value: 'godrej', label: 'Godrej Properties' },
+                    { value: 'sobhagroup', label: 'Sobha Limited' },
+                    { value: 'prestige', label: 'Prestige Group' },
+                    { value: 'brigade', label: 'Brigade Group' }
+                ],
+                property: [
+                    { value: 'magicbricks', label: 'MagicBricks' },
+                    { value: '99acres', label: '99acres' },
+                    { value: 'housing', label: 'Housing.com' },
+                    { value: 'nobroker', label: 'NoBroker' },
+                    { value: 'commonfloor', label: 'CommonFloor' }
+                ],
+                home_loan: [
+                    { value: 'hdfc', label: 'HDFC Ltd' },
+                    { value: 'lic_housing', label: 'LIC Housing Finance' },
+                    { value: 'sbi_home', label: 'SBI Home Loans' },
+                    { value: 'icici_home', label: 'ICICI Home Finance' },
+                    { value: 'axis_home', label: 'Axis Home Loans' }
+                ]
+            }
+        };
+
+        // Add insurance coverage checkbox handler
+        $('#insuranceCoverage').on('change', function() {
+            const isChecked = $(this).is(':checked');
+            $('.insurance-details').toggle(isChecked);
+            
+            if (isChecked) {
+                const claimAmount = parseFloat($('#value').val()) || 0;
+                const insuranceAmount = claimAmount * 0.05; // 5% of claim amount
+                $('#insuranceAmount').val(insuranceAmount.toFixed(2));
+            } else {
+                $('#insuranceAmount').val('');
+            }
+        });
+
+        // Add door-step delivery checkbox handler
+        $('#doorstepDelivery').on('change', function() {
+            const isChecked = $(this).is(':checked');
+            $('.delivery-details').toggle(isChecked);
+        });
+
+        // Show/hide door-step delivery option based on service type
+        $('input[name="serviceType"]').on('change', function() {
+            const isNotice = $(this).val() === 'notice';
+            $('#doorstepDeliveryCard').toggle(isNotice);
+            if (!isNotice) {
+                $('#doorstepDelivery').prop('checked', false);
+                $('.delivery-details').hide();
+            }
+        });
+
+        // Handle form submission
+        $('#submitComplaint').on('click', function() {
+            // Validate all sections
+            if (!validateCurrentSection()) {
+                return;
+            }
+
+            // Collect all form data
+            const formData = {
+                serviceType: $('input[name="serviceType"]:checked').val(),
+                noticeType: $('input[name="noticeType"]:checked').val(),
+                complainant: {
+                    name: $('#complainantName').val(),
+                    address: $('#complainantAddress').val(),
+                    pincode: $('#complainantPincode').val(),
+                    contact: $('#complainantContact').val(),
+                    email: $('#complainantEmail').val()
+                },
+                jurisdiction: {
+                    pincode: $('#jurisdictionPincode').val(),
+                    districtCourt: $('#districtCourt').val(),
+                    city: $('#jurisdictionCity').val(),
+                    address: $('#jurisdictionAddress').val()
+                },
+                respondent: {
+                    name: $('#respondentName').val(),
+                    address: $('#respondentAddress').val(),
+                    relationship: $('#relationship').val(),
+                    contact: $('#respondentContact').val(),
+                    email: $('#respondentEmail').val()
+                },
+                claim: {
+                    amount: $('#claimAmount').val(),
+                    description: $('#claimDescription').val()
+                },
+                documents: $('#documents').val(),
+                insurance: $('#insuranceCoverage').is(':checked'),
+                doorstepDelivery: $('#doorstepDelivery').is(':checked'),
+                payment: {
+                    baseFee: 500,
+                    insurancePremium: $('#insuranceCoverage').is(':checked') ? parseFloat($('#insurancePremium').text().replace('₹', '')) : 0,
+                    deliveryFee: $('#doorstepDelivery').is(':checked') ? 500 : 0,
+                    totalAmount: parseFloat($('#totalAmount').text().replace('₹', ''))
+                }
+            };
+
+            // Send email using EmailJS
+            emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
+                to_email: "happy@happyclaim.in",
+                subject: "New Complaint/Notice Submission",
+                message: `
+                    Service Type: ${formData.serviceType}
+                    Notice Type: ${formData.noticeType || 'N/A'}
+
+                    Complainant Details:
+                    Name: ${formData.complainant.name}
+                    Address: ${formData.complainant.address}
+                    Pincode: ${formData.complainant.pincode}
+                    Contact: ${formData.complainant.contact}
+                    Email: ${formData.complainant.email}
+
+                    Jurisdiction Details:
+                    Pincode: ${formData.jurisdiction.pincode}
+                    District Court: ${formData.jurisdiction.districtCourt}
+                    City: ${formData.jurisdiction.city}
+                    Address: ${formData.jurisdiction.address}
+
+                    Respondent Details:
+                    Name: ${formData.respondent.name}
+                    Address: ${formData.respondent.address}
+                    Relationship: ${formData.respondent.relationship}
+                    Contact: ${formData.respondent.contact}
+                    Email: ${formData.respondent.email}
+
+                    Claim Details:
+                    Amount: ₹${formData.claim.amount}
+                    Description: ${formData.claim.description}
+
+                    Additional Services:
+                    Insurance Coverage: ${formData.insurance ? 'Yes' : 'No'}
+                    Door-step Delivery: ${formData.doorstepDelivery ? 'Yes' : 'No'}
+
+                    Payment Details:
+                    Base Fee: ₹${formData.payment.baseFee}
+                    Insurance Premium: ₹${formData.payment.insurancePremium}
+                    Delivery Fee: ₹${formData.payment.deliveryFee}
+                    Total Amount: ₹${formData.payment.totalAmount}
+                `
+            })
+            .then(function(response) {
+                console.log('Email sent successfully:', response);
+                // Show success message
+                alert('Your complaint/notice has been submitted successfully! We will contact you shortly.');
+                // Reset form
+                $('#complaintForm')[0].reset();
+                // Reset to first section
+                currentSection = 0;
+                updateProgress();
+            })
+            .catch(function(error) {
+                console.error('Email sending failed:', error);
+                alert('There was an error submitting your complaint/notice. Please try again or contact support.');
+            });
+        });
+        });
+    </script>
 </body>
 </html>
