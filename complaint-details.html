@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File a Complaint - HappyClaim</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f9f9f9;
+        }
+
+        .sidebar {
+            background-color: #0c3057;
+            padding-bottom: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar h2 {
+            color: #fff;
+            font-weight: 600;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 0;
+            background-color: #082440;
+        }
+
+        .sidebar .nav-link {
+            color: #fff;
+            font-weight: 500;
+            padding: 12px 20px;
+            border-left: 4px solid transparent;
+            transition: background-color 0.3s ease, border-left-color 0.3s ease;
+        }
+
+        .sidebar .nav-link:hover {
+            background-color: #154360;
+            border-left-color: #f68b6b;
+        }
+
+        .sidebar .nav-link.active {
+            background-color: #f68b6b;
+            font-weight: 700;
+            border-left-color: #f68b6b;
+        }
+
+        .sidebar .nav-item:not(:last-child) {
+            margin-bottom: 5px;
+        }
+
+        .content {
+            padding: 30px;
+            flex-grow: 1;
+        }
+
+        h1 {
+            color: #0c3057;
+            font-weight: 600;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        form fieldset {
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        }
+
+        form legend {
+            color: #0c3057;
+            font-size: 1.2rem;
+            font-weight: 600;
+            padding: 0 10px;
+            border-bottom: none;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        form legend:hover {
+            color: #f68b6b;
+        }
+
+        .form-group label {
+            color: #0c3057;
+            font-weight: 500;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .form-control {
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #f68b6b;
+            box-shadow: 0 0 0 2px rgba(246, 139, 107, 0.25);
+        }
+
+        .form-select {
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            width: 100%;
+        }
+
+        .form-select:focus {
+            border-color: #f68b6b;
+            box-shadow: 0 0 0 2px rgba(246, 139, 107, 0.25);
+        }
+
+
+        textarea.form-control {
+            min-height: 120px;
+        }
+
+        .btn-primary {
+            background-color: #f68b6b;
+            border: none;
+            border-radius: 6px;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .btn-primary:hover {
+            background-color: #e07a5e;
+        }
+
+        .btn-primary:focus {
+            background-color: #e07a5e;
+            box-shadow: 0 0 0 3px rgba(246, 139, 107, 0.3);
+        }
+
+        #sub-categories-group {
+            display: none;
+        }
+
+        .collapsible-content {
+            display: none;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+            max-height: 0;
+            opacity: 0;
+        }
+
+        .collapsible-content.show {
+            display: block;
+            max-height: 1000px;
+            opacity: 1;
+            transition: max-height 0.3s ease-in, opacity 0.3s ease-in;
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 100%;
+                position: relative;
+                padding: 15px;
+            }
+            .sidebar h2{
+                text-align: center;
+            }
+            .sidebar .nav-item{
+                text-align: center;
+            }
+
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="sidebar">
+    <h2>HappyClaim</h2>
+    <ul class="nav flex-column">
+        <li class="nav-item">
+            <a class="nav-link" href="index.html">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="file-complaint.html">File Complaint</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="complaint-history.html">Complaint History</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="user-details.html">User Details</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="login.html">Login</a>
+        </li>
+    </ul>
+</div>
+
+<div class="content">
+    <div class="container mt-4">
+        <h1>File a Complaint</h1>
+        <form>
+            <fieldset>
+                <legend>1. Complainant Details</legend>
+                <div class="collapsible-content show">
+                    <div class="form-group">
+                        <label for="complainant-name">Name of Complainant:</label>
+                        <input type="text" class="form-control" id="complainant-name" name="complainant-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="complainant-address">Communication Address of Complainant:</label>
+                        <input type="text" class="form-control" id="complainant-address" name="complainant-address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone No:</label>
+                        <input type="tel" class="form-control" id="phone" name="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>2. Service Details</legend>
+                <div class="collapsible-content">
+                    <div class="form-group">
+                        <label for="industry">Industry:</label>
+                        <input type="text" class="form-control" id="industry" name="industry">
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Category:</label>
+                        <select class="form-control" id="category" name="category">
+                            <option value="">Select Category</option>
+                            <option value="travel">Travel</option>
+                            <option value="healthcare">Healthcare</option>
+                            <option value="ecommerce">E-commerce</option>
+                            <option value="banking">Banking</option>
+                            <option value="insurance">Insurance</option>
+                            <option value="realestate">Real Estate</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="sub-categories-group" style="display: none;">
+                        <label for="sub-category">Sub-Category:</label>
+                        <select class="form-select" id="sub-category" name="sub-category">
+                            <option value="">Select Sub-Category</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="service-type">Service Type:</label>
+                        <select class="form-control" id="service-type" name="service-type">
+                            <option value="">Select Service Type</option>
+                            <option value="product">Product</option>
+                            <option value="service">Service</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="issue">Issue:</label>
+                        <input type="text" class="form-control" id="issue" name="issue">
+                    </div>
+                    <div class="form-group">
+                        <label for="complaint-description">Complaint Description:</label>
+                        <textarea class="form-control" id="complaint-description" name="complaint-description" rows="5" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="value-of-product">Value of Product/Service (₹):</label>
+                        <input type="number" class="form-control" id="value-of-product" name="value-of-product" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Upload Documents (Bills, Proofs, Communication, etc.):</label>
+                        <input type="file" class="form-control" id="supporting-documents" name="supporting-documents[]" multiple>
+                        <small class="form-text text-muted">You can upload multiple files.</small>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>3. Parties Involved</legend>
+                <div class="collapsible-content">
+                    <div class="form-group">
+                        <label for="party-name">Name of Party:</label>
+                        <input type="text" class="form-control" id="party-name" name="party-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="party-address">Address of Party:</label>
+                        <input type="text" class="form-control" id="party-address" name="party-address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="party-contact">Contact No:</label>
+                        <input type="tel" class="form-control" id="party-contact" name="party-contact" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="party-email">Email:</label>
+                        <input type="email" class="form-control" id="party-email" name="party-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="party-relationship">Relationship with Complainant:</label>
+                        <input type="text" class="form-control" id="party-relationship" name="party-relationship" required>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>4. Jurisdiction Details</legend>
+                <div class="collapsible-content">
+                    <div class="form-group">
+                        <label for="pincode">Pincode:</label>
+                        <input type="text" class="form-control" id="pincode" name="pincode" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="district-court">District Court:</label>
+                        <input type="text" class="form-control" class="form-control" id="district-court" name="district-court" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="city">City:</label>
+                        <input type="text" class="form-control" id="city" name="city" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Address:</label>
+                        <input type="text" class="form-control" id="address" name="address" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="court">Court:</label>
+                        <input type="text" class="form-control" id="court" name="court">
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>5. Lawyer Selection</legend>
+                <div class="collapsible-content">
+                    <div class="form-group">
+                        <label for="lawyer-preference">Select Lawyer:</label>
+                        <select class="form-control" id="lawyer-preference" name="lawyer-preference">
+                            <option value="">Select a Lawyer</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="advocate">Advocate Name:</label>
+                        <input type="text" class="form-control" id="advocate" name="advocate" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="lawyer-details">Lawyer Details:</label>
+                        <textarea class="form-control" id="lawyer-details" name="lawyer-details" rows="3" readonly></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="lawyer-credentials">Lawyer Credentials:</label>
+                        <textarea class="form-control" id="lawyer-credentials" name="lawyer-credentials" rows="3" readonly></textarea>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>6. Payment Details</legend>
+                <div class="collapsible-content">
+                    <div class="form-group">
+                        <label for="payment-mode">Payment Mode:</label>
+                        <select class="form-control" id="payment-mode" name="payment-mode">
+                            <option value="">Select Payment Mode</option>
+                            <option value="credit-card">Credit Card</option>
+                            <option value="debit-card">Debit Card</option>
+                            <option value="net-banking">Net Banking</option>
+                            <option value="upi">UPI (Google Pay, PhonePe, etc.)</option>
+                            <option value="wallet">Mobile Wallet (Paytm, etc.)</option>
+                            <option value="scan-pay">Scan and Pay</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="transaction-id-group">
+                        <label for="transaction-id">Transaction ID:</label>
+                        <input type="text" class="form-control" id="transaction-id" name="transaction-id">
+                    </div>
+                    <div class="form-group" id="upi-id-group" style="display: none;">
+                        <label for="upi-id">UPI ID:</label>
+                        <input type="text" class="form-control" id="upi-id" name="upi-id">
+                    </div>
+                    <div class="form-group" id="scan-pay-group" style="display: none;">
+                        <label>Scan and Pay:</label>
+                        <p>Please scan the QR code below to complete your payment.</p>
+                        <img src="placeholder_qr_code.png" alt="QR Code" style="width: 200px; height: 200px;">
+                        <p>Once the payment is complete, please enter the Transaction ID.</p>
+                    </div>
+                </div>
+            </fieldset>
+
+            <button type="submit" class="btn btn-primary">File Complaint</button>
+        </form>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const categorySelect = document.getElementById('category');
+            const subCategoriesGroup = document.getElementById('sub-categories-group');
+            const subCategorySelect = document.getElementById('sub-category');
+            const pincodeInput = document.getElementById('pincode');
+            const districtCourtInput = document.getElementById('district-court');
+            const cityInput = document.getElementById('city');
+            const addressInput = document.getElementById('address');
+            const paymentModeSelect = document.getElementById('payment-mode');
+            const transactionIdGroup = document.getElementById('transaction-id-group');
+            const upiIdGroup = document.getElementById('upi-id-group');
+            const scanPayGroup = document.getElementById('scan-pay-group');
+            const transactionIdInput = document.getElementById('transaction-id');
+            const fieldsetLegends = document.querySelectorAll('form fieldset legend');
+            const lawyerPreferenceSelect = document.getElementById('lawyer-preference');
+            const advocateNameInput = document.getElementById('advocate');
+            const lawyerDetailsInput = document.getElementById('lawyer-details');
+            const lawyerCredentialsInput = document.getElementById('lawyer-credentials');
+
+
+            const subCategoriesData = {
+                'travel': ['hotel', 'airline', 'travelpartner', 'other'],
+                'healthcare': ['doctor', 'hospital', 'insurance', 'other'],
+                'ecommerce': ['product', 'delivery', 'payment', 'other'],
+                'banking': ['account', 'loan', 'transactions', 'other'],
+                'insurance': ['claim', 'policy', 'premium', 'other'],
+                'realestate': ['property', 'rental', 'agent', 'other']
+            };
+
+            const pincodeData = {
+                '400001': { districtCourt: 'Bombay High Court', city: 'Mumbai', address: 'Fort, Mumbai' },
+                '110001': { districtCourt: 'Delhi High Court', city: 'Delhi', address: 'New Delhi' },
+                '700001': { districtCourt: 'Calcutta High Court', city: 'Kolkata', address: 'Kolkata' },
+                '600001': { districtCourt: 'Madras High Court', city: 'Chennai', address: 'Chennai' },
+                '560001': {districtCourt: 'Bangalore District Court', city: 'Bangalore', address: 'Bangalore'},
+                '282001': {districtCourt: 'Agra District Court', city: 'Agra', address: 'Agra'},
+            };
+
+            const lawyerData = {
+                'lawyer1': { name: 'Adv. Rohan Sharma', details: 'Specialist in Consumer Law', credentials: 'LL.M, Bar Council of India' },
+                'lawyer2': { name: 'Adv. Priya Patel', details: 'Expert in Real Estate Litigation', credentials: 'LL.B, ACIArb' },
+                'lawyer3': { name: 'Adv. Manish Gupta', details: 'Experienced in Healthcare Law', credentials: 'M.D., J.D.' },
+                'lawyer4': { name: 'Adv. Meera Krishnan', details: 'Specialist in Banking Law', credentials: 'Ph.D. in Law, Member of the Bar' },
+            };
+
+            function populateSubCategories(category) {
+                subCategorySelect.innerHTML = '<option value="">Select Sub-Category</option>';
+                if (subCategoriesData[category]) {
+                    subCategoriesData[category].forEach(sub => {
+                        const option = document.createElement('option');
+                        option.value = sub;
+                        option.textContent = sub.charAt(0).toUpperCase() + sub.slice(1);
+                        subCategorySelect.appendChild(option);
+                    });
+                    subCategoriesGroup.style.display = 'block';
+                } else {
+                    subCategoriesGroup.style.display = 'none';
+                }
+            }
+
+            categorySelect.addEventListener('change', function() {
+                populateSubCategories(this.value);
+            });
+
+            pincodeInput.addEventListener('blur', function() {
+                const pincode = this.value;
+                if (pincodeData[pincode]) {
+                    districtCourtInput.value = pincodeData[pincode].districtCourt;
+                    cityInput.value = pincodeData[pincode].city;
+                    addressInput.value = pincodeData[pincode].address;
+                } else {
+                    districtCourtInput.value = '';
+                    cityInput.value = '';
+                    addressInput.value = '';
+                }
+            });
+
+            paymentModeSelect.addEventListener('change', function() {
+                if (this.value === 'upi') {
+                    transactionIdGroup.style.display = 'block';
+                    upiIdGroup.style.display = 'block';
+                    scanPayGroup.style.display = 'none';
+                } else if (this.value === 'scan-pay') {
+                    transactionIdGroup.style.display = 'block';
+                    upiIdGroup.style.display = 'none';
+                    scanPayGroup.style.display = 'block';
+                }
+                 else if (this.value === 'credit-card' || this.value === 'debit-card' || this.value === 'net-banking' || this.value === 'wallet') {
+                    transactionIdGroup.style.display = 'block';
+                    upiIdGroup.style.display = 'none';
+                    scanPayGroup.style.display = 'none';
+                }
+                else {
+                    transactionIdGroup.style.display = 'none';
+                    upiIdGroup.style.display = 'none';
+                    scanPayGroup.style.display = 'none';
+                }
+            });
+
+            fieldsetLegends.forEach(legend => {
+                legend.addEventListener('click', function() {
+                    const content = this.nextElementSibling;
+                    if (content.classList.contains('collapsible-content')) {
+                        content.classList.toggle('show');
+                    }
+                });
+            });
+
+            // Populate Lawyer Selection dropdown
+            for (const key in lawyerData) {
+                const option = document.createElement('option');
+                option.value = key;
+                option.textContent = lawyerData[key].name;
+                lawyerPreferenceSelect.appendChild(option);
+            }
+
+            lawyerPreferenceSelect.addEventListener('change', function() {
+                const selectedLawyer = lawyerData[this.value];
+                if (selectedLawyer) {
+                    advocateNameInput.value = selectedLawyer.name;
+                    lawyerDetailsInput.value = selectedLawyer.details;
+                    lawyerCredentialsInput.value = selectedLawyer.credentials;
+                } else {
+                    advocateNameInput.value = '';
+                    lawyerDetailsInput.value = '';
+                    lawyerCredentialsInput.value = '';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
