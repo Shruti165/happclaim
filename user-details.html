@@ -17,97 +17,221 @@
 
     <div class="content">
         <div class="container mt-4">
-            <h1>User Profile</h1>
-            <p class="lead text-center mb-4">Manage your account settings and preferences</p>
-
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <h3>Profile Picture</h3>
-                        </div>
-                        <div class="card-body text-center">
-                            <img src="https://via.placeholder.com/150" alt="Profile Picture" class="rounded-circle mb-3">
-                            <button class="btn btn-outline-primary btn-block">Change Picture</button>
+            <!-- User Menu Bar -->
+            <div class="user-menu-bar mb-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="user-menu-left">
+                        <h2 class="mb-0">User Profile</h2>
+                    </div>
+                    <div class="user-menu-right">
+                        <div class="btn-group">
+                            <button class="btn btn-outline-primary" id="editProfileBtn">
+                                <i class="fas fa-edit"></i> Edit Profile
+                            </button>
+                            <button class="btn btn-outline-primary" id="changePasswordBtn">
+                                <i class="fas fa-key"></i> Change Password
+                            </button>
+                            <button class="btn btn-outline-primary" id="notificationSettingsBtn">
+                                <i class="fas fa-bell"></i> Notification Settings
+                            </button>
                         </div>
                     </div>
+                </div>
+                <div class="user-menu-tabs mt-3">
+                    <ul class="nav nav-tabs" id="userTabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profile" role="tab">
+                                <i class="fas fa-user"></i> Personal Information
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="complaints-tab" data-toggle="tab" href="#complaints" role="tab">
+                                <i class="fas fa-file-alt"></i> My Complaints
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="documents-tab" data-toggle="tab" href="#documents" role="tab">
+                                <i class="fas fa-file-upload"></i> Uploaded Documents
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="payments-tab" data-toggle="tab" href="#payments" role="tab">
+                                <i class="fas fa-credit-card"></i> Payment History
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="notifications-tab" data-toggle="tab" href="#notifications" role="tab">
+                                <i class="fas fa-bell"></i> Notifications
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
-                    <div class="card">
-                        <div class="card-header">
-                            <h3>Account Statistics</h3>
+            <!-- Tab Content -->
+            <div class="tab-content" id="userTabsContent">
+                <div class="tab-pane fade show active" id="profile" role="tabpanel">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <h3>Profile Picture</h3>
+                                </div>
+                                <div class="card-body text-center">
+                                    <img src="https://via.placeholder.com/150" alt="Profile Picture" class="rounded-circle mb-3">
+                                    <button class="btn btn-outline-primary btn-block">Change Picture</button>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3>Account Statistics</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <h5>Total Complaints</h5>
+                                        <p class="display-4">12</p>
+                                    </div>
+                                    <div class="mb-3">
+                                        <h5>Resolved Complaints</h5>
+                                        <p class="display-4">8</p>
+                                    </div>
+                                    <div>
+                                        <h5>Success Rate</h5>
+                                        <p class="display-4">67%</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <div class="mb-3">
-                                <h5>Total Complaints</h5>
-                                <p class="display-4">12</p>
+
+                        <div class="col-md-8">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <h3>Personal Information</h3>
+                                </div>
+                                <div class="card-body">
+                                    <form id="userDetailsForm">
+                                        <div class="form-group">
+                                            <label for="fullName">Full Name</label>
+                                            <input type="text" class="form-control" id="fullName" value="John Doe">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="email">Email Address</label>
+                                            <input type="email" class="form-control" id="email" value="john.doe@example.com">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="phone">Phone Number</label>
+                                            <input type="tel" class="form-control" id="phone" value="+91 98765 43210">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="address">Address</label>
+                                            <textarea class="form-control" id="address" rows="3">123, Main Street, Mumbai - 400001</textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Update Profile</button>
+                                    </form>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <h5>Resolved Complaints</h5>
-                                <p class="display-4">8</p>
-                            </div>
-                            <div>
-                                <h5>Success Rate</h5>
-                                <p class="display-4">67%</p>
+
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3>Security Settings</h3>
+                                </div>
+                                <div class="card-body">
+                                    <form id="securityForm">
+                                        <div class="form-group">
+                                            <label for="currentPassword">Current Password</label>
+                                            <input type="password" class="form-control" id="currentPassword">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="newPassword">New Password</label>
+                                            <input type="password" class="form-control" id="newPassword">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="confirmPassword">Confirm New Password</label>
+                                            <input type="password" class="form-control" id="confirmPassword">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Change Password</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="col-md-8">
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <h3>Personal Information</h3>
-                        </div>
-                        <div class="card-body">
-                            <form id="userDetailsForm">
-                                <div class="form-group">
-                                    <label for="fullName">Full Name</label>
-                                    <input type="text" class="form-control" id="fullName" value="John Doe">
-                                </div>
-                                <div class="form-group">
-                                    <label for="email">Email Address</label>
-                                    <input type="email" class="form-control" id="email" value="john.doe@example.com">
-                                </div>
-                                <div class="form-group">
-                                    <label for="phone">Phone Number</label>
-                                    <input type="tel" class="form-control" id="phone" value="+91 98765 43210">
-                                </div>
-                                <div class="form-group">
-                                    <label for="address">Address</label>
-                                    <textarea class="form-control" id="address" rows="3">123, Main Street, Mumbai - 400001</textarea>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Update Profile</button>
-                            </form>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <h3>Security Settings</h3>
-                        </div>
-                        <div class="card-body">
-                            <form id="securityForm">
-                                <div class="form-group">
-                                    <label for="currentPassword">Current Password</label>
-                                    <input type="password" class="form-control" id="currentPassword">
-                                </div>
-                                <div class="form-group">
-                                    <label for="newPassword">New Password</label>
-                                    <input type="password" class="form-control" id="newPassword">
-                                </div>
-                                <div class="form-group">
-                                    <label for="confirmPassword">Confirm New Password</label>
-                                    <input type="password" class="form-control" id="confirmPassword">
-                                </div>
-                                <button type="submit" class="btn btn-primary">Change Password</button>
-                            </form>
-                        </div>
-                    </div>
+                <div class="tab-pane fade" id="complaints" role="tabpanel">
+                    <!-- Complaints content will go here -->
+                </div>
+                <div class="tab-pane fade" id="documents" role="tabpanel">
+                    <!-- Documents content will go here -->
+                </div>
+                <div class="tab-pane fade" id="payments" role="tabpanel">
+                    <!-- Payments content will go here -->
+                </div>
+                <div class="tab-pane fade" id="notifications" role="tabpanel">
+                    <!-- Notifications content will go here -->
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+/* Add these styles to your existing CSS */
+.user-menu-bar {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.user-menu-tabs .nav-tabs {
+    border-bottom: 2px solid #dee2e6;
+}
+
+.user-menu-tabs .nav-link {
+    color: #495057;
+    border: none;
+    padding: 12px 20px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.user-menu-tabs .nav-link:hover {
+    color: #007bff;
+    border: none;
+}
+
+.user-menu-tabs .nav-link.active {
+    color: #007bff;
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid #007bff;
+}
+
+.user-menu-tabs .nav-link i {
+    margin-right: 8px;
+}
+
+.user-menu-right .btn-group {
+    gap: 10px;
+}
+
+.user-menu-right .btn {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+}
+
+.user-menu-right .btn i {
+    margin-right: 5px;
+}
+
+.tab-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    min-height: 400px;
+}
+</style>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
@@ -129,6 +253,28 @@
         $("#securityForm").on("submit", function(e) {
             e.preventDefault();
             alert("Password changed successfully!");
+        });
+
+        // Handle menu button clicks
+        $('#editProfileBtn').on('click', function() {
+            // Implement edit profile functionality
+            alert('Edit profile functionality will be implemented here');
+        });
+
+        $('#changePasswordBtn').on('click', function() {
+            // Implement change password functionality
+            alert('Change password functionality will be implemented here');
+        });
+
+        $('#notificationSettingsBtn').on('click', function() {
+            // Implement notification settings functionality
+            alert('Notification settings functionality will be implemented here');
+        });
+
+        // Initialize tabs
+        $('#userTabs a').on('click', function(e) {
+            e.preventDefault();
+            $(this).tab('show');
         });
     });
 </script>
