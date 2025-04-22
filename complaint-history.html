@@ -15,14 +15,24 @@
     <!-- Include Navigation -->
     <div id="navigation"></div>
 
-    <div class="content">
-        <div class="container mt-4">
-            <h1>Complaint History</h1>
+<div class="content">
+    <div class="container mt-4">
+        <h1>Complaint History</h1>
             <p class="lead text-center mb-4">Track the status of your complaints</p>
 
             <div class="card mb-4">
-                <div class="card-header">
+                <div class="card-header d-flex justify-content-between align-items-center">
                     <h3>Filter Complaints</h3>
+                    <div class="search-box">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="searchComplaints" placeholder="Search complaints...">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -66,64 +76,230 @@
             </div>
 
             <div class="card">
-                <div class="card-header">
+                <div class="card-header d-flex justify-content-between align-items-center">
                     <h3>Your Complaints</h3>
+                    <div class="view-toggle">
+                        <button class="btn btn-outline-primary active" id="tableViewBtn">
+                            <i class="fas fa-table"></i> Table View
+                        </button>
+                        <button class="btn btn-outline-primary" id="cardViewBtn">
+                            <i class="fas fa-th-large"></i> Card View
+                        </button>
+                    </div>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
+                    <div class="table-responsive" id="complaintsTable">
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th>Complaint ID</th>
-                                    <th>Category</th>
-                                    <th>Date Filed</th>
-                                    <th>Status</th>
-                                    <th>Amount (₹)</th>
+                                    <th class="sortable" data-sort="id">Complaint ID <i class="fas fa-sort"></i></th>
+                                    <th class="sortable" data-sort="category">Category <i class="fas fa-sort"></i></th>
+                                    <th class="sortable" data-sort="date">Date Filed <i class="fas fa-sort"></i></th>
+                                    <th class="sortable" data-sort="status">Status <i class="fas fa-sort"></i></th>
+                                    <th class="sortable" data-sort="amount">Amount (₹) <i class="fas fa-sort"></i></th>
+                                    <th>Assigned Lawyer</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>HC-2024-001</td>
-                                    <td>E-commerce</td>
-                                    <td>2024-04-20</td>
-                                    <td><span class="status-badge status-pending">Pending</span></td>
-                                    <td>5,000</td>
-                                    <td>
-                                        <a href="complaint-details.html?id=HC-2024-001" class="btn btn-sm btn-primary">View</a>
-                                        <button class="btn btn-sm btn-outline-secondary">Download</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>HC-2024-002</td>
-                                    <td>Healthcare</td>
-                                    <td>2024-04-19</td>
-                                    <td><span class="status-badge status-resolved">Resolved</span></td>
-                                    <td>15,000</td>
-                                    <td>
-                                        <a href="complaint-details.html?id=HC-2024-002" class="btn btn-sm btn-primary">View</a>
-                                        <button class="btn btn-sm btn-outline-secondary">Download</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>HC-2024-003</td>
-                                    <td>Banking</td>
-                                    <td>2024-04-18</td>
-                                    <td><span class="status-badge status-in-progress">In Progress</span></td>
-                                    <td>25,000</td>
-                                    <td>
-                                        <a href="complaint-details.html?id=HC-2024-003" class="btn btn-sm btn-primary">View</a>
-                                        <button class="btn btn-sm btn-outline-secondary">Download</button>
-                                    </td>
-                                </tr>
+                            <tbody id="complaintsTableBody">
+                                <!-- Table rows will be populated dynamically -->
                             </tbody>
                         </table>
                     </div>
+
+                    <!-- Selected Complaint Details Section -->
+                    <div id="selectedComplaintDetails" class="mt-4" style="display: none;">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h4>Complaint Details</h4>
+                                <button class="btn btn-sm btn-outline-secondary" id="closeDetails">
+                                    <i class="fas fa-times"></i> Close
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h5>Complaint Information</h5>
+                                        <div class="complaint-info">
+                                            <p><strong>Complaint ID:</strong> <span id="detailComplaintId"></span></p>
+                                            <p><strong>Category:</strong> <span id="detailCategory"></span></p>
+                                            <p><strong>Date Filed:</strong> <span id="detailDate"></span></p>
+                                            <p><strong>Status:</strong> <span id="detailStatus"></span></p>
+                                            <p><strong>Claim Amount:</strong> <span id="detailAmount"></span></p>
+                                            <p><strong>Description:</strong> <span id="detailDescription"></span></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h5>Company Details</h5>
+                                        <div class="company-info">
+                                            <p><strong>Company Name:</strong> <span id="detailCompany"></span></p>
+                                            <p><strong>Address:</strong> <span id="detailCompanyAddress"></span></p>
+                                            <p><strong>Contact:</strong> <span id="detailCompanyContact"></span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-4">
+                                    <div class="col-md-6">
+                                        <h5>Assigned Lawyer</h5>
+                                        <div class="lawyer-info-details">
+                                            <div class="lawyer-profile">
+                                                <img src="" alt="Lawyer Profile" id="detailLawyerImage" class="lawyer-avatar">
+                                                <div class="lawyer-details">
+                                                    <div class="lawyer-name" id="detailLawyerName"></div>
+                                                    <div class="lawyer-stats">
+                                                        <span class="stat-value" id="detailLawyerSuccess"></span>
+                                                        <span class="stat-label">Success Rate</span>
+                                                        <span class="stat-value" id="detailLawyerCases"></span>
+                                                        <span class="stat-label">Cases Won</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="lawyer-contact mt-3">
+                                                <button class="btn btn-primary btn-sm" onclick="openChat('lawyer1')">
+                                                    <i class="fas fa-comments"></i> Chat
+                                                </button>
+                                                <button class="btn btn-outline-primary btn-sm" onclick="scheduleCall('lawyer1')">
+                                                    <i class="fas fa-phone"></i> Schedule Call
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h5>Case Updates</h5>
+                                        <div class="case-updates">
+                                            <div class="timeline" id="updatesList">
+                                                <!-- Timeline items will be populated dynamically -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-4">
+                                    <div class="col-12">
+                                        <h5>Documents</h5>
+                                        <div class="documents-list" id="documentsList">
+                                            <!-- Document items will be populated dynamically -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="complaintsCards" class="row d-none">
+                        <!-- Card view will be populated dynamically -->
+                    </div>
+
+                    <!-- Loading Spinner -->
+                    <div id="loadingSpinner" class="text-center d-none">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+
+                    <!-- No Results Message -->
+                    <div id="noResults" class="alert alert-info d-none">
+                        No complaints found matching your filters.
+                    </div>
+
+                    <!-- Pagination -->
+                    <nav aria-label="Complaints pagination" class="mt-4">
+                        <ul class="pagination justify-content-center" id="pagination">
+                            <!-- Pagination will be populated dynamically -->
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="complaint-card">
+                <div class="complaint-header">
+                    <h3>Complaint #12345</h3>
+                    <span class="status pending">Pending</span>
+                </div>
+                <div class="complaint-details">
+                    <p><strong>Company:</strong> Amazon India</p>
+                    <p><strong>Date Filed:</strong> March 15, 2024</p>
+                    <p><strong>Claim Amount:</strong> ₹15,000</p>
+                    <p><strong>Last Updated:</strong> March 20, 2024</p>
+                </div>
+                <div class="lawyer-info">
+                    <h4>Assigned Lawyer</h4>
+                    <div class="lawyer-details">
+                        <div class="lawyer-profile">
+                            <img src="https://via.placeholder.com/50" alt="Lawyer Profile" class="lawyer-avatar">
+                            <div class="lawyer-name">Adv. Rajesh Kumar</div>
+                        </div>
+                        <div class="lawyer-stats">
+                            <div class="stat">
+                                <span class="stat-value">95%</span>
+                                <span class="stat-label">Success Rate</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">150+</span>
+                                <span class="stat-label">Cases Won</span>
+                            </div>
+                        </div>
+                        <div class="lawyer-contact">
+                            <button class="btn btn-primary btn-sm" onclick="openChat('lawyer1')">
+                                <i class="fas fa-comments"></i> Chat
+                            </button>
+                            <button class="btn btn-outline-primary btn-sm" onclick="scheduleCall('lawyer1')">
+                                <i class="fas fa-phone"></i> Schedule Call
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="complaint-actions">
+                    <button class="btn btn-primary">View Details</button>
+                    <button class="btn btn-outline-primary">Download Documents</button>
+                </div>
+            </div>
+
+            <div class="complaint-card">
+                <div class="complaint-header">
+                    <h3>Complaint #12346</h3>
+                    <span class="status in-progress">In Progress</span>
+                </div>
+                <div class="complaint-details">
+                    <p><strong>Company:</strong> Flipkart</p>
+                    <p><strong>Date Filed:</strong> March 10, 2024</p>
+                    <p><strong>Claim Amount:</strong> ₹25,000</p>
+                    <p><strong>Last Updated:</strong> March 18, 2024</p>
+                </div>
+                <div class="lawyer-info">
+                    <h4>Assigned Lawyer</h4>
+                    <div class="lawyer-details">
+                        <div class="lawyer-profile">
+                            <img src="https://via.placeholder.com/50" alt="Lawyer Profile" class="lawyer-avatar">
+                            <div class="lawyer-name">Adv. Priya Sharma</div>
+                        </div>
+                        <div class="lawyer-stats">
+                            <div class="stat">
+                                <span class="stat-value">92%</span>
+                                <span class="stat-label">Success Rate</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-value">120+</span>
+                                <span class="stat-label">Cases Won</span>
+                            </div>
+                        </div>
+                        <div class="lawyer-contact">
+                            <button class="btn btn-primary btn-sm" onclick="openChat('lawyer2')">
+                                <i class="fas fa-comments"></i> Chat
+                            </button>
+                            <button class="btn btn-outline-primary btn-sm" onclick="scheduleCall('lawyer2')">
+                                <i class="fas fa-phone"></i> Schedule Call
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="complaint-actions">
+                    <button class="btn btn-primary">View Details</button>
+                    <button class="btn btn-outline-primary">Download Documents</button>
                 </div>
             </div>
         </div>
     </div>
-</div>
+        </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
@@ -132,10 +308,671 @@
     // Load navigation
     $(document).ready(function() {
         $("#navigation").load("static/navigation.html", function() {
-            // Set active link
             $('.nav-link[href="complaint-history.html"]').addClass('active');
         });
+
+        // Initialize variables
+        let currentPage = 1;
+        let itemsPerPage = 10;
+        let currentSort = { column: 'date', direction: 'desc' };
+        let complaints = [];
+        let filteredComplaints = [];
+
+        // Enhanced sample data with more realistic values
+        const sampleComplaints = [
+            {
+                id: 'HC-2024-001',
+                category: 'E-commerce',
+                date: '2024-04-20',
+                status: 'pending',
+                amount: 15000,
+                company: 'Amazon India',
+                companyAddress: '123, MG Road, Bangalore',
+                companyContact: '1800-123-4567',
+                description: 'Delayed delivery and damaged product',
+                lawyer: {
+                    name: 'Adv. Rajesh Kumar',
+                    image: 'https://randomuser.me/api/portraits/men/1.jpg',
+                    successRate: '95%',
+                    casesWon: '150+',
+                    specialization: 'Consumer Rights',
+                    experience: '12 years'
+                },
+                documents: [
+                    { name: 'Invoice.pdf', type: 'pdf', size: '2.5MB' },
+                    { name: 'Product_Images.jpg', type: 'image', size: '1.2MB' }
+                ],
+                updates: [
+                    { date: '2024-04-20', title: 'Complaint Filed', description: 'Initial complaint submitted' },
+                    { date: '2024-04-21', title: 'Lawyer Assigned', description: 'Adv. Rajesh Kumar assigned to case' }
+                ]
+            },
+            {
+                id: 'HC-2024-002',
+                category: 'Healthcare',
+                date: '2024-04-19',
+                status: 'resolved',
+                amount: 25000,
+                company: 'Apollo Hospitals',
+                companyAddress: '456, Hospital Road, Delhi',
+                companyContact: '1800-234-5678',
+                description: 'Medical negligence case',
+                lawyer: {
+                    name: 'Adv. Priya Sharma',
+                    image: 'https://randomuser.me/api/portraits/women/2.jpg',
+                    successRate: '92%',
+                    casesWon: '120+',
+                    specialization: 'Medical Law',
+                    experience: '10 years'
+                },
+                documents: [
+                    { name: 'Medical_Report.pdf', type: 'pdf', size: '3.1MB' },
+                    { name: 'Prescription.jpg', type: 'image', size: '0.8MB' }
+                ],
+                updates: [
+                    { date: '2024-04-19', title: 'Complaint Filed', description: 'Initial complaint submitted' },
+                    { date: '2024-04-20', title: 'Case Resolved', description: 'Settlement reached' }
+                ]
+            },
+            {
+                id: 'HC-2024-003',
+                category: 'Banking',
+                date: '2024-04-18',
+                status: 'in-progress',
+                amount: 50000,
+                company: 'HDFC Bank',
+                companyAddress: '789, Banking Street, Mumbai',
+                companyContact: '1800-345-6789',
+                description: 'Unauthorized transactions',
+                lawyer: {
+                    name: 'Adv. Amit Patel',
+                    image: 'https://randomuser.me/api/portraits/men/3.jpg',
+                    successRate: '88%',
+                    casesWon: '100+',
+                    specialization: 'Banking Law',
+                    experience: '8 years'
+                },
+                documents: [
+                    { name: 'Bank_Statement.pdf', type: 'pdf', size: '1.8MB' },
+                    { name: 'Transaction_Details.pdf', type: 'pdf', size: '0.9MB' }
+                ],
+                updates: [
+                    { date: '2024-04-18', title: 'Complaint Filed', description: 'Initial complaint submitted' },
+                    { date: '2024-04-19', title: 'Investigation Started', description: 'Bank investigation in progress' }
+                ]
+            }
+        ];
+
+        // Initialize the page
+        function initializePage() {
+            complaints = sampleComplaints;
+            filteredComplaints = [...complaints];
+            renderComplaints();
+            setupEventListeners();
+        }
+
+        // Render complaints based on current view
+        function renderComplaints() {
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const currentComplaints = filteredComplaints.slice(start, end);
+
+            if ($('#tableViewBtn').hasClass('active')) {
+                renderTableView(currentComplaints);
+            } else {
+                renderCardView(currentComplaints);
+            }
+
+            renderPagination();
+        }
+
+        // Render table view
+        function renderTableView(complaints) {
+            const tbody = $('#complaintsTableBody');
+            tbody.empty();
+
+            if (complaints.length === 0) {
+                tbody.append(`
+                    <tr>
+                        <td colspan="7" class="text-center">No complaints found matching your filters</td>
+                    </tr>
+                `);
+                return;
+            }
+
+            complaints.forEach(complaint => {
+                tbody.append(`
+                    <tr>
+                        <td>${complaint.id}</td>
+                        <td>${complaint.category}</td>
+                        <td>${complaint.date}</td>
+                        <td><span class="status-badge status-${complaint.status}">${complaint.status}</span></td>
+                        <td>₹${complaint.amount.toLocaleString()}</td>
+                        <td>
+                            <div class="lawyer-info-table">
+                                <div class="lawyer-profile-table">
+                                    <img src="${complaint.lawyer.image}" alt="Lawyer Profile" class="lawyer-avatar-table">
+                                    <div class="lawyer-details-table">
+                                        <div class="lawyer-name-table">${complaint.lawyer.name}</div>
+                                        <div class="lawyer-stats-table">
+                                            <span class="stat-value-table">${complaint.lawyer.successRate}</span>
+                                            <span class="stat-label-table">Success Rate</span>
+                                            <span class="stat-value-table">${complaint.lawyer.casesWon}</span>
+                                            <span class="stat-label-table">Cases Won</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="lawyer-contact-table">
+                                    <button class="btn btn-sm btn-link p-0" onclick="openChat('${complaint.id}')" title="Chat">
+                                        <i class="fas fa-comments"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-link p-0" onclick="scheduleCall('${complaint.id}')" title="Schedule Call">
+                                        <i class="fas fa-phone"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-primary view-details" data-complaint-id="${complaint.id}">View</button>
+                            <button class="btn btn-sm btn-outline-secondary download-docs" data-complaint-id="${complaint.id}">Download</button>
+                        </td>
+                    </tr>
+                `);
+            });
+        }
+
+        // Render card view
+        function renderCardView(complaints) {
+            const container = $('#complaintsCards');
+            container.empty();
+
+            if (complaints.length === 0) {
+                container.append(`
+                    <div class="col-12 text-center">
+                        <p class="text-muted">No complaints found matching your filters</p>
+                    </div>
+                `);
+                return;
+            }
+
+            complaints.forEach(complaint => {
+                container.append(`
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="complaint-card">
+                            <div class="complaint-header">
+                                <h3>${complaint.id}</h3>
+                                <span class="status ${complaint.status}">${complaint.status}</span>
+                            </div>
+                            <div class="complaint-details">
+                                <p><strong>Company:</strong> ${complaint.company}</p>
+                                <p><strong>Category:</strong> ${complaint.category}</p>
+                                <p><strong>Date Filed:</strong> ${complaint.date}</p>
+                                <p><strong>Claim Amount:</strong> ₹${complaint.amount.toLocaleString()}</p>
+                                <p><strong>Description:</strong> ${complaint.description}</p>
+                            </div>
+                            <div class="lawyer-info">
+                                <h4>Assigned Lawyer</h4>
+                                <div class="lawyer-details">
+                                    <div class="lawyer-profile">
+                                        <img src="${complaint.lawyer.image}" alt="Lawyer Profile" class="lawyer-avatar">
+                                        <div class="lawyer-name">${complaint.lawyer.name}</div>
+                                    </div>
+                                    <div class="lawyer-stats">
+                                        <div class="stat">
+                                            <span class="stat-value">${complaint.lawyer.successRate}</span>
+                                            <span class="stat-label">Success Rate</span>
+                                        </div>
+                                        <div class="stat">
+                                            <span class="stat-value">${complaint.lawyer.casesWon}</span>
+                                            <span class="stat-label">Cases Won</span>
+                                        </div>
+                                    </div>
+                                    <div class="lawyer-contact">
+                                        <button class="btn btn-primary btn-sm" onclick="openChat('${complaint.id}')">
+                                            <i class="fas fa-comments"></i> Chat
+                                        </button>
+                                        <button class="btn btn-outline-primary btn-sm" onclick="scheduleCall('${complaint.id}')">
+                                            <i class="fas fa-phone"></i> Schedule Call
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="complaint-actions">
+                                <button class="btn btn-primary view-details" data-complaint-id="${complaint.id}">View Details</button>
+                                <button class="btn btn-outline-primary download-docs" data-complaint-id="${complaint.id}">Download Documents</button>
+                            </div>
+                        </div>
+                    </div>
+                `);
+            });
+        }
+
+        // Render pagination
+        function renderPagination() {
+            const totalPages = Math.ceil(filteredComplaints.length / itemsPerPage);
+            const pagination = $('#pagination');
+            pagination.empty();
+
+            // Previous button
+            pagination.append(`
+                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" data-page="${currentPage - 1}">Previous</a>
+                </li>
+            `);
+
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                pagination.append(`
+                    <li class="page-item ${currentPage === i ? 'active' : ''}">
+                        <a class="page-link" href="#" data-page="${i}">${i}</a>
+                    </li>
+                `);
+            }
+
+            // Next button
+            pagination.append(`
+                <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                    <a class="page-link" href="#" data-page="${currentPage + 1}">Next</a>
+                </li>
+            `);
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // View toggle
+            $('#tableViewBtn, #cardViewBtn').on('click', function() {
+                $('#tableViewBtn, #cardViewBtn').removeClass('active');
+                $(this).addClass('active');
+                $('#complaintsTable, #complaintsCards').toggleClass('d-none');
+                renderComplaints();
+            });
+
+            // View details
+            $(document).on('click', '.view-details', function() {
+                const complaintId = $(this).data('complaint-id');
+                showComplaintDetails(complaintId);
+            });
+
+            // Close details
+            $('#closeDetails').on('click', function() {
+                $('#selectedComplaintDetails').slideUp();
+            });
+
+            // Download documents
+            $(document).on('click', '.download-docs', function() {
+                const complaintId = $(this).data('complaint-id');
+                alert('Downloading documents for complaint: ' + complaintId);
+            });
+        }
+
+        // Show complaint details
+        function showComplaintDetails(complaintId) {
+            const complaint = complaints.find(c => c.id === complaintId);
+            if (!complaint) return;
+
+            // Populate basic information
+            $('#detailComplaintId').text(complaint.id);
+            $('#detailCategory').text(complaint.category);
+            $('#detailDate').text(complaint.date);
+            $('#detailStatus').text(complaint.status);
+            $('#detailAmount').text(`₹${complaint.amount.toLocaleString()}`);
+            $('#detailCompany').text(complaint.company);
+            $('#detailCompanyAddress').text(complaint.companyAddress);
+            $('#detailCompanyContact').text(complaint.companyContact);
+            $('#detailDescription').text(complaint.description);
+
+            // Populate lawyer information
+            $('#detailLawyerName').text(complaint.lawyer.name);
+            $('#detailLawyerSuccess').text(complaint.lawyer.successRate);
+            $('#detailLawyerCases').text(complaint.lawyer.casesWon);
+            $('#detailLawyerImage').attr('src', complaint.lawyer.image);
+
+            // Populate documents
+            const documentsList = $('#documentsList');
+            documentsList.empty();
+            complaint.documents.forEach(doc => {
+                documentsList.append(`
+                    <div class="document-item">
+                        <i class="fas fa-file-pdf"></i>
+                        <span>${doc.name} (${doc.size})</span>
+                        <button class="btn btn-sm btn-outline-primary">Download</button>
+                    </div>
+                `);
+            });
+
+            // Populate updates
+            const updatesList = $('#updatesList');
+            updatesList.empty();
+            complaint.updates.forEach(update => {
+                updatesList.append(`
+                    <div class="timeline-item">
+                        <div class="timeline-date">${update.date}</div>
+                        <div class="timeline-content">
+                            <strong>${update.title}</strong>
+                            <p>${update.description}</p>
+                        </div>
+                    </div>
+                `);
+            });
+
+            // Show details section
+            $('#selectedComplaintDetails').slideDown();
+            
+            // Scroll to details
+            $('html, body').animate({
+                scrollTop: $('#selectedComplaintDetails').offset().top - 20
+            }, 500);
+        }
+
+        // Initialize the page
+        initializePage();
     });
+
+    function openChat(lawyerId) {
+        alert('Opening chat with lawyer ' + lawyerId);
+    }
+
+    function scheduleCall(lawyerId) {
+        alert('Scheduling call with lawyer ' + lawyerId);
+    }
 </script>
+
+<style>
+/* Add these styles to your existing CSS */
+.lawyer-info {
+    margin: 15px 0;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
+.lawyer-info h4 {
+    margin-bottom: 10px;
+    color: #333;
+    font-size: 1.1rem;
+}
+
+.lawyer-details {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.lawyer-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.lawyer-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.lawyer-name {
+    font-weight: 600;
+    color: #333;
+}
+
+.lawyer-stats {
+    display: flex;
+    gap: 20px;
+    margin-left: auto;
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat-value {
+    display: block;
+    font-weight: 600;
+    color: #007bff;
+    font-size: 1.1rem;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.lawyer-contact {
+    display: flex;
+    gap: 10px;
+}
+
+.lawyer-contact .btn {
+    padding: 5px 10px;
+    font-size: 0.9rem;
+}
+
+.lawyer-contact .btn i {
+    margin-right: 5px;
+}
+
+.lawyer-info-table {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.lawyer-profile-table {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.lawyer-avatar-table {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.lawyer-details-table {
+    display: flex;
+    flex-direction: column;
+}
+
+.lawyer-name-table {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.lawyer-stats-table {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.8rem;
+}
+
+.stat-value-table {
+    color: #007bff;
+    font-weight: 600;
+}
+
+.stat-label-table {
+    color: #666;
+}
+
+.lawyer-contact-table {
+    display: flex;
+    gap: 5px;
+}
+
+.lawyer-contact-table .btn-link {
+    color: #007bff;
+    padding: 0;
+    font-size: 0.9rem;
+}
+
+.lawyer-contact-table .btn-link:hover {
+    color: #0056b3;
+}
+
+/* Ensure table cells have proper padding */
+.table td {
+    vertical-align: middle;
+    padding: 12px 8px;
+}
+
+.selected-complaint {
+    background-color: #f8f9fa;
+}
+
+.complaint-details-section {
+    background-color: #f8f9fa;
+    padding: 20px 0;
+    margin-top: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.timeline {
+    position: relative;
+    padding: 20px 0;
+}
+
+.timeline-item {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.timeline-date {
+    width: 120px;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.timeline-content {
+    flex: 1;
+    padding-left: 20px;
+    border-left: 2px solid #007bff;
+    position: relative;
+}
+
+.timeline-content::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 12px;
+    height: 12px;
+    background: #007bff;
+    border-radius: 50%;
+    margin-left: -7px;
+}
+
+.documents-list {
+    margin-top: 15px;
+}
+
+.document-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background: white;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.document-item i {
+    color: #dc3545;
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+.document-item span {
+    flex: 1;
+}
+
+.lawyer-info-details {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.complaint-info, .company-info {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.sortable {
+    cursor: pointer;
+    position: relative;
+}
+
+.sortable i {
+    margin-left: 5px;
+    opacity: 0.3;
+}
+
+.sortable:hover i {
+    opacity: 0.7;
+}
+
+.sortable.active i {
+    opacity: 1;
+}
+
+.search-box {
+    width: 300px;
+}
+
+.view-toggle .btn {
+    margin-left: 5px;
+}
+
+.view-toggle .btn.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+    .search-box {
+        width: 100%;
+        margin-top: 10px;
+    }
+    
+    .view-toggle {
+        margin-top: 10px;
+    }
+    
+    .table-responsive {
+        font-size: 0.9rem;
+    }
+    
+    .lawyer-info-table {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .lawyer-contact-table {
+        margin-top: 5px;
+    }
+}
+</style>
 </body>
 </html>
