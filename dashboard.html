@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HappyClaim - Consumer Protection</title>
+    <title>Dashboard - HappyClaim</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,29 +22,61 @@
             flex-grow: 1;
         }
 
-        h1 {
-            color: #0c3057;
-            font-weight: 600;
+        .page-header {
             margin-bottom: 30px;
             text-align: center;
         }
 
+        .page-header h1 {
+            color: #0c3057;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
         .dashboard {
             background-color: #fff;
-            border-radius: 8px;
-            padding: 20px;
+            border-radius: 12px;
+            padding: 25px;
             margin-bottom: 30px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        }
+
+        .dashboard h2 {
+            color: #0c3057;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
         }
 
         .dashboard-item {
             background-color: #fff;
             border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 15px;
+            border-radius: 10px;
+            padding: 20px;
             margin-bottom: 20px;
             text-align: center;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background-color: #0c3057;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
         .dashboard-item:hover {
@@ -52,54 +84,134 @@
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
 
+        .dashboard-item:hover::before {
+            opacity: 1;
+        }
+
         .dashboard-item h3 {
             color: #0c3057;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             font-weight: 600;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
         .dashboard-item p {
             color: #f68b6b;
-            font-size: 1.2rem;
-            font-weight: 500;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .dashboard-item .icon {
+            font-size: 2rem;
+            color: #0c3057;
+            margin-bottom: 15px;
         }
 
         .complaint-section {
             background-color: #fff;
-            border-radius: 8px;
-            padding: 20px;
+            border-radius: 12px;
+            padding: 25px;
             margin-bottom: 30px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.08);
         }
 
+        .complaint-section h2 {
+            color: #0c3057;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
         .complaint-item {
             border-bottom: 1px solid #e0e0e0;
-            padding-bottom: 15px;
+            padding: 20px 0;
             margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .complaint-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .complaint-item:hover {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
         }
 
         .complaint-item h4 {
             color: #0c3057;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 600;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
         }
 
         .complaint-item p {
             color: #555;
-            font-size: 1rem;
-            margin-bottom: 5px;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
         }
 
         .complaint-item .status {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
             font-weight: 500;
-            color: #f68b6b;
+        }
+
+        .status.pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status.resolved {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status.in-progress {
+            background-color: #cce5ff;
+            color: #004085;
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .quick-action-btn {
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .quick-action-btn:hover {
+            transform: translateY(-2px);
         }
 
         @media (max-width: 992px) {
+            .content {
+                padding: 20px;
+            }
+
             .dashboard-item {
-                margin-bottom: 20px;
+                margin-bottom: 15px;
+            }
+
+            .quick-actions {
+                flex-direction: column;
+            }
+
+            .quick-action-btn {
+                width: 100%;
             }
         }
     </style>
@@ -111,46 +223,54 @@
 
     <div class="content">
         <div class="container mt-4">
-            <h1>Welcome to HappyClaim</h1>
-            <p class="lead">Your Platform for Consumer Protection</p>
+            <div class="page-header">
+                <h1>Welcome to HappyClaim</h1>
+                <p>Your Platform for Consumer Protection</p>
+            </div>
 
             <div class="dashboard">
-                <h2>Dashboard</h2>
+                <h2>Dashboard Overview</h2>
                 <div class="row">
                     <div class="col-md-4">
                         <div class="dashboard-item">
+                            <i class="fas fa-file-alt icon"></i>
                             <h3>Total Complaints</h3>
-                            <p>1250</p>
+                            <p>1,250</p>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="dashboard-item">
+                            <i class="fas fa-check-circle icon"></i>
                             <h3>Complaints Resolved</h3>
                             <p>980</p>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="dashboard-item">
+                            <i class="fas fa-clock icon"></i>
                             <h3>Pending Complaints</h3>
                             <p>270</p>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="dashboard-item">
+                            <i class="fas fa-calendar-alt icon"></i>
                             <h3>Average Resolution Time</h3>
                             <p>15 Days</p>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="dashboard-item">
+                            <i class="fas fa-shopping-cart icon"></i>
                             <h3>Highest Complaint Category</h3>
                             <p>E-commerce</p>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="dashboard-item">
+                            <i class="fas fa-users icon"></i>
                             <h3>Total Users</h3>
-                            <p>5000</p>
+                            <p>5,000</p>
                         </div>
                     </div>
                 </div>
@@ -159,22 +279,34 @@
             <div class="complaint-section">
                 <h2>Recent Complaints</h2>
                 <div class="complaint-item">
-                    <h4>Complaint ID: 1001</h4>
-                    <p>Complainant: John Doe</p>
-                    <p>Category: E-commerce</p>
-                    <p>Status: <span class="status">Pending</span></p>
+                    <h4>Complaint ID: HC-2024-001</h4>
+                    <p><strong>Complainant:</strong> John Doe</p>
+                    <p><strong>Category:</strong> E-commerce</p>
+                    <p><strong>Status:</strong> <span class="status pending">Pending</span></p>
+                    <div class="quick-actions">
+                        <button class="btn btn-primary quick-action-btn">View Details</button>
+                        <button class="btn btn-outline-primary quick-action-btn">Download Documents</button>
+                    </div>
                 </div>
                 <div class="complaint-item">
-                    <h4>Complaint ID: 1002</h4>
-                    <p>Complainant: Jane Smith</p>
-                    <p>Category: Healthcare</p>
-                    <p>Status: <span class="status">Resolved</span></p>
+                    <h4>Complaint ID: HC-2024-002</h4>
+                    <p><strong>Complainant:</strong> Jane Smith</p>
+                    <p><strong>Category:</strong> Healthcare</p>
+                    <p><strong>Status:</strong> <span class="status resolved">Resolved</span></p>
+                    <div class="quick-actions">
+                        <button class="btn btn-primary quick-action-btn">View Details</button>
+                        <button class="btn btn-outline-primary quick-action-btn">Download Documents</button>
+                    </div>
                 </div>
                 <div class="complaint-item">
-                    <h4>Complaint ID: 1003</h4>
-                    <p>Complainant: David Lee</p>
-                    <p>Category: Banking</p>
-                    <p>Status: <span class="status">In Progress</span></p>
+                    <h4>Complaint ID: HC-2024-003</h4>
+                    <p><strong>Complainant:</strong> David Lee</p>
+                    <p><strong>Category:</strong> Banking</p>
+                    <p><strong>Status:</strong> <span class="status in-progress">In Progress</span></p>
+                    <div class="quick-actions">
+                        <button class="btn btn-primary quick-action-btn">View Details</button>
+                        <button class="btn btn-outline-primary quick-action-btn">Download Documents</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -203,6 +335,28 @@
             $('.mobile-nav-toggle').on('click', function() {
                 $('.sidebar').toggleClass('active');
             });
+
+            // Add dashboard link to navigation
+            $('.nav-menu').prepend(`
+                <li class="nav-item">
+                    <a href="dashboard.html" class="nav-link">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+            `);
+        });
+
+        // Handle quick action buttons
+        $('.quick-action-btn').on('click', function() {
+            const action = $(this).text().trim();
+            const complaintId = $(this).closest('.complaint-item').find('h4').text().split(': ')[1];
+            
+            if (action === 'View Details') {
+                window.location.href = `complaint-details.html?id=${complaintId}`;
+            } else if (action === 'Download Documents') {
+                alert(`Downloading documents for complaint ${complaintId}`);
+            }
         });
     });
 </script>
