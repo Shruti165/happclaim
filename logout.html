@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logout - HappyClaim</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .logout-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 100%;
+            max-width: 500px;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .logout-icon {
+            width: 80px;
+            height: 80px;
+            background: #0c3057;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            animation: pulse 2s infinite;
+        }
+
+        .logout-icon i {
+            color: white;
+            font-size: 36px;
+        }
+
+        .logout-header {
+            margin-bottom: 30px;
+        }
+
+        .logout-header h1 {
+            color: #0c3057;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .logout-header p {
+            color: #666;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .countdown {
+            font-size: 1.2rem;
+            color: #0c3057;
+            font-weight: 600;
+            margin: 20px 0;
+        }
+
+        .btn-login {
+            background: #0c3057;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-login:hover {
+            background: #0a2540;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(12, 48, 87, 0.3);
+            color: white;
+            text-decoration: none;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(12, 48, 87, 0.4);
+            }
+            70% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 10px rgba(12, 48, 87, 0);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(12, 48, 87, 0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .logout-container {
+                padding: 30px 20px;
+            }
+
+            .logout-icon {
+                width: 60px;
+                height: 60px;
+            }
+
+            .logout-icon i {
+                font-size: 28px;
+            }
+
+            .logout-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .logout-header p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="logout-container">
+        <div class="logout-icon">
+            <i class="fas fa-sign-out-alt"></i>
+        </div>
+        <div class="logout-header">
+            <h1>Logged Out Successfully</h1>
+            <p>Thank you for using HappyClaim. You have been successfully logged out of your account.</p>
+        </div>
+        <div class="countdown">
+            Redirecting to login page in <span id="timer">5</span> seconds...
+        </div>
+        <a href="login.html" class="btn btn-login">
+            <i class="fas fa-sign-in-alt mr-2"></i>Login Again
+        </a>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            let timeLeft = 5;
+            const timerElement = $('#timer');
+            
+            const countdown = setInterval(function() {
+                timeLeft--;
+                timerElement.text(timeLeft);
+                
+                if (timeLeft <= 0) {
+                    clearInterval(countdown);
+                    window.location.href = 'login.html';
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html> 
