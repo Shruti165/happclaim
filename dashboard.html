@@ -8,51 +8,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="static/css/common.css">
+    <link rel="stylesheet" href="static/css/navigation.css">
     <style>
         body {
             font-family: 'Montserrat', sans-serif;
             background-color: #f9f9f9;
-        }
-
-        .sidebar {
-            background-color: #0c3057;
-            padding-bottom: 20px;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .sidebar h2 {
-            color: #fff;
-            font-weight: 600;
-            padding: 20px;
-            text-align: center;
-            margin-bottom: 0;
-            background-color: #082440;
-        }
-
-        .sidebar .nav-link {
-            color: #fff;
-            font-weight: 500;
-            padding: 12px 20px;
-            border-left: 4px solid transparent;
-            transition: background-color 0.3s ease, border-left-color 0.3s ease;
-        }
-
-        .sidebar .nav-link:hover {
-            background-color: #154360;
-            border-left-color: #f68b6b;
-        }
-
-        .sidebar .nav-link.active {
-            background-color: #f68b6b;
-            font-weight: 700;
-            border-left-color: #f68b6b;
-        }
-
-        .sidebar .nav-item:not(:last-child) {
-            margin-bottom: 5px;
         }
 
         .content {
@@ -136,17 +98,6 @@
         }
 
         @media (max-width: 992px) {
-            .sidebar {
-                width: 100%;
-                position: relative;
-                padding: 15px;
-            }
-            .sidebar h2{
-                text-align: center;
-            }
-            .sidebar .nav-item{
-                text-align: center;
-            }
             .dashboard-item {
                 margin-bottom: 20px;
             }
@@ -154,100 +105,106 @@
     </style>
 </head>
 <body>
-<div class="sidebar">
-    <h2>HappyClaim</h2>
-    <ul class="nav flex-column">
-        <li class="nav-item">
-            <a class="nav-link active" href="index.html">Home</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="file-complaint.html">File Complaint</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="complaint-history.html">Complaint History</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="user-details.html">User Details</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="login.html">Login</a>
-        </li>
-    </ul>
-</div>
+<div class="d-flex">
+    <!-- Include Navigation -->
+    <div id="navigation"></div>
 
-<div class="content">
-    <div class="container mt-4">
-        <h1>Welcome to HappyClaim</h1>
-        <p class="lead">Your Platform for Consumer Protection</p>
+    <div class="content">
+        <div class="container mt-4">
+            <h1>Welcome to HappyClaim</h1>
+            <p class="lead">Your Platform for Consumer Protection</p>
 
-        <div class="dashboard">
-            <h2>Dashboard</h2>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="dashboard-item">
-                        <h3>Total Complaints</h3>
-                        <p>1250</p>
+            <div class="dashboard">
+                <h2>Dashboard</h2>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="dashboard-item">
+                            <h3>Total Complaints</h3>
+                            <p>1250</p>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="dashboard-item">
-                        <h3>Complaints Resolved</h3>
-                        <p>980</p>
+                    <div class="col-md-4">
+                        <div class="dashboard-item">
+                            <h3>Complaints Resolved</h3>
+                            <p>980</p>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="dashboard-item">
-                        <h3>Pending Complaints</h3>
-                        <p>270</p>
+                    <div class="col-md-4">
+                        <div class="dashboard-item">
+                            <h3>Pending Complaints</h3>
+                            <p>270</p>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="dashboard-item">
-                        <h3>Average Resolution Time</h3>
-                        <p>15 Days</p>
+                    <div class="col-md-4">
+                        <div class="dashboard-item">
+                            <h3>Average Resolution Time</h3>
+                            <p>15 Days</p>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="dashboard-item">
-                        <h3>Highest Complaint Category</h3>
-                        <p>E-commerce</p>
+                    <div class="col-md-4">
+                        <div class="dashboard-item">
+                            <h3>Highest Complaint Category</h3>
+                            <p>E-commerce</p>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="dashboard-item">
-                        <h3>Total Users</h3>
-                        <p>5000</p>
+                    <div class="col-md-4">
+                        <div class="dashboard-item">
+                            <h3>Total Users</h3>
+                            <p>5000</p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="complaint-section">
-            <h2>Recent Complaints</h2>
-            <div class="complaint-item">
-                <h4>Complaint ID: 1001</h4>
-                <p>Complainant: John Doe</p>
-                <p>Category: E-commerce</p>
-                <p>Status: <span class="status">Pending</span></p>
-            </div>
-            <div class="complaint-item">
-                <h4>Complaint ID: 1002</h4>
-                <p>Complainant: Jane Smith</p>
-                <p>Category: Healthcare</p>
-                <p>Status: <span class="status">Resolved</span></p>
-            </div>
-            <div class="complaint-item">
-                <h4>Complaint ID: 1003</h4>
-                <p>Complainant: David Lee</p>
-                <p>Category: Banking</p>
-                <p>Status: <span class="status">In Progress</span></p>
+            <div class="complaint-section">
+                <h2>Recent Complaints</h2>
+                <div class="complaint-item">
+                    <h4>Complaint ID: 1001</h4>
+                    <p>Complainant: John Doe</p>
+                    <p>Category: E-commerce</p>
+                    <p>Status: <span class="status">Pending</span></p>
+                </div>
+                <div class="complaint-item">
+                    <h4>Complaint ID: 1002</h4>
+                    <p>Complainant: Jane Smith</p>
+                    <p>Category: Healthcare</p>
+                    <p>Status: <span class="status">Resolved</span></p>
+                </div>
+                <div class="complaint-item">
+                    <h4>Complaint ID: 1003</h4>
+                    <p>Complainant: David Lee</p>
+                    <p>Category: Banking</p>
+                    <p>Status: <span class="status">In Progress</span></p>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Load navigation first
+        $("#navigation").load("static/navigation.html", function(response, status, xhr) {
+            if (status === "error") {
+                console.error("Error loading navigation:", xhr.status, xhr.statusText);
+                return;
+            }
+            
+            // Initialize navigation after it's loaded
+            $('.nav-link[href="dashboard.html"]').addClass('active');
+            
+            // Add mobile navigation toggle
+            $('<button class="mobile-nav-toggle"><i class="fas fa-bars"></i></button>').insertAfter('.content');
+            
+            // Handle mobile navigation toggle
+            $('.mobile-nav-toggle').on('click', function() {
+                $('.sidebar').toggleClass('active');
+            });
+        });
+    });
+</script>
 </body>
 </html>
