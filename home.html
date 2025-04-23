@@ -3,125 +3,329 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - HappyClaim</title>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <!-- Google Fonts -->
+    <title>HappyClaim: Your Consumer Rights Advocate</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="static/css/common.css">
-    <link rel="stylesheet" href="static/css/navigation.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+        .testimonial {
+            display: none;
+        }
+        .testimonial.active {
+            display: block;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const testimonials = document.querySelectorAll('.testimonial');
+            let index = 0;
+
+            function showNextTestimonial() {
+                testimonials.forEach(testimonial => testimonial.classList.remove('active'));
+                testimonials[index].classList.add('active');
+                index = (index + 1) % testimonials.length;
+            }
+
+            showNextTestimonial();
+            setInterval(showNextTestimonial, 5000);
+        });
+    </script>
 </head>
-<body>
-<div class="d-flex">
-    <!-- Include Navigation -->
-    <div id="navigation"></div>
-
-    <div class="content">
-        <div class="container mt-4">
-            <h1>Welcome to HappyClaim</h1>
-            <p class="lead text-center mb-4">Your trusted platform for consumer rights protection</p>
-
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <i class="fas fa-file-alt fa-3x mb-3 text-primary"></i>
-                            <h3>1,250</h3>
-                            <p class="text-muted">Total Complaints</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <i class="fas fa-check-circle fa-3x mb-3 text-success"></i>
-                            <h3>980</h3>
-                            <p class="text-muted">Complaints Resolved</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <i class="fas fa-clock fa-3x mb-3 text-warning"></i>
-                            <h3>270</h3>
-                            <p class="text-muted">Pending Complaints</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card mt-4">
-                <div class="card-header">
-                    <h3>Recent Complaints</h3>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Complaint ID</th>
-                                    <th>Category</th>
-                                    <th>Status</th>
-                                    <th>Date Filed</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>HC-2024-001</td>
-                                    <td>E-commerce</td>
-                                    <td><span class="status-badge status-pending">Pending</span></td>
-                                    <td>2024-04-20</td>
-                                    <td>
-                                        <a href="complaint-details.html?id=HC-2024-001" class="btn btn-sm btn-primary">View</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>HC-2024-002</td>
-                                    <td>Healthcare</td>
-                                    <td><span class="status-badge status-resolved">Resolved</span></td>
-                                    <td>2024-04-19</td>
-                                    <td>
-                                        <a href="complaint-details.html?id=HC-2024-002" class="btn btn-sm btn-primary">View</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>HC-2024-003</td>
-                                    <td>Banking</td>
-                                    <td><span class="status-badge status-in-progress">In Progress</span></td>
-                                    <td>2024-04-18</td>
-                                    <td>
-                                        <a href="complaint-details.html?id=HC-2024-003" class="btn btn-sm btn-primary">View</a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+<body class="bg-[#f7fafc] text-gray-800">
+<header class="bg-white shadow-md py-6 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <div class="flex items-center">
+            <img src="https://placehold.co/180x60/0c3057/fff?text=HappyClaim&font=Montserrat" alt="HappyClaim Logo" class="mr-8">
+            <nav class="hidden md:block">
+                <ul class="flex space-x-6">
+                    <li><a href="#about-us" class="text-gray-700 hover:text-[#f68b6b] transition-colors">About Us</a></li>
+                    <li><a href="#services" class="text-gray-700 hover:text-[#f68b6b] transition-colors">Services</a></li>
+                    <li><a href="#testimonials" class="text-gray-700 hover:text-[#f68b6b] transition-colors">Testimonials</a></li>
+                    <li><a href="#contact-us" class="text-gray-700 hover:text-[#f68b6b] transition-colors">Contact Us</a></li>
+    </ul>
+            </nav>
+        </div>
+        <div class="flex space-x-4">
+            <a href="login.html" class="inline-block bg-[#f68b6b] hover:bg-orange-700 text-white font-semibold px-6 py-2 rounded-full shadow-md transition-all duration-300 transform hover:scale-105">
+                Login
+            </a>
+            <a href="signup.html" class="inline-block bg-[#0c3057] hover:bg-blue-900 text-white font-semibold px-6 py-2 rounded-full shadow-md transition-all duration-300 transform hover:scale-105">
+                File a Complaint
+            </a>
         </div>
     </div>
+</header>
+
+<main class="py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-gradient-to-r from-[#f68b6b] to-[#0c3057] rounded-lg shadow-md p-6 mb-8 text-white text-center">
+            <h2 class="text-2xl sm:text-3xl font-semibold mb-4">
+                Your Satisfaction, Guaranteed!
+            </h2>
+            <p class="text-lg mb-2">
+                <span class="font-bold">Your First Complaint is FREE!</span> We want you to experience the HappyClaim difference, risk-free.
+            </p>
+            <p class="text-lg mb-2">
+                <span class="font-bold">100% Refund Assurance:</span>  We're so confident in our services, your complaints are insured. Get your money back if we don't win!
+            </p>
+            <p class="text-lg mb-2">
+                <span class="font-bold">Hassle-Free Documentation:</span> We provide courier services to handle document signing at your doorstep.
+            </p>
+            <p class="text-lg">
+                <span class="font-bold">Complete Digital Solution:</span>  From filing to resolution, your dedicated lawyer handles everything.  A truly digital and stress-free experience.
+            </p>
+        </div>
+        <div class="text-center mb-16">
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-semibold text-[#0c3057] mb-8">
+                Your Trusted Advocate for Consumer Rights
+            </h1>
+            <p class="mt-3 text-xl text-gray-700">
+                We are dedicated to assisting consumers in resolving disputes and protecting their rights.
+            </p>
 </div>
 
-<!-- Scripts -->
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="static/js/navigation.js"></script>
-<script>
-    // Load navigation
-    $(document).ready(function() {
-        $("#navigation").load("static/navigation.html", function() {
-            // Set active link
-            $('.nav-link[href="home.html"]').addClass('active');
-        });
-    });
-</script>
+        <section id="services" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+            <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-300 flex flex-col border border-gray-200">
+                <h3 class="text-xl font-semibold text-[#f68b6b] mb-4 flex items-center">
+                    <img src="https://placehold.co/30x30/0c3057/fff?text=H&font=Montserrat" alt="Healthcare Icon" class="mr-3 rounded-full">
+                    Healthcare
+                </h3>
+                <p class="text-gray-700 mb-4">
+                    We advocate for patients facing issues like medical negligence, incorrect billing, and denial of services.
+                </p>
+                <p class="text-blue-600 font-medium">
+                    User Story: Successfully represented a family in a wrongful denial of critical care case, securing substantial compensation.
+                </p>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-300 flex flex-col border border-gray-200">
+                <h3 class="text-xl font-semibold text-[#f68b6b] mb-4 flex items-center">
+                    <img src="https://placehold.co/30x30/0c3057/fff?text=E&font=Montserrat" alt="E-commerce Icon" class="mr-3 rounded-full">
+                    E-commerce
+                </h3>
+                <p class="text-gray-700 mb-4">
+                    We address grievances related to defective products, undelivered items, and fraudulent transactions.
+                </p>
+                <p class="text-blue-600 font-medium">
+                    User Story: Recovered funds for a client who was a victim of an online counterfeit product scam.
+                </p>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-300 flex flex-col border border-gray-200">
+                <h3 class="text-xl font-semibold text-[#f68b6b] mb-4 flex items-center">
+                    <img src="https://placehold.co/30x30/0c3057/fff?text=B&font=Montserrat" alt="Banking Icon" class="mr-3 rounded-full">
+                    Banking
+                </h3>
+                <p class="text-gray-700 mb-4">
+                    We support consumers in disputes involving unauthorized transactions, loan discrepancies, and unfair banking practices.
+                </p>
+                <p class="text-blue-600 font-medium">
+                    User Story: Successfully challenged a bank's unfair loan terms, resulting in a favorable settlement for our client.
+                </p>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-300 flex flex-col border border-gray-200">
+                <h3 class="text-xl font-semibold text-[#f68b6b] mb-4 flex items-center">
+                    <img src="https://placehold.co/30x30/0c3057/fff?text=I&font=Montserrat" alt="Insurance Icon" class="mr-3 rounded-full">
+                    Insurance
+                </h3>
+                <p class="text-gray-700 mb-4">
+                    We assist policyholders in cases of wrongful claim rejections, policy misrepresentation, and unfair settlement offers.
+                </p>
+                <p class="text-blue-600 font-medium">
+                    User Story: Represented a client whose insurance claim was wrongfully denied, and secured the full claim amount.
+                </p>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-300 flex flex-col border border-gray-200">
+                <h3 class="text-xl font-semibold text-[#f68b6b] mb-4 flex items-center">
+                    <img src="https://placehold.co/30x30/0c3057/fff?text=T&font=Montserrat" alt="Travel Icon" class="mr-3 rounded-full">
+                    Travel
+                </h3>
+                <p class="text-gray-700 mb-4">
+                    We assist travelers with issues like flight cancellations, denied boarding, and unfair pricing.
+                </p>
+                <p class="text-blue-600 font-medium">
+                    User Story: Obtained compensation for a group of passengers affected by a flight cancellation and denied boarding.
+                </p>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-300 flex flex-col border border-gray-200">
+                <h3 class="text-xl font-semibold text-[#f68b6b] mb-4 flex items-center">
+                    <img src="https://placehold.co/30x30/0c3057/fff?text=R&font=Montserrat" alt="Real Estate Icon" class="mr-3 rounded-full">
+                    Real Estate
+                </h3>
+                <p class="text-gray-700 mb-4">
+                    We support consumers in disputes involving unfair practices in real estate transactions.
+                </p>
+                <p class="text-blue-600 font-medium">
+                    User Story: Successfully represented a homebuyer in a dispute over a delayed project, securing significant compensation.
+                </p>
+            </div>
+        </section>
+
+        <section id="about-us" class="bg-white rounded-lg shadow-md p-8 mb-16 flex flex-col md:flex-row items-center gap-8 border border-gray-200">
+            <div class="md:w-1/2">
+                <h2 class="text-2xl font-semibold text-[#0c3057] mb-6">About Us</h2>
+                <p class="text-gray-700">
+                    HappyClaim is a leading consumer rights advocacy organization, dedicated to empowering consumers and protecting their rights. We leverage the power of the Consumer Protection Act to help individuals seek justice and redressal for grievances against service providers across various industries. Our mission is to foster a fair and transparent marketplace where consumer rights are respected and upheld. We are committed to providing expert legal support and representation to ensure that our clients receive the compensation and justice they deserve.
+                </p>
+            </div>
+            <div class="md:w-1/2">
+                <img src="https://placehold.co/600x300/e0e0e0/333?text=About+Us&font=Montserrat" alt="About Us Image" class="rounded-md">
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+            <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200">
+                <h2 class="text-2xl font-semibold text-[#0c3057] mb-4">Our Mission</h2>
+                <p class="text-gray-700">
+                    To empower consumers with the knowledge, resources, and legal representation necessary to protect their rights and ensure fair treatment in the marketplace. We strive to create a level playing field where businesses are held accountable and consumers can confidently engage in transactions.
+                </p>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200">
+                <h2 class="text-2xl font-semibold text-[#0c3057] mb-4">Our Vision</h2>
+                <p class="text-gray-700">
+                    To be the leading consumer rights organization in India, recognized for our expertise, integrity, and unwavering commitment to justice. We envision a future where consumer rights are universally respected, and businesses adhere to the highest standards of ethical conduct.
+                </p>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-lg shadow-md p-6 mb-16 border border-gray-200">
+            <h2 class="text-2xl font-semibold text-[#0c3057] mb-4">Pricing Model</h2>
+            <p class="text-gray-700 mb-6">
+                HappyClaim offers a transparent and client-centered pricing model, designed to provide accessible and effective legal representation.
+            </p>
+            <ul class="list-disc list-inside text-gray-700">
+                <li><strong>Free Consultation:</strong> We offer an initial consultation at no cost to assess your case and determine the best course of action.</li>
+                <li><strong>First Complaint Free:</strong> Your first complaint is on us. Experience our services risk-free.</li>
+                <li><strong>Contingency Fee:</strong> For many cases, we work on a contingency fee basis, meaning you only pay if we successfully recover compensation for you. Our fee is a percentage of the amount recovered.</li>
+                <li><strong>Fixed Fee:</strong> In some situations, we may agree on a fixed fee for specific services, providing you with cost certainty.</li>
+                <li><strong>Hourly Rates:</strong> For complex litigation or ongoing legal support, we may charge an hourly rate.  This will be clearly communicated and agreed upon in advance.</li>
+                <li><strong>No Hidden Costs:</strong> We are committed to transparency.  All costs and fees will be discussed upfront in a clear and understandable manner.</li>
+            </ul>
+        </section>
+
+        <section id="testimonials" class="bg-white rounded-lg shadow-md p-6 mb-16">
+            <h2 class="text-2xl font-semibold text-[#0c3057] mb-8">Customer Testimonials</h2>
+            <div class="testimonial active text-gray-700">
+                <p class="font-medium italic">"HappyClaim was instrumental in helping me get justice in my case against a fraudulent online seller. I highly recommend their services!"</p>
+                <p class="mt-2 font-semibold text-[#f68b6b]">- Ananya Sharma, E-commerce Fraud Victim</p>
+                    </div>
+            <div class="testimonial text-gray-700">
+                <p class="font-medium italic">"I was denied a critical insurance claim, and HappyClaim fought tirelessly on my behalf. They secured the full amount I was entitled to. Thank you!"</p>
+                <p class="mt-2 font-semibold text-[#f68b6b]">- Rohan Kapoor, Insurance Dispute Client</p>
+                </div>
+            <div class="testimonial text-gray-700">
+                <p class="font-medium italic">"The team at HappyClaim is professional, compassionate, and highly effective. They helped me navigate a complex legal battle with my bank and achieve a favorable outcome."</p>
+                <p class="mt-2 font-semibold text-[#f68b6b]">- Divya Patel, Banking Dispute Client</p>
+                    </div>
+        </section>
+
+        <section class="bg-white rounded-lg shadow-md p-8 mb-16">
+            <h2 class="text-2xl font-semibold text-[#0c3057] mb-8">Company Highlights</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div>
+                    <h3 class="text-3xl font-bold text-[#f68b6b]">95%</h3>
+                    <p class="text-gray-700">Success Rate</p>
+                </div>
+                <div>
+                    <h3 class="text-3xl font-bold text-[#f68b6b]">50+</h3>
+                    <p class="text-gray-700">Experienced Lawyers</p>
+                </div>
+                <div>
+                    <h3 class="text-3xl font-bold text-[#f68b6b]">10,000+</h3>
+                    <p class="text-gray-700">Cases Resolved</p>
+                </div>
+                    </div>
+        </section>
+
+        <section class="bg-white rounded-lg shadow-md p-8 mb-16">
+            <h2 class="text-2xl font-semibold text-[#0c3057] mb-8">Our Commitment to Your Case</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-xl font-semibold text-[#f68b6b] mb-4">Comprehensive Support</h3>
+                    <p class="text-gray-700">
+                        We provide both online and offline support to ensure your complaint is handled smoothly throughout its entire lifecycle.  You'll have access to your case details and lawyer communications through our secure online portal, and you can also reach us via phone or in-person meetings for personalized assistance.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-[#f68b6b] mb-4">Lawyer Accountability and Assurance</h3>
+                    <p class="text-gray-700">
+                        We hold our lawyers to the highest standards of professional conduct.  If your assigned lawyer fails to fulfill their duties or meet your expectations, we will take swift action:
+                    </p>
+                    <ul class="list-disc list-inside text-gray-700 ml-5">
+                        <li><strong>New Lawyer Assignment:</strong> We will promptly assign a new, qualified lawyer to your case to ensure continuity and quality of service.</li>
+                        <li><strong>Refund Option:</strong> If we are unable to provide a satisfactory replacement, you will be eligible for a full refund of any fees paid.</li>
+                    </ul>
+                    <p class="text-gray-700 mt-4">
+                        Your satisfaction and the successful resolution of your complaint are our top priorities.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-lg shadow-md p-8 mb-16">
+            <h2 class="text-2xl font-semibold text-[#0c3057] mb-8">Regular Reminders for Higher Success Rate</h2>
+            <p class="text-gray-700">
+                At HappyClaim, we understand that consistent follow-up is crucial for achieving the best possible outcome for your complaint.  That's why we implement a system of regular reminders to both our local counsel and our clients, ensuring that your case stays on track and progresses efficiently.
+            </p>
+            <ul class="list-disc list-inside text-gray-700 mt-4">
+                <li><strong>For Local Counsel:</strong> We send automated reminders to local counsel to ensure timely filing of documents, adherence to deadlines, and proactive communication with the concerned parties.</li>
+                <li><strong>For Consumers:</strong> We provide regular updates to keep you informed about the progress of your case, upcoming deadlines, and any required actions on your part.  These reminders are delivered via your preferred communication channel (email, SMS, or phone).</li>
+            </ul>
+            <p class="text-gray-700 mt-4">
+                This proactive approach helps to minimize delays, encourages timely action from all parties involved, and ultimately increases the likelihood of a successful resolution.
+            </p>
+        </section>
+
+        <section class="bg-white rounded-lg shadow-md p-8 mb-16">
+            <h2 class="text-2xl font-semibold text-[#0c3057] mb-8">Easy Complaint Filing Options</h2>
+            <p class="text-gray-700">
+                We understand that not everyone is comfortable with online forms. To make our services accessible to everyone, especially less tech-savvy individuals, senior citizens, and those with physical disabilities, we offer multiple convenient ways to file a complaint:
+            </p>
+            <ul class="list-disc list-inside text-gray-700 mt-4">
+                <li><strong>Direct Call:</strong> You can call our dedicated customer support helpline at <span class="font-semibold text-[#f68b6b]">+91-1234567890</span> to speak with a representative who will assist you in filing your complaint over the phone.</li>
+                <li><strong>Voice Recording:</strong> If you prefer, you can record a voice message detailing your complaint and send it to us via WhatsApp at <span class="font-semibold text-[#f68b6b]">+91-9876543210</span>.  Our team will transcribe your message and process it as a formal complaint.</li>
+                <li><strong>Email Support:</strong> You can also email your complaint to us at <span class="font-semibold text-[#f68b6b]">support@happyclaim.com</span>.  Please provide as much detail as possible in your email.</li>
+            </ul>
+            <p class="text-gray-700 mt-4">
+                Our goal is to make the complaint filing process as simple and stress-free as possible for everyone.  Choose the method that works best for you, and let us handle the rest.
+            </p>
+        </section>
+
+        <section id="contact-us" class="bg-white rounded-lg shadow-md p-6 mb-16 flex flex-col md:flex-row items-center gap-8 border border-gray-200">
+            <div class="md:w-1/2">
+                <h2 class="text-2xl font-semibold text-[#0c3057] mb-4">Contact Us</h2>
+                <p class="text-gray-700">
+                    Reach out to us for a free consultation.  Our dedicated team is ready to listen to your concerns and provide you with the expert legal guidance you need.
+                </p>
+                <ul class="mt-4 text-gray-700">
+                    <li>Email: support@happyclaim.com</li>
+                    <li>Phone: +91-1234567890</li>
+                    <li>Address: 123, Consumer Rights Avenue, New Delhi, India</li>
+                </ul>
+            </div>
+            <div class="md:w-1/2">
+                <img src="https://placehold.co/600x300/e0e0e0/333?text=Contact+Us&font=Montserrat" alt="Contact Us Image" class="rounded-md">
+            </div>
+        </section>
+
+        <section class="bg-[#d4c2ef] rounded-lg shadow-lg p-8 text-center">
+            <h2 class="text-2xl sm:text-3xl font-semibold text-[#f68b6b] mb-6">
+                Ready to Take Action?
+            </h2>
+            <p class="text-lg text-gray-800 mb-8">
+                Don't let unfair practices go unchallenged.  File a complaint with HappyClaim today and let us fight for your rights.
+            </p>
+            <a href="signup.html" class="inline-block bg-[#f68b6b] hover:bg-orange-700 text-white font-semibold px-8 py-3 rounded-full shadow-md transition-all duration-300 transform hover:scale-105">
+                File a Complaint Now
+            </a>
+        </section>
+    </div>
+</main>
+
+<footer class="bg-gray-100 py-6 text-center text-gray-700 border-t border-gray-200">
+    <p>© 2025 HappyClaim. All rights reserved. <span class="text-gray-500 text-sm">Disclaimer: This is a fictional website. Please consult with legal professionals for actual advice.</span></p>
+</footer>
 </body>
 </html>
