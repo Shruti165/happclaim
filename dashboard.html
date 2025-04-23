@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HappyClaim - Consumer Protection</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f9f9f9;
+        }
+
+        .sidebar {
+            background-color: #0c3057;
+            padding-bottom: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar h2 {
+            color: #fff;
+            font-weight: 600;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 0;
+            background-color: #082440;
+        }
+
+        .sidebar .nav-link {
+            color: #fff;
+            font-weight: 500;
+            padding: 12px 20px;
+            border-left: 4px solid transparent;
+            transition: background-color 0.3s ease, border-left-color 0.3s ease;
+        }
+
+        .sidebar .nav-link:hover {
+            background-color: #154360;
+            border-left-color: #f68b6b;
+        }
+
+        .sidebar .nav-link.active {
+            background-color: #f68b6b;
+            font-weight: 700;
+            border-left-color: #f68b6b;
+        }
+
+        .sidebar .nav-item:not(:last-child) {
+            margin-bottom: 5px;
+        }
+
+        .content {
+            padding: 30px;
+            flex-grow: 1;
+        }
+
+        h1 {
+            color: #0c3057;
+            font-weight: 600;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .dashboard {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        }
+
+        .dashboard-item {
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .dashboard-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .dashboard-item h3 {
+            color: #0c3057;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .dashboard-item p {
+            color: #f68b6b;
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .complaint-section {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        }
+
+        .complaint-item {
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+
+        .complaint-item h4 {
+            color: #0c3057;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .complaint-item p {
+            color: #555;
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .complaint-item .status {
+            font-weight: 500;
+            color: #f68b6b;
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 100%;
+                position: relative;
+                padding: 15px;
+            }
+            .sidebar h2{
+                text-align: center;
+            }
+            .sidebar .nav-item{
+                text-align: center;
+            }
+            .dashboard-item {
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="sidebar">
+    <h2>HappyClaim</h2>
+    <ul class="nav flex-column">
+        <li class="nav-item">
+            <a class="nav-link active" href="index.html">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="file-complaint.html">File Complaint</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="complaint-history.html">Complaint History</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="user-details.html">User Details</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="login.html">Login</a>
+        </li>
+    </ul>
+</div>
+
+<div class="content">
+    <div class="container mt-4">
+        <h1>Welcome to HappyClaim</h1>
+        <p class="lead">Your Platform for Consumer Protection</p>
+
+        <div class="dashboard">
+            <h2>Dashboard</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="dashboard-item">
+                        <h3>Total Complaints</h3>
+                        <p>1250</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="dashboard-item">
+                        <h3>Complaints Resolved</h3>
+                        <p>980</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="dashboard-item">
+                        <h3>Pending Complaints</h3>
+                        <p>270</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="dashboard-item">
+                        <h3>Average Resolution Time</h3>
+                        <p>15 Days</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="dashboard-item">
+                        <h3>Highest Complaint Category</h3>
+                        <p>E-commerce</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="dashboard-item">
+                        <h3>Total Users</h3>
+                        <p>5000</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="complaint-section">
+            <h2>Recent Complaints</h2>
+            <div class="complaint-item">
+                <h4>Complaint ID: 1001</h4>
+                <p>Complainant: John Doe</p>
+                <p>Category: E-commerce</p>
+                <p>Status: <span class="status">Pending</span></p>
+            </div>
+            <div class="complaint-item">
+                <h4>Complaint ID: 1002</h4>
+                <p>Complainant: Jane Smith</p>
+                <p>Category: Healthcare</p>
+                <p>Status: <span class="status">Resolved</span></p>
+            </div>
+            <div class="complaint-item">
+                <h4>Complaint ID: 1003</h4>
+                <p>Complainant: David Lee</p>
+                <p>Category: Banking</p>
+                <p>Status: <span class="status">In Progress</span></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
