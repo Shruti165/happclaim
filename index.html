@@ -3,2863 +3,315 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File a Complaint - HappyClaim</title>
+    <title>Login - HappyClaim</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="static/css/common.css">
-    <link rel="stylesheet" href="static/css/navigation.css">
     <style>
-        .step-indicator {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 40px;
-            position: relative;
-            padding: 0 20px;
-        }
-
-        .step-indicator::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background-color: #e9ecef;
-            z-index: 1;
-            transform: translateY(-50%);
-        }
-
-        .step {
-            width: auto;
-            min-width: 140px;
-            height: 45px;
-            background-color: white;
-            border: 2px solid #e9ecef;
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
-            z-index: 2;
-            transition: all 0.3s ease;
-            border-radius: 25px;
-            padding: 0 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-
-        .step:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-
-        .step.active {
-            border-color: var(--secondary-color);
-            background-color: var(--secondary-color);
-            color: white;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-
-        .step.completed {
-            border-color: var(--secondary-color);
-            background-color: var(--secondary-color);
-            color: white;
-        }
-
-        .step.completed::after {
-            content: '✓';
-            margin-left: 8px;
-            font-size: 14px;
-        }
-
-        .step-label {
-            font-size: 0.9rem;
-            font-weight: 600;
-            text-align: center;
-            white-space: nowrap;
-            letter-spacing: 0.3px;
-        }
-
-        .form-section {
-            display: none;
-        }
-
-        .form-section.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .form-navigation {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
-            padding: 0 20px;
-        }
-
-        @media (max-width: 1200px) {
-            .step {
-                min-width: 120px;
-                padding: 0 15px;
-            }
-        }
-
-        @media (max-width: 992px) {
-            .step-indicator {
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 0;
-            }
-
-            .step-indicator::before {
-                display: none;
-            }
-
-            .step {
-                margin-bottom: 15px;
-                width: 100%;
-                justify-content: flex-start;
-                padding-left: 25px;
-                min-width: auto;
-            }
-
-            .step::before {
-                content: '';
-                position: absolute;
-                left: 0;
-                top: 50%;
-                transform: translateY(-50%);
-                width: 8px;
-                height: 8px;
-                border-radius: 50%;
-                background-color: #e9ecef;
-            }
-
-            .step.active::before,
-            .step.completed::before {
-                background-color: white;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .step {
-                height: 40px;
-                padding-left: 20px;
-            }
-
-            .step-label {
-                font-size: 0.85rem;
-            }
-        }
-
-        /* Improved dropdown styles */
-        .form-control {
-            white-space: normal;
-            overflow: visible;
-            text-overflow: unset;
-            min-height: 38px;
-            padding: 8px 12px;
-        }
-
-        select.form-control {
-            padding-right: 30px;
-            background-color: white;
-            cursor: pointer;
-        }
-
-        /* Custom dropdown styling */
-        .form-group select {
-            width: 100%;
-            max-width: 100%;
-            min-width: 200px;
-            height: auto;
-        }
-
-        /* Ensure dropdown options are fully visible */
-        select.form-control option {
-            white-space: normal;
-            padding: 8px 12px;
-            min-height: 30px;
-            line-height: 1.5;
-            word-wrap: break-word;
-        }
-
-        /* Custom select wrapper for better control */
-        .select-wrapper {
-            position: relative;
-            width: 100%;
-        }
-
-        .select-wrapper::after {
-            content: '\f078';
-            font-family: 'Font Awesome 5 Free';
-            font-weight: 900;
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            pointer-events: none;
-            color: #6c757d;
-        }
-
-        /* Ensure dropdowns are visible over other elements */
-        select.form-control {
-            z-index: 1;
-        }
-
-        /* Improve dropdown appearance */
-        .form-control:focus {
-            border-color: var(--secondary-color);
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-        }
-
-        /* Make sure tooltips don't interfere with dropdowns */
-        .tooltip {
-            z-index: 1050;
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .form-group select {
-                min-width: 100%;
-            }
-        }
-
-        /* Ensure long text in dropdowns is visible */
-        .dropdown-menu {
-            max-width: 100%;
-            min-width: 200px;
-            width: 100%;
-        }
-
-        .dropdown-item {
-            white-space: normal;
-            word-wrap: break-word;
-            padding: 8px 12px;
-        }
-
-        /* Improve Select2 styling */
-        .select2-container {
-            width: 100% !important;
-        }
-
-        .select2-container--default .select2-selection--single {
-            height: auto;
-            min-height: 38px;
-            border: 1px solid #ced4da;
-            border-radius: 4px;
-        }
-
-        .select2-container--default .select2-selection--single .select2-selection__rendered {
-            line-height: 1.5;
-            padding: 8px 12px;
-            white-space: normal;
-            word-wrap: break-word;
-        }
-
-        .select2-container--default .select2-selection--single .select2-selection__arrow {
-            height: 36px;
-        }
-
-        .select2-dropdown {
-            border: 1px solid #ced4da;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            width: 100% !important;
-        }
-
-        .select2-container--default .select2-results__option {
-            padding: 8px 12px;
-            white-space: normal;
-            word-wrap: break-word;
-        }
-
-        .select2-container--default .select2-results__option--highlighted[aria-selected] {
-            background-color: var(--secondary-color);
-        }
-
-        /* Section styling improvements */
-        .form-section {
-            margin-bottom: 30px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-
-        .card {
-            border: none;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-
-        .card-header {
-            background-color: #f8f9fa;
-            border-bottom: 1px solid #e9ecef;
-            padding: 15px 20px;
-        }
-
-        .card-body {
             padding: 20px;
         }
 
-        .form-group {
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 100%;
+            max-width: 1000px;
+            display: flex;
+            min-height: 600px;
+        }
+
+        .login-image {
+            flex: 1;
+            background: url('https://img.freepik.com/free-vector/law-firm-concept-illustration_114360-1234.jpg') center/cover;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            color: white;
+        }
+
+        .login-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(12, 48, 87, 0.85);
+        }
+
+        .login-image-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            max-width: 80%;
+        }
+
+        .login-image h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
             margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            color: #ffffff;
+        }
+
+        .login-image p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .login-form {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .login-header h1 {
+            color: #0c3057;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .login-header p {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
         }
 
         .form-group label {
+            color: #0c3057;
             font-weight: 500;
             margin-bottom: 8px;
-            color: #495057;
         }
 
-        /* Improve table styling */
-        .table {
-            margin-bottom: 0;
-        }
-
-        .table th {
-            background-color: #f8f9fa;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        .table td {
-            vertical-align: middle;
-        }
-
-        /* Improve button styling */
-        .btn {
-            padding: 8px 16px;
-            font-weight: 500;
-            border-radius: 4px;
-        }
-
-        .btn-primary {
-            background-color: var(--secondary-color);
-            border-color: var(--secondary-color);
-        }
-
-        .btn-primary:hover {
-            background-color: #0056b3;
-            border-color: #0056b3;
-        }
-
-        /* Improve alert styling */
-        .alert {
-            border-radius: 4px;
-            padding: 12px 16px;
-            margin-bottom: 20px;
-        }
-
-        /* Improve modal styling */
-        .modal-content {
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-
-        .modal-header {
-            background-color: #f8f9fa;
-            border-bottom: 1px solid #e9ecef;
-        }
-
-        /* Improve chat window styling */
-        .chat-messages {
-                padding: 15px;
-            background-color: #f8f9fa;
-            border-radius: 4px;
-        }
-
-        .message {
-            margin-bottom: 10px;
-        }
-
-        .user-message .bg-primary {
-            border-radius: 12px 12px 0 12px;
-        }
-
-        .lawyer-message .bg-light {
-            border-radius: 12px 12px 12px 0;
-        }
-
-        /* Improve payment section styling */
-        .payment-summary {
-            background-color: #f8f9fa;
-                padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-
-        .payment-summary h4 {
-            margin-bottom: 15px;
-            color: #495057;
-        }
-
-        .payment-summary p {
-            margin-bottom: 8px;
-            color: #6c757d;
-        }
-
-        .payment-summary h5 {
-            margin-top: 15px;
-            color: #212529;
-        }
-
-        /* Improve button styling */
-        .btn {
-            padding: 8px 16px;
-            font-weight: 500;
-            border-radius: 4px;
-        }
-
-        /* Service Selection Styling */
-        .service-option {
-            background-color: #f8f9fa;
-            border-radius: 8px;
-                padding: 15px;
-            margin-bottom: 15px;
+        .form-control {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 12px 15px;
+            font-size: 1rem;
             transition: all 0.3s ease;
-            border: 1px solid #e9ecef;
         }
 
-        .service-option:hover {
-            background-color: #fff;
-            border-color: var(--secondary-color);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        .form-control:focus {
+            border-color: #0c3057;
+            box-shadow: 0 0 0 0.2rem rgba(12, 48, 87, 0.25);
         }
 
-        .service-option .custom-control {
-            margin-bottom: 10px;
+        .input-group-text {
+            background: transparent;
+            border: 2px solid #e0e0e0;
+            border-right: none;
+            border-radius: 10px 0 0 10px;
         }
 
-        .service-option .custom-control-label {
+        .input-group .form-control {
+            border-left: none;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .btn-login {
+            background: #0c3057;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-login:hover {
+            background: #0a2540;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(12, 48, 87, 0.3);
+        }
+
+        .forgot-password {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .forgot-password a {
+            color: #0c3057;
+            text-decoration: none;
             font-weight: 500;
-            color: #495057;
+            transition: all 0.3s ease;
         }
 
-        .service-option .form-text {
-            color: #6c757d;
-            font-size: 0.875rem;
+        .forgot-password a:hover {
+            color: #0a2540;
+            text-decoration: underline;
         }
 
-        .service-option .sub-options {
-            margin-top: 10px;
-            padding-left: 20px;
-            border-left: 2px solid #e9ecef;
+        .alert {
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: none;
         }
 
-        .service-option .sub-options .custom-control {
-            margin-bottom: 8px;
+        .alert-success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
         }
 
-        .service-option .sub-options .custom-control-label {
-            font-weight: 400;
+        .alert-danger {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
         }
 
-        .service-option input[type="radio"]:checked ~ .custom-control-label {
-            color: var(--secondary-color);
+        .fun-element {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            opacity: 0.15;
+            pointer-events: none;
         }
 
-        /* Add CSS for fee breakdown */
-        .fee-breakdown {
-            background-color: #f8f9fa;
-                padding: 20px;
-            border-radius: 8px;
+        .fun-element-1 {
+            top: 15%;
+            left: 10%;
+            background: url('https://img.freepik.com/free-vector/law-firm-concept-illustration_114360-1235.jpg') center/contain no-repeat;
+            animation: float 6s ease-in-out infinite;
         }
-        .fee-breakdown h5 {
-            color: #495057;
-            margin-bottom: 15px;
-            font-weight: 600;
+
+        .fun-element-2 {
+            top: 65%;
+            right: 10%;
+            background: url('https://img.freepik.com/free-vector/law-firm-concept-illustration_114360-1236.jpg') center/contain no-repeat;
+            animation: float 8s ease-in-out infinite;
         }
-        .fee-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid #e9ecef;
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
         }
-        .fee-item:last-child {
-            border-bottom: none;
-        }
-        .fee-item.total {
-            font-weight: 600;
-            color: var(--secondary-color);
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 2px solid #e9ecef;
-        }
-        .payment-note {
-            color: #6c757d;
-            font-size: 0.875rem;
+
+        @media (max-width: 768px) {
+            .login-container {
+                flex-direction: column;
+            }
+
+            .login-image {
+                min-height: 200px;
+            }
+
+            .login-form {
+                padding: 30px 20px;
+            }
         }
     </style>
-
-    <!-- Add Select2 CSS and JS -->
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <!-- Add EmailJS library -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <script type="text/javascript">
-        (function() {
-            emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
-        })();
-    </script>
 </head>
 <body>
-<div class="d-flex">
-    <!-- Include Navigation -->
-    <div id="navigation"></div>
-
-<div class="content">
-    <div class="container mt-4">
-        <h1>File a Complaint</h1>
-            <p class="lead text-center mb-4">Help us help you resolve your consumer issues</p>
-
-            <!-- Progress Indicator -->
-            <div class="step-indicator">
-                <div class="step active" data-step="0">
-                    <span class="step-label">Service</span>
-                </div>
-                <div class="step" data-step="1">
-                    <span class="step-label">Complainant </span>
-                </div>
-                <div class="step" data-step="2">
-                    <span class="step-label">Complaint </span>
-                </div>
-                <div class="step" data-step="3">
-                    <span class="step-label">Respondent</span>
-                </div>
-                <div class="step" data-step="4">
-                    <span class="step-label">Jurisdiction</span>
-                </div>
-                <div class="step" data-step="5">
-                    <span class="step-label">Lawyer</span>
-                </div>
-                <div class="step" data-step="6">
-                    <span class="step-label">Confirmation</span>
-                </div>
-                <div class="step" data-step="7">
-                    <span class="step-label">Payment</span>
-                </div>
+    <div class="login-container">
+        <div class="login-image">
+            <div class="login-image-content">
+                <h2>Welcome to HappyClaim</h2>
+                <p>Your trusted legal partner in consumer rights protection. We provide expert legal assistance to help you get the justice you deserve.</p>
+                <div class="fun-element fun-element-1"></div>
+                <div class="fun-element fun-element-2"></div>
             </div>
-
-            <form id="complaintForm">
-                <!-- Service Selection Section -->
-                <div class="form-section active" id="section-0">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3>Service</h3>
-                        </div>
-                        <div class="card-body">
-                    <div class="form-group">
-                                <label data-toggle="tooltip" title="Select the type of service you require">
-                                    Service Type <i class="fas fa-info-circle text-muted"></i>
-                                </label>
-                                <div class="custom-control custom-radio">
-                                    <input type="radio" id="serviceNotice" name="serviceType" class="custom-control-input" value="notice" checked>
-                                    <label class="custom-control-label" for="serviceNotice">Send Notice</label>
-                                    <small class="form-text text-muted d-block">Send a legal notice to the opposite party before filing a complaint</small>
-                                    <div class="sub-options" id="noticeTypeOptions">
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" id="happyClaimNotice" name="noticeType" class="custom-control-input" value="happyClaim" checked>
-                                            <label class="custom-control-label" for="happyClaimNotice">Send through HappyClaim</label>
-                    </div>
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" id="lawyerNotice" name="noticeType" class="custom-control-input" value="lawyer">
-                                            <label class="custom-control-label" for="lawyerNotice">Through lawyer recommended by HappyClaim</label>
-                                            <small class="form-text text-muted d-block">Letter head will contain lawyer details</small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="custom-control custom-radio mt-2">
-                                    <input type="radio" id="serviceComplaint" name="serviceType" class="custom-control-input" value="complaint">
-                                    <label class="custom-control-label" for="serviceComplaint">Raise Consumer Complaint</label>
-                                    <small class="form-text text-muted d-block">File a formal consumer complaint with the appropriate commission</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Section 1: Complainant Details -->
-                <div class="form-section" id="section-1">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3>Complainant Details</h3>
-                        </div>
-                        <div class="card-body">
-                    <div class="form-group">
-                                <label for="complainant-name" data-toggle="tooltip" title="Enter your full name as per official documents">
-                                    Name of Complainant <i class="fas fa-info-circle text-muted"></i>
-                                </label>
-                                <input type="text" class="form-control" id="complainant-name" required>
-                    </div>
-                    <div class="form-group">
-                                <label for="pincode" data-toggle="tooltip" title="Select your pincode to automatically fill city and state">
-                                    Pincode <i class="fas fa-info-circle text-muted"></i>
-                                </label>
-                                <select class="form-control" id="pincode" required>
-                                    <option value="">Select Pincode</option>
-                                    <option value="400001">400001 - Mumbai, Maharashtra</option>
-                                    <option value="110001">110001 - New Delhi, Delhi</option>
-                                    <option value="560001">560001 - Bangalore, Karnataka</option>
-                                    <option value="600001">600001 - Chennai, Tamil Nadu</option>
-                                    <option value="700001">700001 - Kolkata, West Bengal</option>
-                                    <option value="380001">380001 - Ahmedabad, Gujarat</option>
-                                    <option value="500001">500001 - Hyderabad, Telangana</option>
-                                    <option value="411001">411001 - Pune, Maharashtra</option>
-                                    <option value="302001">302001 - Jaipur, Rajasthan</option>
-                                    <option value="800001">800001 - Patna, Bihar</option>
-                                </select>
-                    </div>
-                    <div class="form-group">
-                                <label for="complainant-address" data-toggle="tooltip" title="Enter your complete communication address where you can receive official correspondence">
-                                    Communication Address of Complainant <i class="fas fa-info-circle text-muted"></i>
-                                </label>
-                                <textarea class="form-control" id="complainant-address" rows="3" required></textarea>
-                    </div>
-                            <div class="form-group">
-                                <label for="phone" data-toggle="tooltip" title="Enter your 10-digit mobile number">
-                                    Phone No <i class="fas fa-info-circle text-muted"></i>
-                                </label>
-                                <input type="tel" class="form-control" id="phone" pattern="[0-9]{10}" required>
-                                <small class="form-text text-muted">Enter 10-digit mobile number</small>
-                </div>
-                    <div class="form-group">
-                                <label for="email" data-toggle="tooltip" title="Enter your email address for official communication">
-                                    Email <i class="fas fa-info-circle text-muted"></i>
-                                </label>
-                                <input type="email" class="form-control" id="email" required>
-                    </div>
-                    <div class="form-group">
-                                <label for="relationship" data-toggle="tooltip" title="Select your relationship with the complainant">
-                                    Relationship with Complainant <i class="fas fa-info-circle text-muted"></i>
-                                </label>
-                                <select class="form-control" id="relationship" required>
-                                    <option value="">Select Relationship</option>
-                                    <option value="self">Self</option>
-                                    <option value="mother">Mother</option>
-                                    <option value="father">Father</option>
-                                    <option value="brother">Brother</option>
-                                    <option value="sister">Sister</option>
-                                    <option value="husband">Husband</option>
-                                    <option value="son">Son</option>
-                                    <option value="daughter">Daughter</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Section 2: Complaint Details -->
-                <div class="form-section" id="section-2">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3>Complaint Details</h3>
-                        </div>
-                        <div class="card-body">
-                            <div class="form-group">
-                                <label for="category" data-toggle="tooltip" title="Select the category that best describes your complaint">
-                                    Category(Industry) <i class="fas fa-info-circle text-muted"></i>
-                                </label>
-                                <select class="form-control" id="category" required>
-                            <option value="">Select Category</option>
-                            <option value="travel">Travel</option>
-                            <option value="healthcare">Healthcare</option>
-                            <option value="ecommerce">E-commerce</option>
-                            <option value="banking">Banking</option>
-                            <option value="insurance">Insurance</option>
-                                    <option value="real_estate">Real Estate</option>
-                        </select>
-                    </div>
-
-                            <div class="form-group">
-                                <label data-toggle="tooltip" title="Select whether your complaint is related to a product or service">
-                                    Service Type <i class="fas fa-info-circle text-muted"></i>
-                                </label>
-                                <div class="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" id="serviceTypeProduct" name="serviceType" class="custom-control-input" value="product" required>
-                                    <label class="custom-control-label" for="serviceTypeProduct">Product</label>
-                                </div>
-                                <div class="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" id="serviceTypeService" name="serviceType" class="custom-control-input" value="service">
-                                    <label class="custom-control-label" for="serviceTypeService">Service</label>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="subcategory" data-toggle="tooltip" title="Select the specific type of complaint">
-                                    Sub-Category <i class="fas fa-info-circle text-muted"></i>
-                                </label>
-                                <select class="form-control" id="subcategory" required>
-                            <option value="">Select Sub-Category</option>
-                                    <!-- Sub-categories will be populated dynamically -->
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                                <label for="company" data-toggle="tooltip" title="Select the company related to your complaint">
-                                    Company <i class="fas fa-info-circle text-muted"></i>
-                                </label>
-                                <select class="form-control" id="company" required>
-                                    <option value="">Select Company</option>
-                                    <!-- Travel Companies -->
-                                    <optgroup label="Travel & Hospitality">
-                                        <option value="makemytrip">MakeMyTrip</option>
-                                        <option value="yatra">Yatra.com</option>
-                                        <option value="cleartrip">Cleartrip</option>
-                                        <option value="goibibo">Goibibo</option>
-                                        <option value="taj_hotels">Taj Hotels</option>
-                                        <option value="oberoi">Oberoi Hotels</option>
-                                        <option value="air_india">Air India</option>
-                                        <option value="indigo">IndiGo</option>
-                                        <option value="spicejet">SpiceJet</option>
-                                    </optgroup>
-                                    <!-- Healthcare Companies -->
-                                    <optgroup label="Healthcare">
-                                        <option value="apollo">Apollo Hospitals</option>
-                                        <option value="fortis">Fortis Healthcare</option>
-                                        <option value="max">Max Healthcare</option>
-                                        <option value="apollo_pharmacy">Apollo Pharmacy</option>
-                                        <option value="medplus">Medplus</option>
-                                        <option value="lal_pathlabs">Dr. Lal PathLabs</option>
-                                        <option value="thyrocare">Thyrocare</option>
-                                    </optgroup>
-                                    <!-- E-commerce Companies -->
-                                    <optgroup label="E-commerce">
-                                        <option value="amazon">Amazon India</option>
-                                        <option value="flipkart">Flipkart</option>
-                                        <option value="myntra">Myntra</option>
-                                        <option value="ajio">AJIO</option>
-                                        <option value="nykaa">Nykaa</option>
-                                        <option value="meesho">Meesho</option>
-                                        <option value="firstcry">FirstCry</option>
-                                    </optgroup>
-                                    <!-- Banking Companies -->
-                                    <optgroup label="Banking & Finance">
-                                        <option value="sbi">State Bank of India</option>
-                                        <option value="hdfc">HDFC Bank</option>
-                                        <option value="icici">ICICI Bank</option>
-                                        <option value="axis">Axis Bank</option>
-                                        <option value="kotak">Kotak Mahindra Bank</option>
-                                        <option value="pnb">Punjab National Bank</option>
-                                    </optgroup>
-                                    <!-- Insurance Companies -->
-                                    <optgroup label="Insurance">
-                                        <option value="lic">Life Insurance Corporation</option>
-                                        <option value="star_health">Star Health Insurance</option>
-                                        <option value="hdfc_ergo">HDFC ERGO</option>
-                                        <option value="icici_lombard">ICICI Lombard</option>
-                                        <option value="bajaj_allianz">Bajaj Allianz</option>
-                                    </optgroup>
-                                    <!-- Real Estate Companies -->
-                                    <optgroup label="Real Estate">
-                                        <option value="dlf">DLF Limited</option>
-                                        <option value="godrej">Godrej Properties</option>
-                                        <option value="sobhagroup">Sobha Limited</option>
-                                        <option value="prestige">Prestige Group</option>
-                                        <option value="magicbricks">MagicBricks</option>
-                                        <option value="99acres">99acres</option>
-                                    </optgroup>
-                                    <!-- Telecom Companies -->
-                                    <optgroup label="Telecom">
-                                        <option value="airtel">Airtel</option>
-                                        <option value="jio">Reliance Jio</option>
-                                        <option value="vi">Vodafone Idea</option>
-                                        <option value="bsnl">BSNL</option>
-                                    </optgroup>
-                                    <!-- Utility Companies -->
-                                    <optgroup label="Utilities">
-                                        <option value="tata_power">Tata Power</option>
-                                        <option value="adani_power">Adani Power</option>
-                                        <option value="torrent_power">Torrent Power</option>
-                                        <option value="brihanmumbai">Brihanmumbai Electric Supply</option>
-                                    </optgroup>
-                                    <!-- Education Companies -->
-                                    <optgroup label="Education">
-                                        <option value="byjus">BYJU'S</option>
-                                        <option value="vedantu">Vedantu</option>
-                                        <option value="unacademy">Unacademy</option>
-                                        <option value="upgrad">upGrad</option>
-                                    </optgroup>
-                                    <!-- Food Delivery Companies -->
-                                    <optgroup label="Food Delivery">
-                                        <option value="zomato">Zomato</option>
-                                        <option value="swiggy">Swiggy</option>
-                                        <option value="dunzo">Dunzo</option>
-                                        <option value="blinkit">Blinkit</option>
-                                    </optgroup>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                                <label for="issueTitle" data-toggle="tooltip" title="Enter a brief title for your complaint">
-                                    Issue Title <i class="fas fa-info-circle text-muted"></i>
-                                </label>
-                                <input type="text" class="form-control" id="issueTitle" required>
-                    </div>
-
-                    <div class="form-group">
-                                <label for="description" data-toggle="tooltip" title="Provide detailed information about your complaint">
-                                    Complaint Description <i class="fas fa-info-circle text-muted"></i>
-                                </label>
-                                <textarea class="form-control" id="description" rows="5" required></textarea>
-                    </div>
-
-                    <div class="form-group">
-                                <label for="value" data-toggle="tooltip" title="Enter the monetary value of the product or service">
-                                    Value of Product/Service (₹) <i class="fas fa-info-circle text-muted"></i>
-                                </label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">₹</span>
-                    </div>
-                                    <input type="number" class="form-control" id="value" min="0" step="0.01" required>
-                                </div>
-                            </div>
-
-                    <div class="form-group">
-                                <label for="documents" data-toggle="tooltip" title="Upload relevant documents to support your complaint">
-                                    Upload Documents (Bills, Proofs, Communication, etc.) <i class="fas fa-info-circle text-muted"></i>
-                                </label>
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="documents" multiple>
-                                    <label class="custom-file-label" for="documents">Choose files</label>
-                    </div>
-                                <small class="form-text text-muted">Supported formats: PDF, JPG, PNG (Max size: 5MB each)</small>
-                                <div id="uploadedFiles" class="mt-3">
-                                    <!-- Uploaded files will be listed here -->
-                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Section 3: Respondent Details -->
-                <div class="form-section" id="section-3">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3>Respondent Details (Opposite Parties Involved)</h3>
-                        </div>
-                        <div class="card-body">
-                            <form id="respondentForm">
-                    <div class="form-group">
-                                    <label for="partyName" data-toggle="tooltip" title="Enter the name of the opposite party">
-                                        Name of Party <i class="fas fa-info-circle text-muted"></i>
-                                    </label>
-                                    <input type="text" class="form-control" id="partyName" required>
-                    </div>
-                    <div class="form-group">
-                                    <label for="partyAddress" data-toggle="tooltip" title="Enter the complete address of the opposite party">
-                                        Address of Party <i class="fas fa-info-circle text-muted"></i>
-                                    </label>
-                                    <textarea class="form-control" id="partyAddress" rows="3" required></textarea>
-                    </div>
-                    <div class="form-group">
-                                    <label for="partyRelationship" data-toggle="tooltip" title="Select the relationship with the respondent">
-                                        Relationship with Respondent <i class="fas fa-info-circle text-muted"></i>
-                                    </label>
-                                    <select class="form-control" id="partyRelationship" required>
-                                        <option value="">Select Relationship</option>
-                                        <option value="individual">Individual</option>
-                                        <option value="company">Company/Organization</option>
-                                        <option value="government">Government Department</option>
-                                        <option value="service_provider">Service Provider</option>
-                                        <option value="manufacturer">Manufacturer</option>
-                                        <option value="retailer">Retailer</option>
-                                        <option value="distributor">Distributor</option>
-                                        <option value="other">Other</option>
-                                    </select>
-                    </div>
-                    <div class="form-group">
-                                    <label for="partyContact" data-toggle="tooltip" title="Enter the contact number of the opposite party (optional)">
-                                        Contact No <i class="fas fa-info-circle text-muted"></i>
-                                    </label>
-                                    <input type="tel" class="form-control" id="partyContact">
-                    </div>
-                    <div class="form-group">
-                                    <label for="partyEmail" data-toggle="tooltip" title="Enter the email address of the opposite party (optional)">
-                                        Email <i class="fas fa-info-circle text-muted"></i>
-                                    </label>
-                                    <input type="email" class="form-control" id="partyEmail">
-                    </div>
-                                <div class="form-group">
-                                    <button type="button" class="btn btn-primary" id="addParty">
-                                        <i class="fas fa-plus"></i> Add Party
-                                    </button>
-                                    <button type="button" class="btn btn-secondary" id="updateParty" style="display: none;">
-                                        <i class="fas fa-edit"></i> Update Party
-                                    </button>
-                                    <button type="button" class="btn btn-outline-secondary" id="cancelEdit" style="display: none;">
-                                        <i class="fas fa-times"></i> Cancel
-                                    </button>
-                </div>
-                            </form>
-
-                            <div class="table-responsive mt-4">
-                                <table class="table table-bordered table-hover" id="partiesTable">
-                                    <thead class="thead-light">
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Address</th>
-                                            <th>Relationship</th>
-                                            <th>Contact</th>
-                                            <th>Email</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <!-- Parties will be added here dynamically -->
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Section 4: Jurisdiction Details -->
-                <div class="form-section" id="section-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3>Jurisdiction Details</h3>
-                        </div>
-                        <div class="card-body">
-                            <!-- Jurisdiction Information -->
-                            <div class="alert alert-info mb-4">
-                                <h5 class="alert-heading">Under the Consumer Protection Act, 2019:</h5>
-                                <ul class="mb-0">
-                                    <li><strong>District Commission (DCDRC):</strong> For claims up to ₹1 crore
-                                        <ul>
-                                            <li>Presiding Officer: President (District Judge)</li>
-                                            <li>Members: 2 members (1 woman)</li>
-                                            <li>Appeal: To State Commission within 45 days</li>
-                                        </ul>
-                                    </li>
-                                    <li><strong>State Commission (SCDRC):</strong> For claims exceeding ₹1 crore but not exceeding ₹10 crore
-                                        <ul>
-                                            <li>Presiding Officer: President (High Court Judge)</li>
-                                            <li>Members: 4 members (1 woman)</li>
-                                            <li>Appeal: To National Commission within 30 days</li>
-                                        </ul>
-                                    </li>
-                                    <li><strong>National Commission (NCDRC):</strong> For claims exceeding ₹10 crore
-                                        <ul>
-                                            <li>Presiding Officer: President (Supreme Court Judge)</li>
-                                            <li>Members: 4 members (1 woman)</li>
-                                            <li>Appeal: To Supreme Court within 30 days</li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                                <div class="mt-3">
-                                    <small class="text-muted">
-                                        <i class="fas fa-info-circle"></i> Note: All commissions have the power to:
-                                        <ul class="mb-0">
-                                            <li>Summon and enforce attendance of witnesses</li>
-                                            <li>Receive evidence on affidavits</li>
-                                            <li>Grant interim relief</li>
-                                            <li>Pass ex-parte orders</li>
-                                            <li>Order refund of money or replacement of goods</li>
-                                        </ul>
-                                    </small>
-                                </div>
-                            </div>
-
-                            <form id="jurisdictionForm">
-                    <div class="form-group">
-                                    <label for="jurisdictionPincode" data-toggle="tooltip" title="Pincode of the jurisdiction area">
-                                        Pincode <i class="fas fa-info-circle text-muted"></i>
-                                    </label>
-                                    <select class="form-control" id="jurisdictionPincode" required>
-                                        <option value="">Select Pincode</option>
-                                        <option value="400001">400001 - Mumbai, Maharashtra</option>
-                                        <option value="110001">110001 - New Delhi, Delhi</option>
-                                        <option value="560001">560001 - Bangalore, Karnataka</option>
-                                        <option value="600001">600001 - Chennai, Tamil Nadu</option>
-                                        <option value="700001">700001 - Kolkata, West Bengal</option>
-                                        <option value="380001">380001 - Ahmedabad, Gujarat</option>
-                                        <option value="500001">500001 - Hyderabad, Telangana</option>
-                                        <option value="411001">411001 - Pune, Maharashtra</option>
-                                        <option value="302001">302001 - Jaipur, Rajasthan</option>
-                                        <option value="800001">800001 - Patna, Bihar</option>
-                                    </select>
-                    </div>
-                    <div class="form-group">
-                                    <label for="districtCourt" data-toggle="tooltip" title="Name of the District Consumer Court">
-                                        District Court <i class="fas fa-info-circle text-muted"></i>
-                                    </label>
-                                    <input type="text" class="form-control" id="districtCourt" required>
-                    </div>
-                    <div class="form-group">
-                                    <label for="jurisdictionCity" data-toggle="tooltip" title="City of the jurisdiction">
-                                        City <i class="fas fa-info-circle text-muted"></i>
-                                    </label>
-                                    <input type="text" class="form-control" id="jurisdictionCity" required>
-                    </div>
-                    <div class="form-group">
-                                    <label for="courtAddress" data-toggle="tooltip" title="Complete address of the District Consumer Court">
-                                        Court Address <i class="fas fa-info-circle text-muted"></i>
-                                    </label>
-                                    <textarea class="form-control" id="courtAddress" rows="3" required></textarea>
-                    </div>
-                    <div class="form-group">
-                                    <button type="button" class="btn btn-primary" id="confirmJurisdiction">
-                                        <i class="fas fa-check"></i> Confirm Jurisdiction Details
-                                    </button>
-                    </div>
-                            </form>
-                </div>
-                    </div>
-                </div>
-
-                <!-- Section 5: Lawyer Selection -->
-                <div class="form-section" id="section-5">
-                    <!-- Advocate Selection Card -->
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <h3>Advocate Selection</h3>
-                        </div>
-                        <div class="card-body">
-                    <div class="form-group">
-                                <label data-toggle="tooltip" title="Choose whether to select your own lawyer or let Happy Claim suggest one">
-                                    Select your preferred way to choose a lawyer <i class="fas fa-info-circle text-muted"></i>
-                                </label>
-                                <div class="custom-control custom-radio">
-                                    <input type="radio" id="ownCounsel" name="advocateSelection" class="custom-control-input" value="own" checked>
-                                    <label class="custom-control-label" for="ownCounsel">Select own counsel</label>
-                                </div>
-                                <div class="custom-control custom-radio">
-                                    <input type="radio" id="suggestCounsel" name="advocateSelection" class="custom-control-input" value="suggest">
-                                    <label class="custom-control-label" for="suggestCounsel">Allow Happy Claim to suggest</label>
-                                </div>
-                            </div>
-
-                            <!-- Lawyer Selection Dropdown (Initially Visible) -->
-                            <div class="form-group mt-3" id="lawyerDropdownSection">
-                                <label for="lawyerSelect" data-toggle="tooltip" title="Select a lawyer from the list">
-                                    Select Lawyer <i class="fas fa-info-circle text-muted"></i>
-                                </label>
-                                <select class="form-control" id="lawyerSelect">
-                            <option value="">Select a Lawyer</option>
-                                    <option value="1">Adv. Rajesh Kumar (10 years, Specialist in Consumer Law)</option>
-                                    <option value="2">Adv. Priya Sharma (8 years, Specialist in Consumer Protection)</option>
-                                    <option value="3">Adv. Amit Singh (12 years, Specialist in Consumer Law)</option>
-                                    <option value="4">Adv. Neha Gupta (9 years, Specialist in Consumer Protection)</option>
-                                    <option value="5">Adv. Vikram Patel (11 years, Specialist in Consumer Disputes)</option>
-                                    <option value="6">Adv. Meera Desai (7 years, Specialist in Consumer Rights)</option>
-                        </select>
-                    </div>
-                    </div>
-                    </div>
-
-                    <!-- Lawyer Details Card -->
-                    <div class="card">
-                        <div class="card-header">
-                            <h3>Lawyer Details</h3>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-4 text-center">
-                                    <img id="lawyerPhoto" src="https://randomuser.me/api/portraits/men/1.jpg" alt="Lawyer Photo" class="img-fluid rounded-circle mb-3" style="width: 200px; height: 200px; object-fit: cover;">
-                                    <h4 id="lawyerFullName" class="mb-3">Adv. Rajesh Kumar</h4>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <h5>Professional Details</h5>
-                                            <p><strong>Specialization:</strong> <span id="lawyerSpecialization">Specialist in Consumer Law</span></p>
-                                            <p><strong>Credentials:</strong> <span id="lawyerCredentials">LL.M, Bar Council of India</span></p>
-                                            <p><strong>Experience:</strong> <span id="lawyerExperience">10 years</span></p>
-                                            <p><strong>Success Rate:</strong> <span id="lawyerSuccessRate">85%</span></p>
-                                            <p><strong>Cases Handled:</strong> <span id="lawyerCasesHandled">250+</span></p>
-                                            <p><strong>Languages:</strong> <span id="lawyerLanguages">English, Hindi, Marathi</span></p>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <h5>Performance Metrics</h5>
-                                            <div class="mb-3">
-                                                <p><strong>Customer Rating:</strong></p>
-                                                <div id="customerRating" class="mb-2">
-                                                    <i class="fas fa-star text-warning"></i>
-                                                    <i class="fas fa-star text-warning"></i>
-                                                    <i class="fas fa-star text-warning"></i>
-                                                    <i class="fas fa-star text-warning"></i>
-                                                    <i class="fas fa-star-half-alt text-warning"></i>
-                                                    <span class="ml-2">4.5/5</span>
-                                                </div>
-                                                <small class="text-muted">Based on client feedback</small>
-                                            </div>
-                                            <div class="mb-3">
-                                                <p><strong>HappyClaim Rating:</strong></p>
-                                                <div id="happyClaimRating" class="mb-2">
-                                                    <i class="fas fa-star text-warning"></i>
-                                                    <i class="fas fa-star text-warning"></i>
-                                                    <i class="fas fa-star text-warning"></i>
-                                                    <i class="fas fa-star text-warning"></i>
-                                                    <i class="fas fa-star text-warning"></i>
-                                                    <span class="ml-2">4.8/5</span>
-                                                </div>
-                                                <small class="text-muted">Based on response time and case handling</small>
-                                            </div>
-                                            <p><strong>Average Response Time:</strong> <span id="lawyerResponseTime">Within 2 hours</span></p>
-                                        </div>
-                                    </div>
-                                    <div class="mt-4">
-                                        <button type="button" class="btn btn-primary mr-2" id="connectLawyer">
-                                            <i class="fas fa-phone"></i> Connect With Lawyer
-                                        </button>
-                                        <button type="button" class="btn btn-success" id="chatLawyer">
-                                            <i class="fas fa-comments"></i> Chat with Lawyer
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Chat Window Modal -->
-                <div class="modal fade" id="chatModal" tabindex="-1" role="dialog" aria-labelledby="chatModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="chatModalLabel">Chat with Adv. Rajesh Kumar</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="chat-messages" id="chatMessages" style="height: 300px; overflow-y: auto;">
-                                    <div class="message lawyer-message mb-2">
-                                        <div class="d-flex">
-                                            <div class="bg-light p-2 rounded">
-                                                Hello! How can I help you with your consumer complaint?
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="input-group mt-3">
-                                    <input type="text" class="form-control" id="chatInput" placeholder="Type your message...">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-primary" type="button" id="sendMessage">
-                                            <i class="fas fa-paper-plane"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Section 6: Confirmation -->
-                <div class="form-section" id="section-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3>Confirmation</h3>
-                        </div>
-                        <div class="card-body">
-                            <div class="summary">
-                                <h4>Please review your details:</h4>
-                                <div id="summary-details"></div>
-                            </div>
-
-                            <!-- Insurance Option -->
-                            <div class="card mt-4">
-                                <div class="card-header bg-light">
-                                    <h5 class="mb-0">Complaint Insurance Coverage</h5>
-                                </div>
-                                <div class="card-body">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="insuranceCoverage">
-                                        <label class="form-check-label" for="insuranceCoverage">
-                                            <strong>Add Insurance Coverage for this Complaint</strong>
-                                        </label>
-                                        <small class="form-text text-muted d-block">
-                                            <i class="fas fa-info-circle text-primary"></i> 
-                                            Get insurance coverage for your complaint. In case of an unfavorable outcome, you can claim back up to 80% of your legal expenses and claim amount.
-                                        </small>
-                                    </div>
-                                    <div class="insurance-details mt-3" style="display: none;">
-                                        <div class="alert alert-info">
-                                            <h6 class="alert-heading">Insurance Coverage Details:</h6>
-                                            <ul class="mb-0">
-                                                <li>Coverage up to 80% of legal expenses</li>
-                                                <li>Coverage up to 80% of claim amount</li>
-                                                <li>Valid for 2 years from complaint filing</li>
-                                                <li>Premium: 5% of claim amount</li>
-                                            </ul>
-                    </div>
-                    <div class="form-group">
-                                            <label for="insuranceAmount">Insurance Amount (₹)</label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">₹</span>
-                                                </div>
-                                                <input type="number" class="form-control" id="insuranceAmount" readonly>
-                                            </div>
-                                            <small class="form-text text-muted">5% of your claim amount</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Door-step Delivery Option -->
-                            <div class="card mt-4" id="doorstepDeliveryCard" style="display: none;">
-                                <div class="card-header bg-light">
-                                    <h5 class="mb-0">Door-step Delivery Service</h5>
-                                </div>
-                                <div class="card-body">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="doorstepDelivery">
-                                        <label class="form-check-label" for="doorstepDelivery">
-                                            <strong>Add Door-step Delivery Service</strong>
-                                        </label>
-                                        <small class="form-text text-muted d-block">
-                                            <i class="fas fa-truck text-primary"></i> 
-                                            Get your notice delivered at the respondent's doorstep with proof of delivery and acknowledgment.
-                                        </small>
-                                    </div>
-                                    <div class="delivery-details mt-3" style="display: none;">
-                                        <div class="alert alert-info">
-                                            <h6 class="alert-heading">Delivery Service Details:</h6>
-                                            <ul class="mb-0">
-                                                <li>Professional delivery executive</li>
-                                                <li>Photo proof of delivery</li>
-                                                <li>Digital acknowledgment receipt</li>
-                                                <li>Real-time tracking updates</li>
-                                                <li>Delivery within 48 hours</li>
-                                            </ul>
-                    </div>
-                    <div class="form-group">
-                                            <label for="deliveryAmount">Delivery Service Amount (₹)</label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">₹</span>
-                    </div>
-                                                <input type="number" class="form-control" id="deliveryAmount" value="500" readonly>
-                                            </div>
-                                            <small class="form-text text-muted">Flat rate for door-step delivery service</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Disclaimer Message -->
-                            <div class="alert alert-warning mt-4">
-                                <i class="fas fa-exclamation-triangle mr-2"></i>
-                                <strong>Disclaimer:</strong> We at HappyClaim are not responsible to check validity of information filled by user for complaint raised.
-                            </div>
-
-                            <div class="form-group mt-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="terms" required>
-                                    <label class="form-check-label" for="terms">
-                                        I confirm that all the information provided is true and accurate to the best of my knowledge.
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="form-group mt-4">
-                                <button type="button" class="btn btn-primary" id="confirmDetails">
-                                    <i class="fas fa-check-circle"></i> Confirm Details
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Section 7: Payment -->
-                <div class="form-section" id="section-7">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3>Payment Details</h3>
-                        </div>
-                        <div class="card-body">
-                            <form id="paymentForm">
-                                <!-- Case ID Field -->
-                    <div class="form-group">
-                                    <label for="caseId" data-toggle="tooltip" title="Your unique case identification number">
-                                        Case ID <i class="fas fa-info-circle text-muted"></i>
-                                    </label>
-                                    <input type="text" class="form-control" id="caseId" readonly>
-                    </div>
-
-                                <div class="payment-summary mb-4">
-                                    <h4>Payment Summary</h4>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div id="payment-details">
-                                                <!-- Payment details will be populated here -->
-                </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                    <div class="form-group">
-                                    <label for="payment-method" data-toggle="tooltip" title="Select your preferred payment method">
-                                        Payment Mode <i class="fas fa-info-circle text-muted"></i>
-                                    </label>
-                                    <select class="form-control" id="payment-method" required>
-                                        <option value="">Select Payment Method</option>
-                                        <option value="credit">Credit Card</option>
-                                        <option value="debit">Debit Card</option>
-                                        <option value="netbanking">Net Banking</option>
-                                        <option value="upi">UPI</option>
-                                        <option value="wallet">Digital Wallet</option>
-                        </select>
-                    </div>
-
-                                <div class="form-group">
-                                    <label for="transactionId" data-toggle="tooltip" title="Enter the transaction ID provided by your payment method">
-                                        Transaction ID <i class="fas fa-info-circle text-muted"></i>
-                                    </label>
-                                    <input type="text" class="form-control" id="transactionId" placeholder="Enter transaction ID" required>
-                    </div>
-
-                                <div class="form-group mt-4">
-                                    <button type="button" class="btn btn-primary" id="makePayment">
-                                        <i class="fas fa-lock"></i> Make Payment
-                                    </button>
-                    </div>
-                            </form>
-                    </div>
-                </div>
-                </div>
+        </div>
+        <div class="login-form">
+            <div class="login-header">
+                <h1>Login</h1>
+                <p>Please enter your credentials to continue</p>
             </div>
-
-            <!-- Navigation Buttons -->
-            <div class="form-navigation">
-                <button type="button" class="btn btn-outline-primary" id="prevBtn" style="display: none;">Previous</button>
-                <button type="button" class="btn btn-primary" id="nextBtn">Next</button>
+            <div class="alert alert-success" id="successMessage">
+                Login successful! Redirecting...
             </div>
-        </form>
+            <div class="alert alert-danger" id="errorMessage">
+                Invalid username or password
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <i class="fas fa-user"></i>
+                            </span>
+                        </div>
+                        <input type="text" class="form-control" id="username" placeholder="Enter your username" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <i class="fas fa-lock"></i>
+                            </span>
+                        </div>
+                        <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-login">
+                    <i class="fas fa-sign-in-alt mr-2"></i>Login
+                </button>
+            </form>
+            <div class="forgot-password">
+                <a href="#">Forgot Password?</a>
+            </div>
+        </div>
     </div>
-</div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script>
-    $(document).ready(function() {
-        // Load navigation first
-        $("#navigation").load("static/navigation.html", function(response, status, xhr) {
-            if (status === "error") {
-                console.error("Error loading navigation:", xhr.status, xhr.statusText);
-                return;
-            }
-            
-            // Initialize navigation after it's loaded
-            $('.nav-link[href="file-complaint.html"]').addClass('active');
-            
-            // Initialize tooltips after navigation is loaded
-            $('[data-toggle="tooltip"]').tooltip({
-                placement: 'top',
-                trigger: 'hover'
-            });
-
-            // Add mobile navigation toggle
-            $('<button class="mobile-nav-toggle"><i class="fas fa-bars"></i></button>').insertAfter('.content');
-            
-            // Handle mobile navigation toggle
-            $('.mobile-nav-toggle').on('click', function() {
-                $('.sidebar').toggleClass('active');
-            });
-        });
-
-        // Initialize service type selection
-        const initialServiceType = $('input[name="serviceType"]:checked').val();
-        const isNotice = initialServiceType === 'notice';
-        $('#doorstepDeliveryCard').toggle(isNotice);
-        if (!isNotice) {
-            $('#doorstepDelivery').prop('checked', false);
-            $('.delivery-details').hide();
-        }
-
-        // Handle service type selection
-        $('input[name="serviceType"]').on('change', function() {
-            const selectedValue = $(this).val();
-            const isNotice = selectedValue === 'notice';
-            $('#doorstepDeliveryCard').toggle(isNotice);
-            if (!isNotice) {
-                $('#doorstepDelivery').prop('checked', false);
-                $('.delivery-details').hide();
-            }
-            
-            if (selectedValue === 'notice') {
-                $('#noticeTypeOptions').slideDown(300);
-                // Reset notice type selection
-                $('#happyClaimNotice').prop('checked', true);
-            } else {
-                $('#noticeTypeOptions').slideUp(300);
-                // Clear notice type selection
-                $('input[name="noticeType"]').prop('checked', false);
-            }
-        });
-
-        // Initialize notice type options visibility
-        if ($('#serviceNotice').is(':checked')) {
-            $('#noticeTypeOptions').show();
-            // Set default notice type
-            $('#happyClaimNotice').prop('checked', true);
-        } else {
-            $('#noticeTypeOptions').hide();
-            // Clear notice type selection
-            $('input[name="noticeType"]').prop('checked', false);
-        }
-
-        // Pincode change handler
-        $('#pincode').change(function() {
-            const selectedOption = $(this).find('option:selected');
-            if (selectedOption.val()) {
-                const [pincode, cityState] = selectedOption.text().split(' - ');
-                // Update jurisdiction pincode to match complainant pincode
-                $('#jurisdictionPincode').val(pincode).trigger('change');
-                // Here you can add logic to auto-fill city and state if needed
-                console.log(`Selected: ${cityState}`);
-            }
-        });
-
-        // Phone number validation
-        $('#phone').on('input', function() {
-            this.value = this.value.replace(/[^0-9]/g, '').substring(0, 10);
-        });
-
-        let currentSection = 0;
-        const totalSections = 8;
-
-        // Update progress indicator
-        function updateProgress() {
-            $('.step').removeClass('active completed');
-            $('.step').each(function(index) {
-                if (index < currentSection) {
-                    $(this).addClass('completed');
-                } else if (index === currentSection) {
-                    $(this).addClass('active');
-                }
-            });
-        }
-
-        // Show/hide navigation buttons
-        function updateButtons() {
-            $('#prevBtn').toggle(currentSection > 0);
-            $('#nextBtn').text(currentSection === totalSections - 1 ? 'Submit' : 'Next');
-        }
-
-        // Function to update summary details
-        function updateSummary() {
-            const serviceType = $('input[name="serviceType"]:checked').val();
-            const noticeType = $('input[name="noticeType"]:checked').val();
-            
-            let serviceDetails = '';
-            if (serviceType === 'notice') {
-                serviceDetails = `
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h5>Service Details</h5>
-                            <p><strong>Service Type:</strong> Send Notice</p>
-                            <p><strong>Notice Type:</strong> ${noticeType === 'happyClaim' ? 'Send through HappyClaim' : 'Through lawyer recommended by HappyClaim'}</p>
-                        </div>
-                    </div>
-                `;
-            } else {
-                serviceDetails = `
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h5>Service Details</h5>
-                            <p><strong>Service Type:</strong> Raise Consumer Complaint</p>
-                        </div>
-                    </div>
-                `;
-            }
-
-            const summary = `
-                ${serviceDetails}
-                <div class="row mt-4">
-                    <div class="col-md-6">
-                        <h5>Complainant Details</h5>
-                        <p><strong>Name:</strong> ${$('#complainant-name').val()}</p>
-                        <p><strong>Phone:</strong> ${$('#phone').val()}</p>
-                        <p><strong>Email:</strong> ${$('#email').val()}</p>
-                        <p><strong>Address:</strong> ${$('#complainant-address').val()}</p>
-                    </div>
-                    <div class="col-md-6">
-                        <h5>Complaint Details</h5>
-                        <p><strong>Category:</strong> ${$('#category option:selected').text()}</p>
-                        <p><strong>Sub-Category:</strong> ${$('#subcategory option:selected').text()}</p>
-                        <p><strong>Issue Title:</strong> ${$('#issueTitle').val()}</p>
-                        <p><strong>Amount:</strong> ₹${$('#value').val()}</p>
-                    </div>
-                </div>
-                <div class="row mt-4">
-                    <div class="col-md-6">
-                        <h5>Respondent Details</h5>
-                        <div id="respondent-summary">
-                            <!-- Respondent details will be populated here -->
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <h5>Jurisdiction Details</h5>
-                        <p><strong>District Court:</strong> ${$('#districtCourt').val()}</p>
-                        <p><strong>City:</strong> ${$('#jurisdictionCity').val()}</p>
-                        <p><strong>Address:</strong> ${$('#courtAddress').val()}</p>
-                    </div>
-                </div>
-            `;
-            $('#summary-details').html(summary);
-        }
-
-        // Function to update respondent summary
-        function updateRespondentSummary() {
-            const $respondentSummary = $('#respondent-summary');
-            $respondentSummary.empty();
-
-            if (parties.length === 0) {
-                $respondentSummary.append('<p>No respondents added</p>');
-                return;
-            }
-
-            parties.forEach((party, index) => {
-                $respondentSummary.append(`
-                    <div class="mb-3">
-                        <p><strong>Party ${index + 1}:</strong></p>
-                        <p><strong>Name:</strong> ${party.name}</p>
-                        <p><strong>Address:</strong> ${party.address}</p>
-                        <p><strong>Relationship:</strong> ${party.relationship}</p>
-                        ${party.contact ? `<p><strong>Contact:</strong> ${party.contact}</p>` : ''}
-                        ${party.email ? `<p><strong>Email:</strong> ${party.email}</p>` : ''}
-                    </div>
-                `);
-            });
-        }
-
-        // Handle next button click
-        $('#nextBtn').on('click', function() {
-            if (currentSection === totalSections - 1) {
-                // Submit form
-                alert('Complaint submitted successfully!');
-                window.location.href = 'history.html';
-            } else {
-                currentSection++;
-                $('.form-section').removeClass('active');
-                $(`#section-${currentSection}`).addClass('active');
-                updateProgress();
-                updateButtons();
-
-                // Update specific sections when entering them
-                if (currentSection === 6) { // When entering confirmation section
-                    updateSummary();
-                    updateRespondentSummary();
-                } else if (currentSection === 7) { // When entering payment section
-                    updatePaymentSection();
-                }
-            }
-        });
-
-        // Handle previous button click
-        $('#prevBtn').on('click', function() {
-            currentSection--;
-            $('.form-section').removeClass('active');
-            $(`#section-${currentSection}`).addClass('active');
-            updateProgress();
-            updateButtons();
-        });
-
-        // Remove validation from confirm buttons
-        $('#confirmJurisdiction').on('click', function(e) {
-            e.preventDefault();
-            showAlert('Jurisdiction details confirmed successfully!', 'success');
-        });
-
-        $('#confirmDetails').on('click', function(e) {
-            e.preventDefault();
-            showAlert('Details confirmed successfully!', 'success');
-        });
-
-        // Sub-categories mapping
-        const subCategories = {
-            travel: [
-                { value: 'hotel', label: 'Hotel Booking & Stay' },
-                { value: 'travel_partner', label: 'Travel Agency & Tour Operator' },
-                { value: 'airline', label: 'Airline Services' },
-                { value: 'railway', label: 'Railway Services' },
-                { value: 'bus', label: 'Bus Services' },
-                { value: 'car_rental', label: 'Car Rental Services' },
-                { value: 'cruise', label: 'Cruise Services' },
-                { value: 'travel_insurance', label: 'Travel Insurance' },
-                { value: 'visa', label: 'Visa Services' },
-                { value: 'others', label: 'Other Travel Services' }
-            ],
-            healthcare: [
-                { value: 'hospital', label: 'Hospital Services' },
-                { value: 'clinic', label: 'Clinic Services' },
-                { value: 'pharmacy', label: 'Pharmacy & Medicine' },
-                { value: 'diagnostic', label: 'Diagnostic Services' },
-                { value: 'health_insurance', label: 'Health Insurance' },
-                { value: 'medical_equipment', label: 'Medical Equipment' },
-                { value: 'dental', label: 'Dental Services' },
-                { value: 'alternative_medicine', label: 'Alternative Medicine' },
-                { value: 'nursing', label: 'Nursing Services' },
-                { value: 'others', label: 'Other Healthcare Services' }
-            ],
-            ecommerce: [
-                { value: 'delivery', label: 'Delivery & Shipping Issues' },
-                { value: 'product_quality', label: 'Product Quality & Defects' },
-                { value: 'refund', label: 'Refund Issues' },
-                { value: 'return', label: 'Return & Exchange' },
-                { value: 'pricing', label: 'Pricing Disputes' },
-                { value: 'warranty', label: 'Warranty Claims' },
-                { value: 'seller', label: 'Seller Behavior' },
-                { value: 'payment', label: 'Payment Issues' },
-                { value: 'account', label: 'Account Related Issues' },
-                { value: 'others', label: 'Other E-commerce Issues' }
-            ],
-            banking: [
-                { value: 'account', label: 'Account Related Issues' },
-                { value: 'transaction', label: 'Transaction Issues' },
-                { value: 'loan', label: 'Loan Services' },
-                { value: 'credit_card', label: 'Credit Card Services' },
-                { value: 'debit_card', label: 'Debit Card Services' },
-                { value: 'net_banking', label: 'Net Banking Issues' },
-                { value: 'mobile_banking', label: 'Mobile Banking Issues' },
-                { value: 'atm', label: 'ATM Services' },
-                { value: 'cheque', label: 'Cheque Related Issues' },
-                { value: 'others', label: 'Other Banking Issues' }
-            ],
-            insurance: [
-                { value: 'claim', label: 'Claim Settlement' },
-                { value: 'policy', label: 'Policy Related Issues' },
-                { value: 'premium', label: 'Premium Payment Issues' },
-                { value: 'health_insurance', label: 'Health Insurance' },
-                { value: 'life_insurance', label: 'Life Insurance' },
-                { value: 'motor_insurance', label: 'Motor Insurance' },
-                { value: 'travel_insurance', label: 'Travel Insurance' },
-                { value: 'home_insurance', label: 'Home Insurance' },
-                { value: 'documentation', label: 'Documentation Issues' },
-                { value: 'others', label: 'Other Insurance Issues' }
-            ],
-            real_estate: [
-                { value: 'builder', label: 'Builder Issues' },
-                { value: 'property', label: 'Property Related Issues' },
-                { value: 'rental', label: 'Rental Issues' },
-                { value: 'broker', label: 'Broker Services' },
-                { value: 'home_loan', label: 'Home Loan Issues' },
-                { value: 'maintenance', label: 'Maintenance Issues' },
-                { value: 'possession', label: 'Possession Delay' },
-                { value: 'documentation', label: 'Documentation Issues' },
-                { value: 'amenities', label: 'Amenities & Facilities' },
-                { value: 'others', label: 'Other Real Estate Issues' }
-            ]
-        };
-
-        // Update sub-categories when category changes
-        $('#category').on('change', function() {
-            const category = $(this).val();
-            const $subcategory = $('#subcategory');
-            
-            // Clear existing options
-            $subcategory.empty();
-            $subcategory.append('<option value="">Select Sub-Category</option>');
-            
-            if (category && subCategories[category]) {
-                subCategories[category].forEach(item => {
-                    $subcategory.append(`<option value="${item.value}">${item.label}</option>`);
-                });
-            }
-            
-            // Reinitialize Select2 for subcategory
-            $subcategory.select2('destroy').select2({
-                width: '100%',
-                dropdownAutoWidth: true
-            });
-
-            // Clear company dropdown when category changes
-            $('#company').empty().append('<option value="">Select Company</option>');
-            $('#company').select2('destroy').select2({
-                width: '100%',
-                dropdownAutoWidth: true
-            });
-        });
-
-        // Update companies when subcategory changes
-        $('#subcategory').on('change', function() {
-            const category = $('#category').val();
-            const subcategory = $(this).val();
-            const $company = $('#company');
-            
-            console.log('Subcategory changed:', { category, subcategory });
-            
-            // Clear existing options
-            $company.empty();
-            $company.append('<option value="">Select Company</option>');
-            
-            if (category && subcategory && companyData[category] && companyData[category][subcategory]) {
-                console.log('Populating companies for:', { category, subcategory });
-                const companies = companyData[category][subcategory];
-                companies.forEach(item => {
-                    $company.append(`<option value="${item.value}">${item.label}</option>`);
-                });
-            } else {
-                console.log('No companies found for:', { category, subcategory });
-            }
-            
-            // Reinitialize Select2 for company with search functionality
-            $company.select2('destroy').select2({
-                width: '100%',
-                dropdownAutoWidth: true,
-                minimumInputLength: 0, // Allow typing from the start
-                placeholder: "Type to search companies...",
-                allowClear: true,
-                tags: true, // Allow custom entries
-                createTag: function(params) {
-                    return {
-                        id: params.term,
-                        text: params.term,
-                        newOption: true
-                    }
-                },
-                matcher: function(params, data) {
-                    // If there are no search terms, return all of the data
-                    if ($.trim(params.term) === '') {
-                        return data;
-                    }
-
-                    // Do not display the item if there is no 'text' property
-                    if (typeof data.text === 'undefined') {
-                        return null;
-                    }
-
-                    // Search in the text and optgroup label
-                    const searchTerm = params.term.toLowerCase();
-                    const text = data.text.toLowerCase();
-                    const group = data.element.parentElement.label ? data.element.parentElement.label.toLowerCase() : '';
-
-                    if (text.indexOf(searchTerm) > -1 || group.indexOf(searchTerm) > -1) {
-                        return data;
-                    }
-
-                    return null;
-                },
-                templateResult: function(data) {
-                    if (!data.id) return data.text;
-                    if (data.newOption) {
-                        return $('<span>' + data.text + ' (new)</span>');
-                    }
-                    return $('<span>' + data.text + '</span>');
-                },
-                templateSelection: function(data) {
-                    if (!data.id) return data.text;
-                    return $('<span>' + data.text + '</span>');
-                }
-            });
-        });
-
-        // Initialize Select2 for all selects
-        $('select').select2({
-            width: '100%',
-            dropdownAutoWidth: true
-        });
-
-        // Initialize Select2 for company dropdown with search functionality
-        $('#company').select2({
-            width: '100%',
-            dropdownAutoWidth: true,
-            minimumInputLength: 0, // Allow typing from the start
-            placeholder: "Type to search companies...",
-            allowClear: true,
-            tags: true, // Allow custom entries
-            createTag: function(params) {
-                return {
-                    id: params.term,
-                    text: params.term,
-                    newOption: true
-                }
-            },
-            matcher: function(params, data) {
-                // If there are no search terms, return all of the data
-                if ($.trim(params.term) === '') {
-                    return data;
-                }
-
-                // Do not display the item if there is no 'text' property
-                if (typeof data.text === 'undefined') {
-                    return null;
-                }
-
-                // Search in the text and optgroup label
-                const searchTerm = params.term.toLowerCase();
-                const text = data.text.toLowerCase();
-                const group = data.element.parentElement.label ? data.element.parentElement.label.toLowerCase() : '';
-
-                if (text.indexOf(searchTerm) > -1 || group.indexOf(searchTerm) > -1) {
-                    return data;
-                }
-
-                return null;
-            },
-            templateResult: function(data) {
-                if (!data.id) return data.text;
-                if (data.newOption) {
-                    return $('<span>' + data.text + ' (new)</span>');
-                }
-                return $('<span>' + data.text + '</span>');
-            },
-            templateSelection: function(data) {
-                if (!data.id) return data.text;
-                return $('<span>' + data.text + '</span>');
-            }
-        });
-
-        // Add custom styling for search results
-        $('.select2-results__option').css({
-            'padding': '8px 12px',
-            'white-space': 'normal',
-            'word-wrap': 'break-word'
-        });
-
-        // Add custom styling for optgroups
-        $('.select2-results__group').css({
-            'font-weight': 'bold',
-            'padding': '8px 12px',
-            'background-color': '#f8f9fa',
-            'border-bottom': '1px solid #e9ecef'
-        });
-
-        // Ensure the dropdown is properly focused when clicked
-        $('#company').on('select2:open', function() {
-            $('.select2-search__field').focus();
-        });
-
-        // Handle file uploads
-        $('#documents').change(function() {
-            const files = this.files;
-            const $uploadedFiles = $('#uploadedFiles');
-            
-            $uploadedFiles.empty();
-            
-            if (files.length > 0) {
-                const $list = $('<ul class="list-group"></ul>');
-                
-                Array.from(files).forEach(file => {
-                    const $item = $(`
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span>${file.name}</span>
-                            <span class="badge badge-primary badge-pill">${formatFileSize(file.size)}</span>
-                        </li>
-                    `);
-                    $list.append($item);
-                });
-                
-                $uploadedFiles.append($list);
-            }
-        });
-
-        // Format file size
-        function formatFileSize(bytes) {
-            if (bytes === 0) return '0 Bytes';
-            const k = 1024;
-            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-            const i = Math.floor(Math.log(bytes) / Math.log(k));
-            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-        }
-
-        // Store parties data
-        let parties = [];
-        let editingIndex = -1;
-
-        // Add party button click handler
-        $('#addParty').on('click', function(e) {
-            e.preventDefault();
-            console.log('Add Party button clicked');
-            
-            // Get form values
-            const name = $('#partyName').val().trim();
-            const address = $('#partyAddress').val().trim();
-            const relationship = $('#partyRelationship').val();
-            const contact = $('#partyContact').val().trim();
-            const email = $('#partyEmail').val().trim();
-            
-            console.log('Form values:', { name, address, relationship, contact, email });
-            
-            // Validate required fields
-            if (!name || !address || !relationship) {
-                showAlert('Please fill in all required fields (Name, Address, and Relationship)', 'danger');
-                return;
-            }
-
-            // Create new party object
-            const party = {
-                name: name,
-                address: address,
-                relationship: relationship,
-                contact: contact || '-',
-                email: email || '-'
-            };
-
-            // Add to parties array
-            parties.push(party);
-            console.log('Added party:', party);
-            console.log('Total parties:', parties.length);
-            
-            // Update table and clear form
-            updatePartiesTable();
-            clearForm();
-            
-            // Show success message
-            showAlert('Party added successfully!', 'success');
-        });
-
-        // Function to update the parties table
-        function updatePartiesTable() {
-            console.log('Updating parties table');
-            const $tbody = $('#partiesTable tbody');
-            $tbody.empty();
-
-            if (parties.length === 0) {
-                $tbody.append(`
-                    <tr>
-                        <td colspan="6" class="text-center">No parties added yet</td>
-                    </tr>
-                `);
-                return;
-            }
-
-            parties.forEach((party, index) => {
-                const $row = $(`
-                    <tr>
-                        <td>${party.name}</td>
-                        <td>${party.address}</td>
-                        <td>${party.relationship}</td>
-                        <td>${party.contact}</td>
-                        <td>${party.email}</td>
-                        <td>
-                            <button class="btn btn-sm btn-info edit-party" data-index="${index}">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn btn-sm btn-danger delete-party" data-index="${index}">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `);
-
-                $tbody.append($row);
-            });
-
-            // Add event handlers for edit and delete buttons
-            $('.edit-party').off('click').on('click', function() {
-                const index = $(this).data('index');
-                editParty(index);
-            });
-
-            $('.delete-party').off('click').on('click', function() {
-                const index = $(this).data('index');
-                deleteParty(index);
-            });
-        }
-
-        // Function to edit a party
-        function editParty(index) {
-            console.log('Editing party at index:', index);
-            const party = parties[index];
-            $('#partyName').val(party.name);
-            $('#partyAddress').val(party.address);
-            $('#partyRelationship').val(party.relationship);
-            $('#partyContact').val(party.contact === '-' ? '' : party.contact);
-            $('#partyEmail').val(party.email === '-' ? '' : party.email);
-
-            editingIndex = index;
-            $('#addParty').hide();
-            $('#updateParty').show();
-            $('#cancelEdit').show();
-        }
-
-        // Update party button click handler
-        $('#updateParty').on('click', function(e) {
-            e.preventDefault();
-            console.log('Update Party button clicked');
-            
-            if (editingIndex === -1) return;
-            
-            // Get form values
-            const name = $('#partyName').val().trim();
-            const address = $('#partyAddress').val().trim();
-            const relationship = $('#partyRelationship').val();
-            const contact = $('#partyContact').val().trim();
-            const email = $('#partyEmail').val().trim();
-            
-            console.log('Updated values:', { name, address, relationship, contact, email });
-            
-            // Validate required fields
-            if (!name || !address || !relationship) {
-                showAlert('Please fill in all required fields (Name, Address, and Relationship)', 'danger');
-                return;
-            }
-
-            // Update party object
-            parties[editingIndex] = {
-                name: name,
-                address: address,
-                relationship: relationship,
-                contact: contact || '-',
-                email: email || '-'
-            };
-
-            console.log('Updated party:', parties[editingIndex]);
-            
-            // Update table and reset form
-            updatePartiesTable();
-            clearForm();
-            resetButtons();
-            
-            // Show success message
-            showAlert('Party updated successfully!', 'success');
-        });
-
-        // Cancel edit button click handler
-        $('#cancelEdit').on('click', function(e) {
-            e.preventDefault();
-            console.log('Cancel edit clicked');
-            clearForm();
-            resetButtons();
-        });
-
-        // Function to delete a party
-        function deleteParty(index) {
-            console.log('Deleting party at index:', index);
-            if (confirm('Are you sure you want to delete this party?')) {
-                parties.splice(index, 1);
-                updatePartiesTable();
-                if (editingIndex === index) {
-                    clearForm();
-                    resetButtons();
-                }
-                showAlert('Party deleted successfully!', 'success');
-            }
-        }
-
-        // Function to clear the form
-        function clearForm() {
-            console.log('Clearing form');
-            $('#respondentForm')[0].reset();
-            editingIndex = -1;
-        }
-
-        // Function to reset buttons
-        function resetButtons() {
-            console.log('Resetting buttons');
-            $('#addParty').show();
-            $('#updateParty').hide();
-            $('#cancelEdit').hide();
-        }
-
-        // Function to show alert messages
-        function showAlert(message, type = 'info') {
-            console.log('Showing alert:', { message, type });
-            const $alert = $(`
-                <div class="alert alert-${type} alert-dismissible fade show" role="alert">
-                    ${message}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            `);
-            
-            $('#respondentForm').before($alert);
-            
-            // Remove alert after 3 seconds
-            setTimeout(() => {
-                $alert.alert('close');
-            }, 3000);
-        }
-
-        // Initialize the table with empty state
-        updatePartiesTable();
-
-        // Initialize
-        updateProgress();
-        updateButtons();
-
-        // Connect with lawyer button click handler
-        $('#connectLawyer').on('click', function() {
-            alert('Connecting you with the lawyer...');
-        });
-
-        // Chat with lawyer button click handler
-        $('#chatLawyer').on('click', function() {
-            $('#chatModal').modal('show');
-        });
-
-        // Send message button click handler
-        $('#sendMessage').on('click', function() {
-            const message = $('#chatInput').val().trim();
-            if (message) {
-                const $chatMessages = $('#chatMessages');
-                $chatMessages.append(`
-                    <div class="message user-message mb-2">
-                        <div class="d-flex justify-content-end">
-                            <div class="bg-primary text-white p-2 rounded">
-                                ${message}
-                            </div>
-                        </div>
-                    </div>
-                `);
-                $('#chatInput').val('');
-                $chatMessages.scrollTop($chatMessages[0].scrollHeight);
-                
-                // Simulate lawyer response
-                setTimeout(() => {
-                    $chatMessages.append(`
-                        <div class="message lawyer-message mb-2">
-                            <div class="d-flex">
-                                <div class="bg-light p-2 rounded">
-                                    Thank you for your message. I'll get back to you shortly.
-                                </div>
-                            </div>
-                        </div>
-                    `);
-                    $chatMessages.scrollTop($chatMessages[0].scrollHeight);
-                }, 1000);
-            }
-        });
-
-        // Handle enter key in chat input
-        $('#chatInput').on('keypress', function(e) {
-            if (e.which === 13) {
-                $('#sendMessage').click();
-            }
-        });
-
-        // Function to update payment section
-        function updatePaymentSection() {
-            const serviceType = $('input[name="serviceType"]:checked').val();
-            const noticeType = $('input[name="noticeType"]:checked').val();
-            const hasInsurance = $('#insuranceCoverage').is(':checked');
-            const hasDelivery = $('#doorstepDelivery').is(':checked');
-            
-            // Generate and set case ID
-            const caseId = generateCaseId();
-            $('#caseId').val(caseId);
-
-            let paymentDetails = '';
-            if (serviceType === 'notice') {
-                if (noticeType === 'happyClaim') {
-                    paymentDetails = `
-                        <div class="fee-breakdown">
-                            <h5>Fee Breakdown</h5>
-                            <div class="fee-item">
-                                <span>Notice Drafting Fee</span>
-                                <span>₹500</span>
-                            </div>
-                            <div class="fee-item">
-                                <span>Courier Charges</span>
-                                <span>₹100</span>
-                            </div>
-                            <div class="fee-item">
-                                <span>Service Charges</span>
-                                <span>₹200</span>
-                            </div>
-                            ${hasInsurance ? `
-                            <div class="fee-item">
-                                <span>Insurance Premium</span>
-                                <span>₹${$('#insuranceAmount').val()}</span>
-                            </div>
-                            ` : ''}
-                            ${hasDelivery ? `
-                            <div class="fee-item">
-                                <span>Door-step Delivery Service</span>
-                                <span>₹500</span>
-                            </div>
-                            ` : ''}
-                            <div class="fee-item">
-                                <span>GST (18%)</span>
-                                <span>₹144</span>
-                            </div>
-                            <div class="fee-item total">
-                                <span>Total Amount</span>
-                                <span>₹${hasInsurance || hasDelivery ? (944 + (hasInsurance ? parseFloat($('#insuranceAmount').val()) : 0) + (hasDelivery ? 500 : 0)).toFixed(2) : '944'}</span>
-                            </div>
-                        </div>
-                        <div class="payment-note mt-3">
-                            <small class="text-muted">
-                                <i class="fas fa-info-circle"></i> Includes 2 rounds of notice drafting and delivery
-                                ${hasInsurance ? '<br><i class="fas fa-shield-alt"></i> Includes insurance coverage for the complaint' : ''}
-                                ${hasDelivery ? '<br><i class="fas fa-truck"></i> Includes door-step delivery service' : ''}
-                            </small>
-                        </div>
-                    `;
-                } else {
-                    paymentDetails = `
-                        <div class="fee-breakdown">
-                            <h5>Fee Breakdown</h5>
-                            <div class="fee-item">
-                                <span>Lawyer Consultation Fee</span>
-                                <span>₹1000</span>
-                            </div>
-                            <div class="fee-item">
-                                <span>Notice Drafting Fee</span>
-                                <span>₹1000</span>
-                            </div>
-                            <div class="fee-item">
-                                <span>Courier Charges</span>
-                                <span>₹100</span>
-                            </div>
-                            <div class="fee-item">
-                                <span>Service Charges</span>
-                                <span>₹300</span>
-                            </div>
-                            ${hasInsurance ? `
-                            <div class="fee-item">
-                                <span>Insurance Premium</span>
-                                <span>₹${$('#insuranceAmount').val()}</span>
-                            </div>
-                            ` : ''}
-                            ${hasDelivery ? `
-                            <div class="fee-item">
-                                <span>Door-step Delivery Service</span>
-                                <span>₹500</span>
-                            </div>
-                            ` : ''}
-                            <div class="fee-item">
-                                <span>GST (18%)</span>
-                                <span>₹432</span>
-                            </div>
-                            <div class="fee-item total">
-                                <span>Total Amount</span>
-                                <span>₹${hasInsurance || hasDelivery ? (2832 + (hasInsurance ? parseFloat($('#insuranceAmount').val()) : 0) + (hasDelivery ? 500 : 0)).toFixed(2) : '2832'}</span>
-                            </div>
-                        </div>
-                        <div class="payment-note mt-3">
-                            <small class="text-muted">
-                                <i class="fas fa-info-circle"></i> Includes lawyer consultation, notice drafting, and delivery
-                                ${hasInsurance ? '<br><i class="fas fa-shield-alt"></i> Includes insurance coverage for the complaint' : ''}
-                                ${hasDelivery ? '<br><i class="fas fa-truck"></i> Includes door-step delivery service' : ''}
-                            </small>
-                        </div>
-                    `;
-                }
-            } else {
-                paymentDetails = `
-                    <div class="fee-breakdown">
-                        <h5>Fee Breakdown</h5>
-                        <div class="fee-item">
-                            <span>Filing Fee</span>
-                            <span>₹500</span>
-                        </div>
-                        <div class="fee-item">
-                            <span>Lawyer Consultation Fee</span>
-                            <span>₹2000</span>
-                        </div>
-                        <div class="fee-item">
-                            <span>Documentation Charges</span>
-                            <span>₹500</span>
-                        </div>
-                        <div class="fee-item">
-                            <span>Service Charges</span>
-                            <span>₹500</span>
-                        </div>
-                        ${hasInsurance ? `
-                        <div class="fee-item">
-                            <span>Insurance Premium</span>
-                            <span>₹${$('#insuranceAmount').val()}</span>
-                        </div>
-                        ` : ''}
-                        <div class="fee-item">
-                            <span>GST (18%)</span>
-                            <span>₹630</span>
-                        </div>
-                        <div class="fee-item total">
-                            <span>Total Amount</span>
-                            <span>₹${hasInsurance ? (4130 + parseFloat($('#insuranceAmount').val())).toFixed(2) : '4130'}</span>
-                        </div>
-                    </div>
-                    <div class="payment-note mt-3">
-                        <small class="text-muted">
-                            <i class="fas fa-info-circle"></i> Includes complete case handling until resolution
-                            ${hasInsurance ? '<br><i class="fas fa-shield-alt"></i> Includes insurance coverage for the complaint' : ''}
-                        </small>
-                    </div>
-                `;
-            }
-            
-            $('#payment-details').html(paymentDetails);
-        }
-
-        // Function to generate case ID
-        function generateCaseId() {
-            const timestamp = new Date().getTime();
-            const random = Math.floor(Math.random() * 10000);
-            return `HC${timestamp}${random}`;
-        }
-
-        // Listen for pincode changes in complainant details
-        $('#pincode').on('change', function() {
-            const selectedPincode = $(this).val();
-            console.log('Complainant pincode changed:', selectedPincode);
-            if (selectedPincode) {
-                // Set the jurisdiction pincode to match complainant pincode
-                $('#jurisdictionPincode').val(selectedPincode);
-                populateJurisdictionDetails(selectedPincode);
-            }
-        });
-
-        // Listen for jurisdiction pincode changes
-        $('#jurisdictionPincode').on('change', function() {
-            const selectedPincode = $(this).val();
-            console.log('Jurisdiction pincode changed:', selectedPincode);
-            if (selectedPincode) {
-                populateJurisdictionDetails(selectedPincode);
-            }
-        });
-
-        // Function to populate jurisdiction details
-        function populateJurisdictionDetails(pincode) {
-            console.log('Populating jurisdiction details for pincode:', pincode);
-            const data = jurisdictionData[pincode];
-            if (data) {
-                $('#districtCourt').val(data.districtCourt);
-                $('#jurisdictionCity').val(data.city);
-                $('#courtAddress').val(data.address);
-                console.log('Jurisdiction details updated:', data);
-            } else {
-                console.log('No jurisdiction data found for pincode:', pincode);
-            }
-        }
-
-        // Initialize jurisdiction details if pincode is already selected
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
         $(document).ready(function() {
-            const initialPincode = $('#pincode').val();
-            if (initialPincode) {
-                $('#jurisdictionPincode').val(initialPincode);
-                populateJurisdictionDetails(initialPincode);
-            }
-        });
-
-        // Jurisdiction data mapping
-        const jurisdictionData = {
-            '400001': {
-                districtCourt: 'Mumbai District Consumer Disputes Redressal Commission',
-                city: 'Mumbai',
-                address: 'Consumer Disputes Redressal Commission, 3rd Floor, New Administrative Building, Opposite Mantralaya, Mumbai - 400032, Maharashtra',
-                contact: '022-22027991',
-                email: 'dcdrc.mumbai@maharashtra.gov.in',
-                workingHours: '10:00 AM - 6:00 PM (Monday to Friday)',
-                jurisdiction: 'South Mumbai, Colaba, Fort, Marine Lines, Churchgate'
-            },
-            '110001': {
-                districtCourt: 'New Delhi District Consumer Disputes Redressal Commission',
-                city: 'New Delhi',
-                address: 'Consumer Disputes Redressal Commission, 5th Floor, Vikas Bhawan, I.P. Estate, New Delhi - 110002, Delhi',
-                contact: '011-23379111',
-                email: 'dcdrc.delhi@delhi.gov.in',
-                workingHours: '9:30 AM - 5:30 PM (Monday to Friday)',
-                jurisdiction: 'Connaught Place, Parliament Street, Janpath, Sansad Marg'
-            },
-            '560001': {
-                districtCourt: 'Bangalore District Consumer Disputes Redressal Commission',
-                city: 'Bangalore',
-                address: 'Consumer Disputes Redressal Commission, 2nd Floor, M.S. Building, Dr. Ambedkar Veedhi, Bangalore - 560001, Karnataka',
-                contact: '080-22252525',
-                email: 'dcdrc.bangalore@karnataka.gov.in',
-                workingHours: '10:00 AM - 5:30 PM (Monday to Friday)',
-                jurisdiction: 'Central Business District, MG Road, Brigade Road, Commercial Street'
-            },
-            '600001': {
-                districtCourt: 'Chennai District Consumer Disputes Redressal Commission',
-                city: 'Chennai',
-                address: 'Consumer Disputes Redressal Commission, 4th Floor, Singaravelar Maligai, 32, Rajaji Salai, Chennai - 600001, Tamil Nadu',
-                contact: '044-25340500',
-                email: 'dcdrc.chennai@tn.gov.in',
-                workingHours: '10:00 AM - 5:45 PM (Monday to Friday)',
-                jurisdiction: 'George Town, Parrys Corner, Broadway, High Court'
-            },
-            '700001': {
-                districtCourt: 'Kolkata District Consumer Disputes Redressal Commission',
-                city: 'Kolkata',
-                address: 'Consumer Disputes Redressal Commission, 3rd Floor, Bikash Bhawan, Salt Lake, Kolkata - 700091, West Bengal',
-                contact: '033-23370000',
-                email: 'dcdrc.kolkata@wb.gov.in',
-                workingHours: '10:30 AM - 5:00 PM (Monday to Friday)',
-                jurisdiction: 'BBD Bagh, Dalhousie Square, Writers Building, Esplanade'
-            },
-            '380001': {
-                districtCourt: 'Ahmedabad District Consumer Disputes Redressal Commission',
-                city: 'Ahmedabad',
-                address: 'Consumer Disputes Redressal Commission, 5th Floor, Block No. 5, Dr. Jivraj Mehta Bhavan, Gandhinagar - 382010, Gujarat',
-                contact: '079-23250505',
-                email: 'dcdrc.ahmedabad@gujarat.gov.in',
-                workingHours: '10:00 AM - 6:00 PM (Monday to Friday)',
-                jurisdiction: 'Central Ahmedabad, Ellis Bridge, Ashram Road, CG Road'
-            },
-            '500001': {
-                districtCourt: 'Hyderabad District Consumer Disputes Redressal Commission',
-                city: 'Hyderabad',
-                address: 'Consumer Disputes Redressal Commission, 3rd Floor, Gruhakalpa Complex, M.J. Road, Hyderabad - 500001, Telangana',
-                contact: '040-23230404',
-                email: 'dcdrc.hyderabad@telangana.gov.in',
-                workingHours: '10:30 AM - 5:00 PM (Monday to Friday)',
-                jurisdiction: 'Abids, Koti, Sultan Bazar, Nampally'
-            },
-            '411001': {
-                districtCourt: 'Pune District Consumer Disputes Redressal Commission',
-                city: 'Pune',
-                address: 'Consumer Disputes Redressal Commission, 4th Floor, New Administrative Building, Pune - 411001, Maharashtra',
-                contact: '020-26123333',
-                email: 'dcdrc.pune@maharashtra.gov.in',
-                workingHours: '10:00 AM - 5:30 PM (Monday to Friday)',
-                jurisdiction: 'Shivajinagar, FC Road, JM Road, Deccan Gymkhana'
-            },
-            '302001': {
-                districtCourt: 'Jaipur District Consumer Disputes Redressal Commission',
-                city: 'Jaipur',
-                address: 'Consumer Disputes Redressal Commission, 2nd Floor, Yojana Bhawan, Tilak Marg, Jaipur - 302005, Rajasthan',
-                contact: '0141-2222222',
-                email: 'dcdrc.jaipur@rajasthan.gov.in',
-                workingHours: '10:00 AM - 5:00 PM (Monday to Friday)',
-                jurisdiction: 'Civil Lines, MI Road, Bani Park, C-Scheme'
-            },
-            '800001': {
-                districtCourt: 'Patna District Consumer Disputes Redressal Commission',
-                city: 'Patna',
-                address: 'Consumer Disputes Redressal Commission, 3rd Floor, Vikas Bhawan, Bailey Road, Patna - 800001, Bihar',
-                contact: '0612-2222222',
-                email: 'dcdrc.patna@bihar.gov.in',
-                workingHours: '10:00 AM - 5:00 PM (Monday to Friday)',
-                jurisdiction: 'Patna City, Gandhi Maidan, Fraser Road, Exhibition Road'
-            }
-        };
-
-        // Handle advocate selection radio buttons
-        $('input[name="advocateSelection"]').on('change', function() {
-            const selectedOption = $(this).val();
-            if (selectedOption === 'own') {
-                $('#lawyerDropdownSection').show();
-            } else {
-                $('#lawyerDropdownSection').hide();
-            }
-        });
-
-        // Initialize Select2 for lawyer dropdown
-        $('#lawyerSelect').select2({
-            width: '100%',
-            dropdownAutoWidth: true
-        });
-
-        // Lawyer data mapping
-        const lawyerData = {
-            '1': {
-                name: 'Adv. Rajesh Kumar',
-                photo: 'https://randomuser.me/api/portraits/men/1.jpg',
-                experience: '10 years',
-                specialization: 'Specialist in Consumer Law',
-                credentials: 'LL.M, Bar Council of India',
-                successRate: '85%',
-                casesHandled: '250+',
-                languages: 'English, Hindi, Marathi',
-                customerRating: 4.5,
-                happyClaimRating: 4.8,
-                responseTime: 'Within 2 hours'
-            },
-            '2': {
-                name: 'Adv. Priya Sharma',
-                photo: 'https://randomuser.me/api/portraits/women/1.jpg',
-                experience: '8 years',
-                specialization: 'Specialist in Consumer Protection',
-                credentials: 'LL.M, Bar Council of India',
-                successRate: '78%',
-                casesHandled: '180+',
-                languages: 'English, Hindi',
-                customerRating: 4.3,
-                happyClaimRating: 4.6,
-                responseTime: 'Within 4 hours'
-            },
-            '3': {
-                name: 'Adv. Amit Singh',
-                photo: 'https://randomuser.me/api/portraits/men/2.jpg',
-                experience: '12 years',
-                specialization: 'Specialist in Consumer Law',
-                credentials: 'LL.M, Bar Council of India',
-                successRate: '82%',
-                casesHandled: '300+',
-                languages: 'English, Hindi, Punjabi',
-                customerRating: 4.7,
-                happyClaimRating: 4.9,
-                responseTime: 'Within 1 hour'
-            },
-            '4': {
-                name: 'Adv. Neha Gupta',
-                photo: 'https://randomuser.me/api/portraits/women/2.jpg',
-                experience: '9 years',
-                specialization: 'Specialist in Consumer Protection',
-                credentials: 'LL.M, Bar Council of India',
-                successRate: '80%',
-                casesHandled: '200+',
-                languages: 'English, Hindi',
-                customerRating: 4.4,
-                happyClaimRating: 4.7,
-                responseTime: 'Within 3 hours'
-            },
-            '5': {
-                name: 'Adv. Vikram Patel',
-                photo: 'https://randomuser.me/api/portraits/men/3.jpg',
-                experience: '11 years',
-                specialization: 'Specialist in Consumer Disputes',
-                credentials: 'LL.M, Bar Council of India',
-                successRate: '83%',
-                casesHandled: '270+',
-                languages: 'English, Hindi, Gujarati',
-                customerRating: 4.6,
-                happyClaimRating: 4.8,
-                responseTime: 'Within 2 hours'
-            },
-            '6': {
-                name: 'Adv. Meera Desai',
-                photo: 'https://randomuser.me/api/portraits/women/3.jpg',
-                experience: '7 years',
-                specialization: 'Specialist in Consumer Rights',
-                credentials: 'LL.M, Bar Council of India',
-                successRate: '75%',
-                casesHandled: '150+',
-                languages: 'English, Hindi, Marathi',
-                customerRating: 4.2,
-                happyClaimRating: 4.5,
-                responseTime: 'Within 5 hours'
-            }
-        };
-
-        // Function to update lawyer details
-        function updateLawyerDetails(lawyerId) {
-            console.log('Updating lawyer details for ID:', lawyerId);
-            const lawyer = lawyerData[lawyerId];
-            if (!lawyer) {
-                console.error('No lawyer found for ID:', lawyerId);
-                return;
-            }
-
-            // Update photo and name
-            $('#lawyerPhoto').attr('src', lawyer.photo);
-            $('#lawyerFullName').text(lawyer.name);
-
-            // Update professional details
-            $('#lawyerSpecialization').text(lawyer.specialization);
-            $('#lawyerCredentials').text(lawyer.credentials);
-            $('#lawyerExperience').text(lawyer.experience);
-            $('#lawyerSuccessRate').text(lawyer.successRate);
-            $('#lawyerCasesHandled').text(lawyer.casesHandled);
-            $('#lawyerLanguages').text(lawyer.languages);
-            $('#lawyerResponseTime').text(lawyer.responseTime);
-
-            // Update ratings
-            $('#customerRating').html(generateStars(lawyer.customerRating));
-            $('#happyClaimRating').html(generateStars(lawyer.happyClaimRating));
-
-            // Update chat modal title
-            $('#chatLawyerName').text(lawyer.name);
-
-            console.log('Lawyer details updated successfully');
-        }
-
-        // Function to generate star ratings
-        function generateStars(rating) {
-            let stars = '';
-            for (let i = 1; i <= 5; i++) {
-                if (i <= rating) {
-                    stars += '<i class="fas fa-star text-warning"></i>';
-                } else if (i - 0.5 <= rating) {
-                    stars += '<i class="fas fa-star-half-alt text-warning"></i>';
+            $('#loginForm').on('submit', function(e) {
+                e.preventDefault();
+                
+                const username = $('#username').val();
+                const password = $('#password').val();
+                
+                // Check credentials
+                if (username === 'admin' && password === 'admin') {
+                    $('#errorMessage').hide();
+                    $('#successMessage').fadeIn();
+                    
+                    // Redirect after successful login
+                    setTimeout(function() {
+                        window.location.href = 'dashboard.html';
+                    }, 1500);
                 } else {
-                    stars += '<i class="far fa-star text-warning"></i>';
+                    $('#successMessage').hide();
+                    $('#errorMessage').fadeIn();
                 }
-            }
-            return stars + ` <span class="ml-2">${rating}/5</span>`;
-        }
-
-        // Handle lawyer selection change
-        $('#lawyerSelect').on('change', function() {
-            const selectedLawyerId = $(this).val();
-            console.log('Lawyer selection changed:', selectedLawyerId);
-            if (selectedLawyerId) {
-                updateLawyerDetails(selectedLawyerId);
-            }
-        });
-
-        // Initialize with first lawyer's details
-        updateLawyerDetails('1');
-
-        // Company data mapping
-        const companyData = {
-            travel: {
-                hotel: [
-                    { value: 'taj_hotels', label: 'Taj Hotels' },
-                    { value: 'oberoi_hotels', label: 'Oberoi Hotels' },
-                    { value: 'itc_hotels', label: 'ITC Hotels' },
-                    { value: 'marriott', label: 'Marriott International' },
-                    { value: 'hyatt', label: 'Hyatt Hotels' }
-                ],
-                travel_partner: [
-                    { value: 'makemytrip', label: 'MakeMyTrip' },
-                    { value: 'yatra', label: 'Yatra.com' },
-                    { value: 'cleartrip', label: 'Cleartrip' },
-                    { value: 'goibibo', label: 'Goibibo' },
-                    { value: 'expedia', label: 'Expedia' }
-                ],
-                airline: [
-                    { value: 'air_india', label: 'Air India' },
-                    { value: 'indigo', label: 'IndiGo' },
-                    { value: 'spicejet', label: 'SpiceJet' },
-                    { value: 'vistara', label: 'Vistara' },
-                    { value: 'air_asia', label: 'AirAsia India' }
-                ]
-            },
-            healthcare: {
-                hospital: [
-                    { value: 'apollo', label: 'Apollo Hospitals' },
-                    { value: 'fortis', label: 'Fortis Healthcare' },
-                    { value: 'max', label: 'Max Healthcare' },
-                    { value: 'manipal', label: 'Manipal Hospitals' },
-                    { value: 'medanta', label: 'Medanta' }
-                ],
-                pharmacy: [
-                    { value: 'apollo_pharmacy', label: 'Apollo Pharmacy' },
-                    { value: 'medplus', label: 'Medplus' },
-                    { value: 'netmeds', label: 'Netmeds' },
-                    { value: 'pharmeasy', label: 'Pharmeasy' },
-                    { value: '1mg', label: '1mg' }
-                ],
-                diagnostic: [
-                    { value: 'lal_pathlabs', label: 'Dr. Lal PathLabs' },
-                    { value: 'thyrocare', label: 'Thyrocare' },
-                    { value: 'metropolis', label: 'Metropolis Healthcare' },
-                    { value: 'srl_diagnostics', label: 'SRL Diagnostics' },
-                    { value: 'apollo_diagnostics', label: 'Apollo Diagnostics' }
-                ]
-            },
-            ecommerce: {
-                delivery: [
-                    { value: 'amazon', label: 'Amazon India' },
-                    { value: 'flipkart', label: 'Flipkart' },
-                    { value: 'myntra', label: 'Myntra' },
-                    { value: 'ajio', label: 'AJIO' },
-                    { value: 'meesho', label: 'Meesho' }
-                ],
-                product_quality: [
-                    { value: 'amazon', label: 'Amazon India' },
-                    { value: 'flipkart', label: 'Flipkart' },
-                    { value: 'myntra', label: 'Myntra' },
-                    { value: 'nykaa', label: 'Nykaa' },
-                    { value: 'firstcry', label: 'FirstCry' }
-                ],
-                refund: [
-                    { value: 'amazon', label: 'Amazon India' },
-                    { value: 'flipkart', label: 'Flipkart' },
-                    { value: 'myntra', label: 'Myntra' },
-                    { value: 'ajio', label: 'AJIO' },
-                    { value: 'meesho', label: 'Meesho' }
-                ]
-            },
-            banking: {
-                account: [
-                    { value: 'sbi', label: 'State Bank of India' },
-                    { value: 'hdfc', label: 'HDFC Bank' },
-                    { value: 'icici', label: 'ICICI Bank' },
-                    { value: 'axis', label: 'Axis Bank' },
-                    { value: 'kotak', label: 'Kotak Mahindra Bank' }
-                ],
-                transaction: [
-                    { value: 'sbi', label: 'State Bank of India' },
-                    { value: 'hdfc', label: 'HDFC Bank' },
-                    { value: 'icici', label: 'ICICI Bank' },
-                    { value: 'axis', label: 'Axis Bank' },
-                    { value: 'kotak', label: 'Kotak Mahindra Bank' }
-                ],
-                credit_card: [
-                    { value: 'sbi', label: 'State Bank of India' },
-                    { value: 'hdfc', label: 'HDFC Bank' },
-                    { value: 'icici', label: 'ICICI Bank' },
-                    { value: 'axis', label: 'Axis Bank' },
-                    { value: 'kotak', label: 'Kotak Mahindra Bank' }
-                ]
-            },
-            insurance: {
-                health_insurance: [
-                    { value: 'star_health', label: 'Star Health Insurance' },
-                    { value: 'hdfc_ergo', label: 'HDFC ERGO' },
-                    { value: 'icici_lombard', label: 'ICICI Lombard' },
-                    { value: 'bajaj_allianz', label: 'Bajaj Allianz' },
-                    { value: 'new_india', label: 'New India Assurance' }
-                ],
-                motor_insurance: [
-                    { value: 'bajaj_allianz', label: 'Bajaj Allianz' },
-                    { value: 'icici_lombard', label: 'ICICI Lombard' },
-                    { value: 'hdfc_ergo', label: 'HDFC ERGO' },
-                    { value: 'united_india', label: 'United India Insurance' },
-                    { value: 'national_insurance', label: 'National Insurance' }
-                ],
-                life_insurance: [
-                    { value: 'lic', label: 'Life Insurance Corporation' },
-                    { value: 'sbi_life', label: 'SBI Life Insurance' },
-                    { value: 'hdfc_life', label: 'HDFC Life Insurance' },
-                    { value: 'icici_prudential', label: 'ICICI Prudential' },
-                    { value: 'max_life', label: 'Max Life Insurance' }
-                ]
-            },
-            real_estate: {
-                builder: [
-                    { value: 'dlf', label: 'DLF Limited' },
-                    { value: 'godrej', label: 'Godrej Properties' },
-                    { value: 'sobhagroup', label: 'Sobha Limited' },
-                    { value: 'prestige', label: 'Prestige Group' },
-                    { value: 'brigade', label: 'Brigade Group' }
-                ],
-                property: [
-                    { value: 'magicbricks', label: 'MagicBricks' },
-                    { value: '99acres', label: '99acres' },
-                    { value: 'housing', label: 'Housing.com' },
-                    { value: 'nobroker', label: 'NoBroker' },
-                    { value: 'commonfloor', label: 'CommonFloor' }
-                ],
-                home_loan: [
-                    { value: 'hdfc', label: 'HDFC Ltd' },
-                    { value: 'lic_housing', label: 'LIC Housing Finance' },
-                    { value: 'sbi_home', label: 'SBI Home Loans' },
-                    { value: 'icici_home', label: 'ICICI Home Finance' },
-                    { value: 'axis_home', label: 'Axis Home Loans' }
-                ]
-            }
-        };
-
-        // Add insurance coverage checkbox handler
-        $('#insuranceCoverage').on('change', function() {
-            const isChecked = $(this).is(':checked');
-            $('.insurance-details').toggle(isChecked);
-            
-            if (isChecked) {
-                const claimAmount = parseFloat($('#value').val()) || 0;
-                const insuranceAmount = claimAmount * 0.05; // 5% of claim amount
-                $('#insuranceAmount').val(insuranceAmount.toFixed(2));
-            } else {
-                $('#insuranceAmount').val('');
-            }
-        });
-
-        // Add door-step delivery checkbox handler
-        $('#doorstepDelivery').on('change', function() {
-            const isChecked = $(this).is(':checked');
-            $('.delivery-details').toggle(isChecked);
-        });
-
-        // Show/hide door-step delivery option based on service type
-        $('input[name="serviceType"]').on('change', function() {
-            const isNotice = $(this).val() === 'notice';
-            $('#doorstepDeliveryCard').toggle(isNotice);
-            if (!isNotice) {
-                $('#doorstepDelivery').prop('checked', false);
-                $('.delivery-details').hide();
-            }
-        });
-
-        // Handle form submission
-        $('#submitComplaint').on('click', function() {
-            // Validate all sections
-            if (!validateCurrentSection()) {
-                return;
-            }
-
-            // Collect all form data
-            const formData = {
-                serviceType: $('input[name="serviceType"]:checked').val(),
-                noticeType: $('input[name="noticeType"]:checked').val(),
-                complainant: {
-                    name: $('#complainantName').val(),
-                    address: $('#complainantAddress').val(),
-                    pincode: $('#complainantPincode').val(),
-                    contact: $('#complainantContact').val(),
-                    email: $('#complainantEmail').val()
-                },
-                jurisdiction: {
-                    pincode: $('#jurisdictionPincode').val(),
-                    districtCourt: $('#districtCourt').val(),
-                    city: $('#jurisdictionCity').val(),
-                    address: $('#jurisdictionAddress').val()
-                },
-                respondent: {
-                    name: $('#respondentName').val(),
-                    address: $('#respondentAddress').val(),
-                    relationship: $('#relationship').val(),
-                    contact: $('#respondentContact').val(),
-                    email: $('#respondentEmail').val()
-                },
-                claim: {
-                    amount: $('#claimAmount').val(),
-                    description: $('#claimDescription').val()
-                },
-                documents: $('#documents').val(),
-                insurance: $('#insuranceCoverage').is(':checked'),
-                doorstepDelivery: $('#doorstepDelivery').is(':checked'),
-                payment: {
-                    baseFee: 500,
-                    insurancePremium: $('#insuranceCoverage').is(':checked') ? parseFloat($('#insurancePremium').text().replace('₹', '')) : 0,
-                    deliveryFee: $('#doorstepDelivery').is(':checked') ? 500 : 0,
-                    totalAmount: parseFloat($('#totalAmount').text().replace('₹', ''))
-                }
-            };
-
-            // Send email using EmailJS
-            emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
-                to_email: "happy@happyclaim.in",
-                subject: "New Complaint/Notice Submission",
-                message: `
-                    Service Type: ${formData.serviceType}
-                    Notice Type: ${formData.noticeType || 'N/A'}
-
-                    Complainant Details:
-                    Name: ${formData.complainant.name}
-                    Address: ${formData.complainant.address}
-                    Pincode: ${formData.complainant.pincode}
-                    Contact: ${formData.complainant.contact}
-                    Email: ${formData.complainant.email}
-
-                    Jurisdiction Details:
-                    Pincode: ${formData.jurisdiction.pincode}
-                    District Court: ${formData.jurisdiction.districtCourt}
-                    City: ${formData.jurisdiction.city}
-                    Address: ${formData.jurisdiction.address}
-
-                    Respondent Details:
-                    Name: ${formData.respondent.name}
-                    Address: ${formData.respondent.address}
-                    Relationship: ${formData.respondent.relationship}
-                    Contact: ${formData.respondent.contact}
-                    Email: ${formData.respondent.email}
-
-                    Claim Details:
-                    Amount: ₹${formData.claim.amount}
-                    Description: ${formData.claim.description}
-
-                    Additional Services:
-                    Insurance Coverage: ${formData.insurance ? 'Yes' : 'No'}
-                    Door-step Delivery: ${formData.doorstepDelivery ? 'Yes' : 'No'}
-
-                    Payment Details:
-                    Base Fee: ₹${formData.payment.baseFee}
-                    Insurance Premium: ₹${formData.payment.insurancePremium}
-                    Delivery Fee: ₹${formData.payment.deliveryFee}
-                    Total Amount: ₹${formData.payment.totalAmount}
-                `
-            })
-            .then(function(response) {
-                console.log('Email sent successfully:', response);
-                // Show success message
-                alert('Your complaint/notice has been submitted successfully! We will contact you shortly.');
-                // Reset form
-                $('#complaintForm')[0].reset();
-                // Reset to first section
-                currentSection = 0;
-                updateProgress();
-            })
-            .catch(function(error) {
-                console.error('Email sending failed:', error);
-                alert('There was an error submitting your complaint/notice. Please try again or contact support.');
             });
-        });
         });
     </script>
 </body>
